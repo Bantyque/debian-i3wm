@@ -37,7 +37,7 @@ sudo apt install -y picom rofi dunst libnotify-bin i3 unzip wmctrl
 
 sudo apt install -y geany
 
-sudo apt install -y mpv scrot gimp obs-studio transmission inkscape telegram-desktop viewnior moc webp-pixbuf-loader
+sudo apt install -y mpv scrot gimp obs-studio transmission inkscape telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish
 
 sudo apt install -y zathura
 
@@ -81,11 +81,16 @@ sudo apt install connman connman-gtk connman-vpn
 sudo chmod +x ~/debian-i3wm/autotiling
 sudo cp ~/debian-i3wm/autotiling /bin/
 
+sudo chmod +x ~/debian-i3wm/rofi-power-menu
+sudo cp ~/debian-i3wm/rofi-power-menu /bin/
+
 \cp -r ~/debian-i3wm/.config ~
 \cp -r ~/debian-i3wm/.moc ~
 \cp -r ~/debian-i3wm/.local ~
 \cp ~/debian-i3wm/.bashrc ~
 \cp ~/debian-i3wm/.Xresources ~
+
+sudo chmod +x ~/.config/polybar/launch.sh
 
 
 
