@@ -72,7 +72,16 @@ wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/in
 systemctl enable betterlockscreen@$USER
 
 bash ~/debian-i3wm/ly.sh
+sudo apt install ~/debian-i3wm/tlpui.deb
 
+sudo apt install connman connman-gtk connman-vpn
+
+sudo chmod +x ~/debian-i3wm/autotiling
+sudo cp ~/debian-i3wm/autotiling /bin/
+
+\cp -r ~/debian-i3wm/.config ~
+\cp -r ~/debian-i3wm/.moc ~
+\cp -r ~/debian-i3wm/.local ~
 \cp ~/debian-i3wm/.bashrc ~
 \cp ~/debian-i3wm/.Xresources ~
 
