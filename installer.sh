@@ -44,6 +44,8 @@ sudo apt install -y zathura
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
+sudo apt install python3-i3ipc
+
 sudo apt install pipx
 
 pipx install pywal
