@@ -1,0 +1,203 @@
+
+##################################################### Конфигурационный файл i3wm ##############################
+
+# Кнопка MOD
+set $mod Mod4
+
+# Раскладка клавиатуры
+exec --no-startup-id setxkbmap -layout us,ru,ua -option "grp:alt_shift_toggle"
+
+
+#################################################### Декорации окон ###########################################
+default_border pixel 2
+for_window [tiling] border pixel 2
+for_window [floating] border pixel 2
+gaps inner 4
+gaps outer 4
+
+# Шрифты
+font pango:Iosevka Nerd Font 10
+font pango:Symbols Nerd Font 12
+
+########################################################## Автостарт ##########################################
+
+exec --no-startup-id dex --autostart --environment i3
+exec_always --no-startup-id "xrdb ~/.Xresources"
+exec --no-startup-id "xfce4-power-manager"
+exec --no-startup-id "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
+exec --no-startup-id "unclutter-xfixes --timeout 1 --jitter 1 --ignore-buttons 4,5,6,7 --hide-on-touch --start-hidden" 
+exec --no-startup-id xss-lock --transfer-sleep-lock --beterlockscreen -l
+exec_always --no-startup-id ~/.config/polybar/launch.sh
+exec --no-startup-id dunst -conf ~/.config/dunst/dunstrc
+exec --no-startup-id picom --experimental-backends --config ~/.config/picom.conf 
+exec_always --no-startup-id "wpg -s ~/Изображения/Обои"
+exec --no-startup-id betterlockscreen -u ~/Изображения/Обои/
+exec_always --no-startup-id autotiling
+exec_always --no-startup-id "wal-telegram --wal --tiled"
+
+########################################################## Цвета ##############################################
+
+set_from_resource $fg i3wm.color7 #f0f0f0
+set_from_resource $bg i3wm.color2 #f0f0f0
+
+# class                 border  backgr. text indicator child_border
+client.focused          $bg     $bg     $fg  $bg       $bg
+client.focused_inactive $bg     $bg     $fg  $bg       $bg
+client.unfocused        $bg     $bg     $fg  $bg       $bg
+client.urgent           $bg     $bg     $fg  $bg       $bg
+client.placeholder      $bg     $bg     $fg  $bg       $bg
+
+client.background       $bg
+
+#################################################### Правила открытия окон ####################################
+
+# Окна в плавающем режиме по умолчанию
+for_window [class="mpv"] floating enable, move absolute position center
+for_window [class="Viewnior"] floating enable, move absolute position center
+for_window [class="Pavucontrol"] floating enable, move absolute position center
+for_window [class="Catfish"] floating enable, move absolute position top
+for_window [title="calcurse" class="URxvt"] floating enable
+for_window [class="Connman-gtk"] floating enable, move absolute position top
+
+# Окна открывающиеся на определенном рабочем столе
+assign [instance="google-chrome"] $ws3
+assign [instance="transmission-gtk"] $ws3
+#assign [instance="telegram-desktop"] $ws3
+assign [class="rxvt" instance="MOC"] $ws4
+assign [class="rxvt" instance="cava"] $ws4
+assign [instance="libreoffice"] $ws5
+assign [instance="GIMP"] $ws5
+
+#################################################### Звук и яркость экрана ####################################
+
+# Звук
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Яркость
+bindsym XF86MonBrightnessUp exec light -A 10
+bindsym XF86MonBrightnessDown exec light -U 10
+
+################################################# Программы ##################################################
+
+# Терминал
+bindsym $mod+Return exec rxvt -tr
+
+# Лаунчер
+bindsym $mod+d exec rofi -show drun -show-icons
+
+# Скриншот
+bindsym --release Print exec "scrot"
+
+# Pcmanfm
+bindsym $mod+Shift+p exec pcmanfm
+
+# Chrome
+bindsym $mod+g exec google-chrome
+
+# Geany
+bindsym $mod+c exec geany
+
+# Telegram
+bindsym $mod+t exec telegram-desktop
+
+# Torrent
+bindsym $mod+b exec transmission-gtk
+
+# Search
+bindsym $mod+s exec catfish
+
+# Плеер MOC
+bindsym Mod4+z exec "rxvt -tr -name player -e mocp"
+bindsym XF86AudioPrev exec --no-startup-id "mocp --previous"
+bindsym XF86AudioPlay exec --no-startup-id "mocp --toggle-pause"
+bindsym XF86AudioNext exec --no-startup-id "mocp --next"
+
+############################################### Горячие клавиши ##############################################
+
+# Перетаскивание мышкой
+floating_modifier $mod
+tiling_drag modifier titlebar
+
+# Закрыть окно
+bindsym $mod+Shift+q kill
+
+# Рестарт конфига i3
+bindsym $mod+Shift+r restart
+
+# Выход из сессии i3
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# Переключение окон
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Перемещение окон на рабочем столе
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Открыть новое окно горизонтально
+bindsym $mod+h split h
+
+# Открыть новое окно вертикально
+bindsym $mod+v split v
+
+# Открыть окно во весь экран
+bindsym $mod+f fullscreen toggle
+
+# Переключение между плавающими окнами и тайлингом
+bindsym $mod+space floating toggle
+
+# Изменение фокуса между плавающими окнами и тайлингом
+bindsym $mod+Shift+space focus mode_toggle
+
+# Выделитьвсе окна
+bindsym $mod+a focus parent
+
+# Название рабочих столов
+set $ws1 "1:"
+set $ws2 "2:"
+set $ws3 "3:"
+set $ws4 "4:"
+set $ws5 "5:"
+set $ws6 "6:"
+
+# Переход на рабочий стол
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+
+# Перемещение выбраного окнана рабочий стол
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+
+# Режим изменения размера окна
+mode "resize" {
+
+        # Направление изменения размера окон
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # Горячие клавиши изменения размера
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
