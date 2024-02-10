@@ -72,6 +72,8 @@ wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/in
 systemctl enable betterlockscreen@$USER
 
 bash ~/debian-i3wm/ly.sh
+
+sudo apt install tlp tlp-rdw acpi-call-dkms tp-smapi-dkms
 sudo apt install ~/debian-i3wm/tlpui.deb
 
 sudo apt install connman connman-gtk connman-vpn
