@@ -33,7 +33,7 @@ sudo apt install -y bluez blueman
 sudo systemctl enable cups
 sudo systemctl enable bluetooth
 
-sudo apt install -y picom rofi dunst libnotify-bin i3 unzip wmctrl
+sudo apt install -y picom rofi dunst libnotify-bin i3 unzip wmctrl curl
 
 sudo apt install -y geany
 
