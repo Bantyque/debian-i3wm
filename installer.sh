@@ -91,6 +91,7 @@ sudo cp ~/debian-i3wm/rofi-power-menu /bin/
 \cp ~/debian-i3wm/.Xresources ~
 
 sudo chmod +x ~/.config/polybar/*.sh
+sudo chmod +x ~/.config/rofi/*.sh
 
 
 
