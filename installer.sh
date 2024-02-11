@@ -13,7 +13,7 @@ sudo systemctl enable acpid
 
 sudo apt install -y policykit-1-gnome 
 
-sudo apt install -y pcmanfm ranger file-roller
+sudo apt install -y pcmanfm ranger file-roller zip unzip
 
 sudo apt install -y rxvt-unicode
 
