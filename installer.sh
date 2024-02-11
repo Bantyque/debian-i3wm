@@ -19,7 +19,7 @@ sudo apt install -y rxvt-unicode
 
 sudo apt install -y pulseaudio alsa-utils pavucontrol pamixer
 
-sudo apt install -y neofetch
+sudo apt install -y neofetch htop cava
 
 sudo apt install -y lxappearance 
 
