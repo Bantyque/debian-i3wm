@@ -1,10 +1,6 @@
 #!/bin/sh
-# Dependencies for Ly Console Manager
-sudo apt install -y libpam0g-dev libxcb-xkb-dev
 
-# Install Ly Console Display Manager
-cd 
-cd Downloads
+sudo apt install -y libpam0g-dev libxcb-xkb-dev
 git clone --recurse-submodules https://github.com/fairyglade/ly
 cd ly/
 make
