@@ -90,7 +90,8 @@ bindsym $mod+Return exec rxvt -tr
 bindsym $mod+d exec rofi -show drun -show-icons
 
 # Скриншот
-bindsym --release Print exec "scrot"
+#bindsym --release Print exec "scrot"
+bindsym --release Print exec "flameshot gui"
 
 # Pcmanfm
 bindsym $mod+Shift+p exec pcmanfm
