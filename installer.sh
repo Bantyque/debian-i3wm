@@ -2,6 +2,8 @@
 
 sudo apt install -y xorg xserver-xorg xbindkeys light xinput
 
+sudo apt install y firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu
+
 sudo apt install -y build-essential wget
 
 xdg-user-dirs-update
@@ -37,12 +39,16 @@ sudo apt install -y picom rofi dunst libnotify-bin i3 unzip wmctrl curl
 
 sudo apt install -y geany
 
-sudo apt install -y mpv scrot gimp obs-studio transmission inkscape telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish
+#sudo apt install -y scrot
+
+sudo apt install -y mpv gimp obs-studio transmission flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish
 
 sudo apt install -y zathura
 
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
+
+sudo apt install python3
 
 sudo apt install python3-i3ipc
 
