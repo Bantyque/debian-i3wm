@@ -41,7 +41,7 @@ sudo apt install -y geany
 
 #sudo apt install -y scrot
 
-sudo apt install -y mpv gimp obs-studio transmission flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish
+sudo apt install -y mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish
 
 sudo apt install -y zathura
 
