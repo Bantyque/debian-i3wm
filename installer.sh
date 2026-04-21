@@ -30,7 +30,7 @@ sudo apt install -y feh
 sudo apt install -y fonts-recommended fonts-ubuntu fonts-font-awesome fonts-terminus font-manager
 
 sudo apt install -y cups system-config-printer simple-scan printer-driver-splix sane
-sudo apt install -y bluez blueman
+sudo apt install -y bluetooth bluez bluez-tools pulseaudio-module-bluetooth blueman
 
 sudo systemctl enable cups
 sudo systemctl enable bluetooth
