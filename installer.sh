@@ -9,65 +9,12 @@ echo "Repository directory: $REPO_DIR"
 sudo apt update
 
 
-sudo apt install -y \
-    xorg xserver-xorg xbindkeys light xinput \
-    firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 \
-    mesa-vulkan-drivers xserver-xorg-video-amdgpu \
-    build-essential gcc make autoconf pkg-config \
-    wget curl git unzip zip \
-    dialog mtools dosfstools \
-    avahi-daemon acpi acpid \
-    gvfs-backends gvfs-fuse gvfs-mtp \
-    xfce4-power-manager \
-    policykit-1-gnome lxpolkit \
-    lxsession \
-    pcmanfm ranger file-roller \
-    rxvt-unicode \
-    pulseaudio alsa-utils pavucontrol pamixer \
-    pulseaudio-module-bluetooth \
-    bluez bluez-tools blueman \
-    cups system-config-printer simple-scan \
-    printer-driver-splix sane \
-    picom rofi dunst libnotify-bin \
-    i3 i3lock xss-lock wmctrl xdotool \
-    feh nitrogen arandr \
-    lxappearance \
-    xclip xsel wl-clipboard \
-    connman connman-gtk connman-vpn \
-    python3 python3-pip python3-i3ipc pipx \
-    fastfetch btop htop cava \
-    jq tree bat eza fd-find ripgrep fzf \
-    dos2unix psmisc lsb-release \
-    ca-certificates software-properties-common \
-    xdg-utils xdg-user-dirs \
-    xdg-desktop-portal xdg-desktop-portal-gtk \
-    brightnessctl playerctl numlockx \
-    redshift \
-    papirus-icon-theme arc-theme materia-gtk-theme \
-    fonts-recommended fonts-ubuntu \
-    fonts-font-awesome fonts-terminus \
-    font-manager \
-    geany zathura \
-    mpv gimp obs-studio transmission \
-    shotcut darktable flameshot \
-    telegram-desktop viewnior \
-    moc webp-pixbuf-loader \
-    calcurse catfish \
-    ffmpeg imagemagick \
-    p7zip-full unrar \
-    ntfs-3g exfatprogs \
-    zenity yad \
-    tlp tlp-rdw acpi-call-dkms \
-    grub-customizer plymouth plymouth-themes \
-    xss-lock \
-    libpam0g-dev libcairo2-dev libfontconfig1-dev \
-    libxcb-composite0-dev libev-dev \
-    libx11-xcb-dev libxcb-xkb-dev \
-    libxcb-xinerama0-dev libxcb-randr0-dev \
-    libxcb-image0-dev libxcb-util0-dev \
-    libxcb-xrm-dev libxkbcommon-dev \
-    libxkbcommon-x11-dev libjpeg-dev
-
+sudo apt install -y xorg xserver-xorg xbindkeys light xinput firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu build-essential gcc make autoconf pkg-config wget curl git unzip zip dialog mtools dosfstools
+    avahi-daemon acpi acpid gvfs-backends gvfs-fuse gvfs-mtp xfce4-power-manager policykit-1-gnome lxpolkit lxsession pcmanfm ranger file-roller rxvt-unicode pulseaudio alsa-utils pavucontrol pamixer pulseaudio-module-bluetooth bluez bluez-tools blueman
+    cups system-config-printer simple-scan printer-driver-splix sane picom rofi dunst libnotify-bin i3 i3lock xss-lock wmctrl xdotool feh arandr lxappearance xclip xsel wl-clipboard connman connman-gtk connman-vpn python3 python3-pip python3-i3ipc pipx fastfetch btop htop cava 
+    jq tree bat eza fd-find ripgrep fzf dos2unix psmisc lsb-release ca-certificates software-properties-common xdg-utils xdg-user-dirs xdg-desktop-portal xdg-desktop-portal-gtk brightnessctl playerctl numlockx redshift papirus-icon-theme arc-theme materia-gtk-theme fonts-recommended fonts-ubuntu 
+    fonts-font-awesome fonts-terminus font-manager geany zathura mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish ffmpeg imagemagick p7zip-full unrar ntfs-3g exfatprogs zenity yad tlp tlp-rdw acpi-call-dkms 
+    grub-customizer plymouth plymouth-themes xss-lock libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev
 xdg-user-dirs-update
 
 
