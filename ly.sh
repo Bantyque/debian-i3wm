@@ -16,10 +16,10 @@ rm -rf /tmp/ly-build
 
 echo "=== Шаг 4: Клонирование репозитория ==="
 # Флаг --recurse-submodules критически важен, без него сборка упадет!
-git clone --recurse-submodules https://github.com/fairyglade/ly /tmp/ly-build
+git clone --recurse-submodules https://github.com/fairyglade/ly 
 
 echo "=== Шаг 5: Компиляция Ly ==="
-cd /tmp/ly-build
+cd ly
 make
 
 echo "=== Шаг 6: Установка и интеграция с systemd ==="
@@ -34,9 +34,5 @@ sudo systemctl disable getty@tty2.service
 
 # Безопасно отключаем другие графические экраны входа, если они случайно установлены
 sudo systemctl disable lightdm gdm3 sddm 2>/dev/null || true
-
-echo "=== Готово! Очистка мусора... ==="
-cd ~
-rm -rf /tmp/ly-build
 
 echo "Установка дисплейного менеджера Ly успешно завершена! При следующей загрузке системы он появится автоматически."
