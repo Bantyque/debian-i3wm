@@ -1,104 +1,105 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-echo "Repository directory: $REPO_DIR"
-
-sudo apt update
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
 
-sudo apt install -y xorg xserver-xorg xbindkeys light xinput firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu build-essential gcc make autoconf pkg-config wget curl git unzip zip dialog mtools dosfstools
-    avahi-daemon acpi acpid gvfs-backends gvfs-fuse gvfs-mtp xfce4-power-manager policykit-1-gnome lxpolkit lxsession pcmanfm ranger file-roller rxvt-unicode pulseaudio alsa-utils pavucontrol pamixer pulseaudio-module-bluetooth bluez bluez-tools blueman
-    cups system-config-printer simple-scan printer-driver-splix sane picom rofi dunst libnotify-bin i3 i3lock xss-lock wmctrl xdotool feh arandr lxappearance xclip xsel wl-clipboard connman connman-gtk connman-vpn python3 python3-pip python3-i3ipc pipx fastfetch btop htop cava 
-    jq tree bat eza fd-find ripgrep fzf dos2unix psmisc lsb-release ca-certificates software-properties-common xdg-utils xdg-user-dirs xdg-desktop-portal xdg-desktop-portal-gtk brightnessctl playerctl numlockx redshift papirus-icon-theme arc-theme materia-gtk-theme fonts-recommended fonts-ubuntu 
-    fonts-font-awesome fonts-terminus font-manager geany zathura mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish ffmpeg imagemagick p7zip-full unrar ntfs-3g exfatprogs zenity yad tlp tlp-rdw acpi-call-dkms 
-    grub-customizer plymouth plymouth-themes xss-lock libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev
+if [ "$EUID" -eq 0 ]; then
+  echo "Пожалуйста, запустите скрипт как обычный пользователь (не через sudo su)."
+  exit 1
+fi
+
+echo "Обновление системы..."
+sudo apt update && sudo apt upgrade -y
+
+echo "Установка основных пакетов..."
+sudo apt install -y \
+    xorg xserver-xorg xbindkeys light xinput \
+    firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu \
+    build-essential wget dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager \
+    policykit-1-gnome pcmanfm ranger file-roller zip unzip rxvt-unicode \
+    pulseaudio alsa-utils pavucontrol pamixer \
+    neofetch htop cava lxappearance feh \
+    fonts-recommended fonts-ubuntu fonts-font-awesome fonts-terminus font-manager \
+    cups system-config-printer simple-scan printer-driver-splix sane \
+    bluetooth bluez bluez-tools pulseaudio-module-bluetooth blueman \
+    picom rofi dunst libnotify-bin i3 wmctrl curl geany \
+    mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura \
+    python3 python3-i3ipc pipx \
+    grub-customizer plymouth plymouth-themes xss-lock \
+    autoconf gcc make pkg-config libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev \
+    tlp tlp-rdw acpi-call-dkms tp-smapi-dkms connman connman-gtk connman-vpn xdg-user-dirs
+
+
 xdg-user-dirs-update
 
 
-sudo systemctl enable avahi-daemon
-sudo systemctl enable acpid
-sudo systemctl enable cups
-sudo systemctl enable bluetooth
-sudo systemctl enable connman
-sudo systemctl enable tlp
+sudo systemctl enable avahi-daemon acpid cups bluetooth
 
-
-pipx ensurepath
-
-pipx install pywal || true
-pipx install wpgtk || true
-
-if command -v wpg-install.sh >/dev/null 2>&1; then
-    wpg-install.sh -g -i
+echo "Установка Google Chrome..."
+if ! command -v google-chrome-stable &> /dev/null; then
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb
+    sudo dpkg -i /tmp/chrome.deb
+    sudo apt --fix-broken install -y
 fi
 
+echo "Установка pywal и wpgtk..."
+pipx install pywal
+pipx install wpgtk
+pipx ensurepath
 
-cd /tmp
-wget -O google-chrome.deb \
-    https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+~/.local/bin/wpg-install.sh -g -i
 
-sudo apt install -y ./google-chrome.deb
-rm -f google-chrome.deb
-
-
+echo "Настройка plymouth..."
 sudo plymouth-set-default-theme -R spinner
 
+echo "Установка i3lock-color..."
+if [ ! -d "$HOME/i3lock-color" ]; then
+    git clone https://github.com/Raymo111/i3lock-color.git "$HOME/i3lock-color"
+    cd "$HOME/i3lock-color"
+    ./install-i3lock-color.sh
+    cd "$REPO_DIR" # Возвращаемся обратно
+fi
 
-cd /tmp
-rm -rf i3lock-color
+echo "Установка betterlockscreen..."
+wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 
-git clone https://github.com/Raymo111/i3lock-color.git
-cd i3lock-color
+systemctl --user enable betterlockscreen@$USER
 
-./install-i3lock-color.sh
+echo "Запуск скрипта установки Ly..."
+if [ -f "$REPO_DIR/ly.sh" ]; then
+    bash "$REPO_DIR/ly.sh"
+else
+    echo "ПРЕДУПРЕЖДЕНИЕ: Файл ly.sh не найден в $REPO_DIR!"
+fi
 
-
-wget -qO- \
-    https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh \
-    | sudo bash -s system
-
-sudo systemctl enable "betterlockscreen@${USER}"
-
-
-
-chmod +x "$REPO_DIR/ly.sh"
-bash "$REPO_DIR/ly.sh"
-
-
-if [[ -f "$REPO_DIR/tlpui.deb" ]]; then
+echo "Установка локального .deb (tlpui)..."
+if [ -f "$REPO_DIR/tlpui.deb" ]; then
     sudo apt install -y "$REPO_DIR/tlpui.deb"
 fi
 
+echo "Копирование кастомных скриптов (autotiling, rofi-power-menu)..."
 
-install -Dm755 "$REPO_DIR/autotiling" \
-    /usr/local/bin/autotiling
+sudo cp "$REPO_DIR/autotiling" /usr/local/bin/
+sudo chmod +x /usr/local/bin/autotiling
 
-install -Dm755 "$REPO_DIR/rofi-power-menu" \
-    /usr/local/bin/rofi-power-menu
+sudo cp "$REPO_DIR/rofi-power-menu" /usr/local/bin/
+sudo chmod +x /usr/local/bin/rofi-power-menu
 
+echo "Копирование конфигурационных файлов..."
 
-cp -rf "$REPO_DIR/.config" "$HOME/"
-cp -rf "$REPO_DIR/.moc" "$HOME/"
-cp -rf "$REPO_DIR/.local" "$HOME/"
+mkdir -p ~/.config ~/.local ~/.moc
 
-install -m644 "$REPO_DIR/.bashrc" "$HOME/.bashrc"
-install -m644 "$REPO_DIR/.Xresources" "$HOME/.Xresources"
+cp -a "$REPO_DIR/.config/"* ~/.config/ 2>/dev/null || true
+cp -a "$REPO_DIR/.moc/"* ~/.moc/ 2>/dev/null || true
+cp -a "$REPO_DIR/.local/"* ~/.local/ 2>/dev/null || true
 
+cp "$REPO_DIR/.bashrc" ~/
+cp "$REPO_DIR/.Xresources" ~/
 
-find "$HOME/.config/polybar" \
-    -type f -name "*.sh" \
-    -exec chmod +x {} \; 2>/dev/null || true
-
-find "$HOME/.config/rofi" \
-    -type f -name "*.sh" \
-    -exec chmod +x {} \; 2>/dev/null || true
-
+chmod +x ~/.config/polybar/*.sh 2>/dev/null || true
+chmod +x ~/.config/rofi/*.sh 2>/dev/null || true
 
 sudo apt autoremove -y
-sudo apt autoclean -y
 
-echo
-echo "Батя грит маладца!"
+echo "Установка завершена!"
