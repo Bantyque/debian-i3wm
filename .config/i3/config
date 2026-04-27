@@ -25,9 +25,9 @@ exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id "xrdb ~/.Xresources"
 exec --no-startup-id "xfce4-power-manager"
 exec --no-startup-id nm-applet
-exec --no-startup-id "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1"
+exec --no-startup-id "/usr/libexec/polkit-gnome-authentication-agent-1"
 exec --no-startup-id "unclutter-xfixes --timeout 1 --jitter 1 --ignore-buttons 4,5,6,7 --hide-on-touch --start-hidden" 
-exec --no-startup-id xss-lock --transfer-sleep-lock --beterlockscreen -l
+exec --no-startup-id xss-lock --transfer-sleep-lock -- beterlockscreen -l
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec --no-startup-id dunst -conf ~/.config/dunst/dunstrc
 exec --no-startup-id picom --experimental-backends --config ~/.config/picom.conf 
@@ -58,7 +58,7 @@ for_window [class="Viewnior"] floating enable, move absolute position center
 for_window [class="Pavucontrol"] floating enable, move absolute position center
 for_window [class="Catfish"] floating enable, move absolute position top
 for_window [title="calcurse" class="URxvt"] floating enable
-for_window [class="nm-applet"] floating enable, move absolute position top
+for_window [class="nm-connection-editor"] floating enable, move absolute position top
 
 # Окна открывающиеся на определенном рабочем столе
 assign [instance="google-chrome"] $ws3
