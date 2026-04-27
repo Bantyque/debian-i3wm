@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-
+# Определяем директорию репозитория
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
-
 if [ "$EUID" -eq 0 ]; then
-  echo "Пожалуйста, запустите скрипт как обычный пользователь (не через sudo su)."
+  echo "Пожалуйста, запустите скрипт как обычный пользователь."
   exit 1
 fi
 
@@ -20,7 +19,8 @@ sudo apt install -y firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulk
 echo "Установка системных утилит и демонов..."
 sudo apt install -y build-essential wget dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager
 sudo apt install -y policykit-1-gnome pcmanfm ranger file-roller zip unzip rxvt-unicode
-sudo apt install -y tlp tlp-rdw acpi-call-dkms tp-smapi-dkms connman connman-gtk connman-vpn xdg-user-dirs
+# Убрали connman, добавили NetworkManager:
+sudo apt install -y tlp tlp-rdw acpi-call-dkms tp-smapi-dkms network-manager network-manager-gnome network-manager-openvpn-gnome xdg-user-dirs
 
 echo "Установка звука и Bluetooth..."
 sudo apt install -y pulseaudio alsa-utils pavucontrol pamixer
@@ -40,14 +40,13 @@ sudo apt install -y python3 python3-i3ipc pipx
 echo "Установка прикладных программ..."
 sudo apt install -y neofetch htop cava mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura
 
-echo "Установка библиотек для компиляции i3lock-color и Ly..."
+echo "Установка библиотек для компиляции..."
 sudo apt install -y autoconf gcc make pkg-config libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev
 
-# Обновляем директории пользователя
 xdg-user-dirs-update
 
-
-sudo systemctl enable avahi-daemon acpid cups bluetooth
+# Включаем NetworkManager и другие сервисы
+sudo systemctl enable NetworkManager avahi-daemon acpid cups bluetooth
 
 echo "Установка Google Chrome..."
 if ! command -v google-chrome-stable &> /dev/null; then
@@ -60,7 +59,6 @@ echo "Установка pywal и wpgtk..."
 pipx install pywal
 pipx install wpgtk
 pipx ensurepath
-
 ~/.local/bin/wpg-install.sh -g -i
 
 echo "Настройка plymouth..."
@@ -71,19 +69,16 @@ if [ ! -d "$HOME/i3lock-color" ]; then
     git clone https://github.com/Raymo111/i3lock-color.git "$HOME/i3lock-color"
     cd "$HOME/i3lock-color"
     ./install-i3lock-color.sh
-    cd "$REPO_DIR" # Возвращаемся обратно
+    cd "$REPO_DIR"
 fi
 
 echo "Установка betterlockscreen..."
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
-
 systemctl --user enable betterlockscreen@$USER
 
 echo "Запуск скрипта установки Ly..."
 if [ -f "$REPO_DIR/ly.sh" ]; then
     bash "$REPO_DIR/ly.sh"
-else
-    echo "ПРЕДУПРЕЖДЕНИЕ: Файл ly.sh не найден в $REPO_DIR!"
 fi
 
 echo "Установка локального .deb (tlpui)..."
@@ -91,8 +86,7 @@ if [ -f "$REPO_DIR/tlpui.deb" ]; then
     sudo apt install -y "$REPO_DIR/tlpui.deb"
 fi
 
-echo "Копирование кастомных скриптов (autotiling, rofi-power-menu)..."
-
+echo "Копирование кастомных скриптов..."
 sudo cp "$REPO_DIR/autotiling" /usr/local/bin/
 sudo chmod +x /usr/local/bin/autotiling
 
@@ -100,7 +94,6 @@ sudo cp "$REPO_DIR/rofi-power-menu" /usr/local/bin/
 sudo chmod +x /usr/local/bin/rofi-power-menu
 
 echo "Копирование конфигурационных файлов..."
-
 mkdir -p ~/.config ~/.local ~/.moc
 
 cp -a "$REPO_DIR/.config/"* ~/.config/ 2>/dev/null || true
