@@ -80,9 +80,9 @@ echo "Установка betterlockscreen..."
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 systemctl --user enable betterlockscreen@$USER
 
-echo "Запуск скрипта установки Ly..."
-if [ -f "$REPO_DIR/ly.sh" ]; then
-    bash "$REPO_DIR/ly.sh"
+echo "Запуск скрипта установки Lemurs..."
+if [ -f "$REPO_DIR/lemurs.sh" ]; then
+    bash "$REPO_DIR/lemurs.sh"
 fi
 
 echo "Установка локального .deb (tlpui)..."
