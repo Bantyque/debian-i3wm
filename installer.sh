@@ -10,27 +10,40 @@ if [ "$EUID" -eq 0 ]; then
 fi
 
 echo "Обновление системы..."
-sudo apt update && sudo apt upgrade -y
+sudo apt update
+sudo apt upgrade -y
 
-echo "Установка основных пакетов..."
-sudo apt install -y \
-    xorg xserver-xorg xbindkeys light xinput \
-    firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu \
-    build-essential wget dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager \
-    policykit-1-gnome pcmanfm ranger file-roller zip unzip rxvt-unicode \
-    pulseaudio alsa-utils pavucontrol pamixer \
-    neofetch htop cava lxappearance feh \
-    fonts-recommended fonts-ubuntu fonts-font-awesome fonts-terminus font-manager \
-    cups system-config-printer simple-scan printer-driver-splix sane \
-    bluetooth bluez bluez-tools pulseaudio-module-bluetooth blueman \
-    picom rofi dunst libnotify-bin i3 wmctrl curl geany \
-    mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura \
-    python3 python3-i3ipc pipx \
-    grub-customizer plymouth plymouth-themes xss-lock \
-    autoconf gcc make pkg-config libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev \
-    tlp tlp-rdw acpi-call-dkms tp-smapi-dkms connman connman-gtk connman-vpn xdg-user-dirs
+echo "Установка базовой графики и Xorg..."
+sudo apt install -y xorg xserver-xorg xbindkeys light xinput
+sudo apt install -y firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu
 
+echo "Установка системных утилит и демонов..."
+sudo apt install -y build-essential wget dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager
+sudo apt install -y policykit-1-gnome pcmanfm ranger file-roller zip unzip rxvt-unicode
+sudo apt install -y tlp tlp-rdw acpi-call-dkms tp-smapi-dkms connman connman-gtk connman-vpn xdg-user-dirs
 
+echo "Установка звука и Bluetooth..."
+sudo apt install -y pulseaudio alsa-utils pavucontrol pamixer
+sudo apt install -y bluetooth bluez bluez-tools pulseaudio-module-bluetooth blueman
+
+echo "Установка шрифтов и тем..."
+sudo apt install -y lxappearance feh fonts-recommended fonts-ubuntu fonts-font-awesome fonts-terminus font-manager
+sudo apt install -y grub-customizer plymouth plymouth-themes xss-lock
+
+echo "Установка принтеров и сканеров..."
+sudo apt install -y cups system-config-printer simple-scan printer-driver-splix sane
+
+echo "Установка i3wm и компонентов..."
+sudo apt install -y picom rofi dunst libnotify-bin i3 wmctrl curl geany
+sudo apt install -y python3 python3-i3ipc pipx
+
+echo "Установка прикладных программ..."
+sudo apt install -y neofetch htop cava mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura
+
+echo "Установка библиотек для компиляции i3lock-color и Ly..."
+sudo apt install -y autoconf gcc make pkg-config libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev
+
+# Обновляем директории пользователя
 xdg-user-dirs-update
 
 
