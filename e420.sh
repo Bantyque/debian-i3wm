@@ -98,15 +98,14 @@ sudo chmod +x /usr/local/bin/rofi-power-menu
 echo "Копирование конфигурационных файлов..."
 mkdir -p ~/.config ~/.local ~/.moc
 
-cp -a "$REPO_DIR/.config/"* ~/.config/ 2>/dev/null || true
-cp -a "$REPO_DIR/.moc/"* ~/.moc/ 2>/dev/null || true
-cp -a "$REPO_DIR/.local/"* ~/.local/ 2>/dev/null || true
+cp -r ~/debian-i3wm/.config ~/
+cp -r ~/debian-i3wm/.moc ~/
+cp -r ~/debian-i3wm/.local ~/
+cp ~/debian-i3wm/.bashrc ~/
+cp ~/debian-i3wm/.Xresources ~/
 
-cp "$REPO_DIR/.bashrc" ~/
-cp "$REPO_DIR/.Xresources" ~/
-
-chmod +x ~/.config/polybar/*.sh 2>/dev/null || true
-chmod +x ~/.config/rofi/*.sh 2>/dev/null || true
+sudo chmod +x ~/.config/polybar/*.sh
+sudo chmod +x ~/.config/rofi/*.sh
 
 sudo apt autoremove -y
 
