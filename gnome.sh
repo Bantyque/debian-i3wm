@@ -14,7 +14,7 @@ sudo apt update && sudo apt upgrade -y
 
 echo "--- 3. Установка GNOME Core (Без магазина и карт) ---"
 # Ставим только основу: рабочий стол, настройки, терминал и файловый менеджер
-sudo apt install -y gnome-core gdm3 nautilus gnome-terminal gnome-control-center
+sudo apt install -y gnome-core gdm3 nautilus gnome-terminal 
 
 echo "--- 4. Звук Pipewire (Чистая установка) ---"
 sudo apt install -y pipewire-audio-client-libraries wireplumber pavucontrol
