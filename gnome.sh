@@ -13,7 +13,7 @@ sudo apt update && sudo apt upgrade -y
 sudo apt install -y wget tar xz-utils curl
 
 echo "--- 3. GNOME Core (База) ---"
-sudo apt install -y gnome-core gdm3 nautilus gnome-terminal 
+sudo apt install -y gnome-core gdm3 pcmanfm alacritty 
 
 echo "--- 4. Кастомизация (Твики и Расширения) ---"
 sudo apt install -y gnome-tweaks gnome-shell-extension-manager
@@ -52,7 +52,7 @@ if ! command -v google-chrome-stable &> /dev/null; then
 fi
 
 echo "--- 13. Повседневные мелочи ---"
-sudo apt install -y network-manager-gnome xdg-user-dirs fonts-inter loupe gnome-calculator micro
+sudo apt install -y network-manager-gnome xdg-user-dirs fonts-inter gthumb gnome-calculator geany
 
 echo "--- 14. Установка Telegram (Официальный бинарник) ---"
 # Скачиваем последнюю версию напрямую с серверов Telegram во временную папку
