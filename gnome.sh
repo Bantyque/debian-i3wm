@@ -52,7 +52,7 @@ if ! command -v google-chrome-stable &> /dev/null; then
 fi
 
 echo "--- 13. Повседневные мелочи ---"
-sudo apt install -y network-manager-gnome xdg-user-dirs fonts-inter loupe gnome-calculator firefox-esr micro
+sudo apt install -y network-manager-gnome xdg-user-dirs fonts-inter loupe gnome-calculator micro
 
 echo "--- 14. Установка Telegram (Официальный бинарник) ---"
 # Скачиваем последнюю версию напрямую с серверов Telegram во временную папку
