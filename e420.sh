@@ -79,8 +79,8 @@ wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/in
 systemctl --user enable betterlockscreen@$USER
 
 echo "Запуск скрипта установки Lemurs..."
-if [ -f "$REPO_DIR/lemurs.sh" ]; then
-    bash "$REPO_DIR/lemurs.sh"
+if [ -f "$REPO_DIR/ly.sh" ]; then
+    bash "$REPO_DIR/ly.sh"
 fi
 
 echo "Установка локального .deb (tlpui)..."
