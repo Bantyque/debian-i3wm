@@ -22,20 +22,12 @@ sudo apt install -y pipewire-audio-client-libraries wireplumber pavucontrol
 echo "--- 5. Драйверы для T495 (AMD Ryzen / Vega) ---"
 sudo apt install -y firmware-amd-graphics libgl1-mesa-dri mesa-vulkan-drivers
 
-echo "--- 6. Специфичный софт для ThinkPad (Батарея и кнопки) ---"
-# TLP для энергосбережения + acpi_call для порогов зарядки
-sudo apt install -y tlp tlp-rdw acpi-call-dkms
-sudo systemctl enable tlp
-
 echo "--- 7. Системный минимум (Bluetooth, Сеть, Пароли) ---"
 sudo apt install -y network-manager-gnome bluez blueman policykit-1-gnome xdg-user-dirs
 
 echo "--- 8. Шрифты (Чтобы всё было красиво) ---"
 # Inter — отличный шрифт для интерфейса, JetBrains — для кода
 sudo apt install -y fonts-inter fonts-jetbrains-mono
-
-echo "--- 9. Твои инструменты ---"
-# Ставим только то, что просил: браузер и редактор
 
 echo "Установка Google Chrome..."
 if ! command -v google-chrome-stable &> /dev/null; then
