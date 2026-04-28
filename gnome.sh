@@ -77,6 +77,11 @@ EOF
 # Удаляем скачанный архив
 rm /tmp/telegram.tar.xz
 
+echo "--- 12. БИОМЕТРИЯ (Сканер отпечатков пальцев) ---"
+sudo apt install -y fprintd libpam-fprintd
+# Автоматически включаем проверку отпечатка в системе
+sudo pam-auth-update --enable fprintd
+
 echo "--- 15. Очистка ---"
 sudo apt autoremove --purge -y
 
