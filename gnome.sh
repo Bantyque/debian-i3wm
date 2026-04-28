@@ -24,7 +24,7 @@ echo "--- 6. Звук и Bluetooth (с поддержкой гарнитур) --
 sudo apt install -y pipewire-audio-client-libraries wireplumber pavucontrol bluez gnome-bluetooth libspa-0.2-bluetooth
 
 echo "--- 7. Приложения ---"
-sudo apt install -y gimp obs-studio transmission shotcut darktable telegram-desktop webp-pixbuf-loader
+sudo apt install -y gimp obs-studio transmission shotcut darktable webp-pixbuf-loader
 
 echo "--- 8. ПЕЧАТЬ (Принтеры и PDF) ---"
 sudo apt install -y cups cups-client system-config-printer evince printer-driver-gutenprint
@@ -44,7 +44,30 @@ fi
 echo "--- 10. Повседневные мелочи ---"
 sudo apt install -y network-manager-gnome xdg-user-dirs fonts-inter loupe gnome-calculator firefox-esr micro
 
-echo "--- 11. Очистка ---"
+echo "--- 11. Установка Telegram (Официальный бинарник) ---"
+# Скачиваем последнюю версию напрямую с серверов Telegram во временную папку
+wget -O /tmp/telegram.tar.xz https://telegram.org/dl/desktop/linux
+# Распаковываем в системную директорию /opt/
+sudo tar -xJvf /tmp/telegram.tar.xz -C /opt/
+# Создаем символическую ссылку, чтобы можно было запускать через терминал
+sudo ln -sf /opt/Telegram/Telegram /usr/local/bin/telegram-desktop
+# Создаем ярлык для меню приложений GNOME
+sudo tee /usr/share/applications/telegramdesktop.desktop > /dev/null <<EOF
+[Desktop Entry]
+Version=1.0
+Name=Telegram Desktop
+Comment=Официальное приложение Telegram
+Exec=/opt/Telegram/Telegram -- %u
+Icon=telegram
+Terminal=false
+Type=Application
+Categories=Chat;Network;InstantMessaging;
+MimeType=x-scheme-handler/tg;
+EOF
+# Удаляем скачанный архив
+rm /tmp/telegram.tar.xz
+
+echo "--- 12. Очистка ---"
 sudo apt autoremove --purge -y
 
 echo "--- Установка завершена! ---"
