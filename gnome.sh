@@ -36,8 +36,13 @@ sudo apt install -y fonts-inter fonts-jetbrains-mono
 
 echo "--- 9. Твои инструменты ---"
 # Ставим только то, что просил: браузер и редактор
-sudo apt install -y firefox-esr micro
 
+echo "Установка Google Chrome..."
+if ! command -v google-chrome-stable &> /dev/null; then
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb
+    sudo dpkg -i /tmp/chrome.deb
+    sudo apt --fix-broken install -y
+fi
 echo "--- 10. Финальная чистка ---"
 sudo apt autoremove --purge -y
 
