@@ -81,7 +81,7 @@ alias genpass='echo `< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`'
 # bashmount
 alias bm='bashmount'
 # Neofetch
-alias neofetch='pfetch'
+#alias neofetch='pfetch'
 # end of alias #########################################################
 
 # functions ############################################################
