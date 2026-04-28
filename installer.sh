@@ -1,116 +1,105 @@
 #!/usr/bin/env bash
 
-# Определяем директорию репозитория
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
-
-if [ "$EUID" -eq 0 ]; then
-  echo "Пожалуйста, запустите скрипт как обычный пользователь."
-  exit 1
-fi
-
-echo "Обновление системы..."
-sudo apt update
-sudo apt upgrade -y
-
-echo "Установка базовой графики и Xorg..."
 sudo apt install -y xorg xserver-xorg xbindkeys light xinput
-sudo apt install -y firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu
 
-echo "Установка системных утилит и демонов..."
-sudo apt install -y build-essential wget dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager
-sudo apt install -y policykit-1-gnome pcmanfm ranger file-roller zip unzip rxvt-unicode
-# Убрали connman, добавили NetworkManager:
-sudo apt install -y tlp tlp-rdw acpi-call-dkms tp-smapi-dkms network-manager network-manager-gnome network-manager-openvpn-gnome xdg-user-dirs
+sudo apt install y firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu
 
-echo "Установка звука и Bluetooth..."
-sudo apt install -y pulseaudio alsa-utils pavucontrol pamixer
-sudo apt install -y bluetooth bluez bluez-tools pulseaudio-module-bluetooth blueman
-
-echo "Установка шрифтов и тем..."
-sudo apt install -y lxappearance feh fonts-recommended fonts-ubuntu fonts-font-awesome fonts-terminus font-manager
-sudo apt install -y grub-customizer plymouth plymouth-themes xss-lock
-
-echo "Установка принтеров и сканеров..."
-sudo apt install -y cups system-config-printer simple-scan printer-driver-splix sane
-
-echo "Установка i3wm и компонентов..."
-sudo apt install -y picom rofi dunst libnotify-bin i3 wmctrl curl geany
-sudo apt install -y python3 python3-i3ipc pipx
-
-echo "Установка прикладных программ..."
-sudo apt install -y neofetch htop cava mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura
-
-echo "Установка библиотек для компиляции..."
-sudo apt install -y autoconf gcc make pkg-config libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev
+sudo apt install -y build-essential wget
 
 xdg-user-dirs-update
 
-# Включаем NetworkManager и другие сервисы
-sudo systemctl enable NetworkManager avahi-daemon acpid cups bluetooth
+sudo apt install -y dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager
 
-echo "Установка Google Chrome..."
-if ! command -v google-chrome-stable &> /dev/null; then
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb
-    sudo dpkg -i /tmp/chrome.deb
-    sudo apt --fix-broken install -y
-fi
+sudo systemctl enable avahi-daemon
+sudo systemctl enable acpid
 
-echo "Установка pywal и wpgtk..."
+sudo apt install -y policykit-1-gnome 
+
+sudo apt install -y pcmanfm ranger file-roller zip unzip
+
+sudo apt install -y rxvt-unicode
+
+sudo apt install -y pulseaudio alsa-utils pavucontrol pamixer
+
+sudo apt install -y neofetch htop cava
+
+sudo apt install -y lxappearance 
+
+sudo apt install -y feh
+ 
+sudo apt install -y fonts-recommended fonts-ubuntu fonts-font-awesome fonts-terminus font-manager
+
+sudo apt install -y cups system-config-printer simple-scan printer-driver-splix sane
+sudo apt install -y bluetooth bluez bluez-tools pulseaudio-module-bluetooth blueman
+
+sudo systemctl enable cups
+sudo systemctl enable bluetooth
+
+sudo apt install -y picom rofi dunst libnotify-bin i3 unzip wmctrl curl
+
+sudo apt install -y geany
+
+#sudo apt install -y scrot
+
+sudo apt install -y mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish
+
+sudo apt install -y zathura
+
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+sudo dpkg -i google-chrome-stable_current_amd64.deb
+
+sudo apt install python3
+
+sudo apt install python3-i3ipc
+
+sudo apt install pipx
+
 pipx install pywal
-pipx install wpgtk
-pipx ensurepath
-~/.local/bin/wpg-install.sh -g -i
 
-echo "Настройка plymouth..."
+pipx install wpgtk
+
+wpg-install.sh -g -i
+
+sudo apt install grub-customizer plymouth plymouth-themes
+
 sudo plymouth-set-default-theme -R spinner
 
-echo "Установка i3lock-color..."
-if [ ! -d "$HOME/i3lock-color" ]; then
-    git clone https://github.com/Raymo111/i3lock-color.git "$HOME/i3lock-color"
-    cd "$HOME/i3lock-color"
-    ./install-i3lock-color.sh
-    cd "$REPO_DIR"
-fi
+sudo apt install xss-lock
 
-echo "Установка betterlockscreen..."
+sudo apt install autoconf gcc make pkg-config libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev
+
+git clone https://github.com/Raymo111/i3lock-color.git
+cd i3lock-color
+./install-i3lock-color.sh
+
+cd
+
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
-systemctl --user enable betterlockscreen@$USER
+systemctl enable betterlockscreen@$USER
 
-#echo "Запуск скрипта установки Ly..."
-#if [ -f "$REPO_DIR/ly.sh" ]; then
-#   bash "$REPO_DIR/ly.sh"
-#fi
+bash ~/debian-i3wm/ly.sh
 
-echo "Запуск скрипта установки Lemurs..."
-if [ -f "$REPO_DIR/lemurs.sh" ]; then
-    bash "$REPO_DIR/lemurs.sh"
-fi
+sudo apt install tlp tlp-rdw acpi-call-dkms tp-smapi-dkms
+sudo apt install ~/debian-i3wm/tlpui.deb
 
-echo "Установка локального .deb (tlpui)..."
-if [ -f "$REPO_DIR/tlpui.deb" ]; then
-    sudo apt install -y "$REPO_DIR/tlpui.deb"
-fi
+sudo apt install connman connman-gtk connman-vpn
 
-echo "Копирование кастомных скриптов..."
-sudo cp "$REPO_DIR/autotiling" /usr/local/bin/
-sudo chmod +x /usr/local/bin/autotiling
+sudo chmod +x ~/debian-i3wm/autotiling
+sudo cp ~/debian-i3wm/autotiling /bin/
 
-sudo cp "$REPO_DIR/rofi-power-menu" /usr/local/bin/
-sudo chmod +x /usr/local/bin/rofi-power-menu
+sudo chmod +x ~/debian-i3wm/rofi-power-menu
+sudo cp ~/debian-i3wm/rofi-power-menu /bin/
 
-echo "Копирование конфигурационных файлов..."
-mkdir -p ~/.config ~/.local ~/.moc
+\cp -r ~/debian-i3wm/.config ~
+\cp -r ~/debian-i3wm/.moc ~
+\cp -r ~/debian-i3wm/.local ~
+\cp ~/debian-i3wm/.bashrc ~
+\cp ~/debian-i3wm/.Xresources ~
 
-cp -a "$REPO_DIR/.config/"* ~/.config/ 2>/dev/null || true
-cp -a "$REPO_DIR/.moc/"* ~/.moc/ 2>/dev/null || true
-cp -a "$REPO_DIR/.local/"* ~/.local/ 2>/dev/null || true
+sudo chmod +x ~/.config/polybar/*.sh
+sudo chmod +x ~/.config/rofi/*.sh
 
-cp "$REPO_DIR/.bashrc" ~/
-cp "$REPO_DIR/.Xresources" ~/
 
-chmod +x ~/.config/polybar/*.sh 2>/dev/null || true
-chmod +x ~/.config/rofi/*.sh 2>/dev/null || true
 
-sudo apt autoremove -y
+sudo apt autoremove
 
-echo "Установка завершена!"
