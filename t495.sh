@@ -21,7 +21,7 @@ sudo apt install -y firmware-iwlwifi firmware-realtek firmware-misc-nonfree
 echo "Установка системных утилит и демонов..."
 # Добавлен lm-sensors
 sudo apt install -y build-essential wget dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager lm-sensors
-sudo apt install -y policykit-1-gnome pcmanfm ranger file-roller zip unzip rxvt-unicode
+sudo apt install -y lxpolkit pcmanfm ranger file-roller zip unzip rxvt-unicode
 # Убран tp-smapi-dkms (несовместим с T495)
 sudo apt install -y tlp tlp-rdw acpi-call-dkms network-manager network-manager-gnome network-manager-openvpn-gnome xdg-user-dirs
 
@@ -38,7 +38,7 @@ sudo apt install -y cups system-config-printer simple-scan printer-driver-splix 
 
 echo "Установка i3wm и компонентов..."
 sudo apt install -y picom rofi dunst libnotify-bin i3 wmctrl curl geany
-sudo apt install -y python3 python3-i3ipc pipx
+sudo apt install -y python3 python3-i3ipc python3-pip python3-full pipx
 
 echo "Установка прикладных программ..."
 # Заменили neofetch на fastfetch
@@ -60,10 +60,13 @@ if ! command -v google-chrome-stable &> /dev/null; then
 fi
 
 echo "Установка pywal и wpgtk..."
+export PIPX_BIN_DIR=/usr/local/bin
 pipx install pywal
 pipx install wpgtk
 pipx ensurepath
-~/.local/bin/wpg-install.sh -g -i
+if [ ! -d "$HOME/.config/wpg" ]; then
+    wpg-install.sh -g -i -r -p
+fi
 
 echo "Настройка plymouth..."
 sudo plymouth-set-default-theme -R spinner
@@ -80,9 +83,14 @@ echo "Установка betterlockscreen..."
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 systemctl --user enable betterlockscreen@$USER
 
-echo "Запуск скрипта установки Lemurs..."
-if [ -f "$REPO_DIR/lemurs.sh" ]; then
-    bash "$REPO_DIR/lemurs.sh"
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+sudo apt update
+sudo apt install zig 
+
+echo "Запуск скрипта установки Ly..."
+if [ -f "$REPO_DIR/ly.sh" ]; then
+    bash "$REPO_DIR/ly.sh"
 fi
 
 echo "Установка локального .deb (tlpui)..."
