@@ -17,6 +17,7 @@ echo "Установка базовой графики и микрокода AMD
 sudo apt install -y xorg xserver-xorg xbindkeys light xinput
 sudo apt install -y amd64-microcode firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu
 sudo apt install -y firmware-iwlwifi firmware-realtek firmware-misc-nonfree
+xdg-user-dirs-update
 
 echo "Установка системных утилит и демонов..."
 # Добавлен lm-sensors
@@ -37,7 +38,7 @@ echo "Установка принтеров и сканеров..."
 sudo apt install -y cups system-config-printer simple-scan printer-driver-splix sane
 
 echo "Установка i3wm и компонентов..."
-sudo apt install -y picom rofi dunst libnotify-bin i3 wmctrl curl geany
+sudo apt install -y picom polybar feh rofi dunst libnotify-bin i3-wm i3lock lightdm lightdm-gtk-greeter wmctrl curl geany
 sudo apt install -y python3 python3-i3ipc python3-pip python3-full pipx
 
 echo "Установка прикладных программ..."
@@ -47,7 +48,7 @@ sudo apt install -y fastfetch htop cava mpv gimp obs-studio transmission shotcut
 echo "Установка библиотек для компиляции..."
 sudo apt install -y autoconf gcc make pkg-config libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev
 
-xdg-user-dirs-update
+
 
 # Включаем NetworkManager и другие сервисы
 sudo systemctl enable NetworkManager avahi-daemon acpid cups bluetooth
@@ -59,63 +60,63 @@ if ! command -v google-chrome-stable &> /dev/null; then
     sudo apt --fix-broken install -y
 fi
 
-echo "Установка pywal и wpgtk..."
-export PIPX_BIN_DIR=/usr/local/bin
-pipx install pywal
-pipx install wpgtk
-pipx ensurepath
-if [ ! -d "$HOME/.config/wpg" ]; then
-    wpg-install.sh -g -i -r -p
-fi
+#echo "Установка pywal и wpgtk..."
+#export PIPX_BIN_DIR=/usr/local/bin
+#pipx install pywal
+#pipx install wpgtk
+#pipx ensurepath
+#if [ ! -d "$HOME/.config/wpg" ]; then
+#    wpg-install.sh -g -i -r -p
+#fi
 
-echo "Настройка plymouth..."
-sudo plymouth-set-default-theme -R spinner
+#echo "Настройка plymouth..."
+#sudo plymouth-set-default-theme -R spinner
 
-echo "Установка i3lock-color..."
-if [ ! -d "$HOME/i3lock-color" ]; then
-    git clone https://github.com/Raymo111/i3lock-color.git "$HOME/i3lock-color"
-    cd "$HOME/i3lock-color"
-    ./install-i3lock-color.sh
-    cd "$REPO_DIR"
-fi
+#echo "Установка i3lock-color..."
+#if [ ! -d "$HOME/i3lock-color" ]; then
+ #   git clone https://github.com/Raymo111/i3lock-color.git "$HOME/i3lock-color"
+  #  cd "$HOME/i3lock-color"
+   # ./install-i3lock-color.sh
+    #cd "$REPO_DIR"
+#fi
 
-echo "Установка betterlockscreen..."
-wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
-systemctl --user enable betterlockscreen@$USER
+#echo "Установка betterlockscreen..."
+#wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
+#systemctl --user enable betterlockscreen@$USER
 
-curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
-echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
-sudo apt update
-sudo apt install zig 
+#curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+#echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+#sudo apt update
+#sudo apt install zig 
 
-echo "Запуск скрипта установки Ly..."
-if [ -f "$REPO_DIR/ly.sh" ]; then
-    bash "$REPO_DIR/ly.sh"
-fi
+#echo "Запуск скрипта установки Ly..."
+#if [ -f "$REPO_DIR/ly.sh" ]; then
+ #   bash "$REPO_DIR/ly.sh"
+#fi
 
 echo "Установка локального .deb (tlpui)..."
 if [ -f "$REPO_DIR/tlpui.deb" ]; then
     sudo apt install -y "$REPO_DIR/tlpui.deb"
 fi
 
-echo "Копирование кастомных скриптов..."
-sudo cp "$REPO_DIR/autotiling" /usr/local/bin/
-sudo chmod +x /usr/local/bin/autotiling
+#echo "Копирование кастомных скриптов..."
+#sudo cp "$REPO_DIR/autotiling" /usr/local/bin/
+#sudo chmod +x /usr/local/bin/autotiling
 
-sudo cp "$REPO_DIR/rofi-power-menu" /usr/local/bin/
-sudo chmod +x /usr/local/bin/rofi-power-menu
+#sudo cp "$REPO_DIR/rofi-power-menu" /usr/local/bin/
+#sudo chmod +x /usr/local/bin/rofi-power-menu
 
-echo "Копирование конфигурационных файлов..."
-mkdir -p ~/.config ~/.local ~/.moc
+#echo "Копирование конфигурационных файлов..."
+#mkdir -p ~/.config ~/.local ~/.moc
 
-cp -r ~/debian-i3wm/.config ~/
-cp -r ~/debian-i3wm/.moc ~/
-cp -r ~/debian-i3wm/.local ~/
-cp ~/debian-i3wm/.bashrc ~/
-cp ~/debian-i3wm/.Xresources ~/
+#cp -r ~/debian-i3wm/.config ~/
+#cp -r ~/debian-i3wm/.moc ~/
+#cp -r ~/debian-i3wm/.local ~/
+#cp ~/debian-i3wm/.bashrc ~/
+#cp ~/debian-i3wm/.Xresources ~/
 
-sudo chmod +x ~/.config/polybar/*.sh
-sudo chmod +x ~/.config/rofi/*.sh
+#sudo chmod +x ~/.config/polybar/*.sh
+#sudo chmod +x ~/.config/rofi/*.sh
 
 sudo apt autoremove -y
 echo "Установка завершена!"
