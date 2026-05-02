@@ -8,6 +8,9 @@ if [ "$EUID" -eq 0 ]; then
     exit 1
 fi
 
+# Инициализация D-Bus сессии для systemctl --user
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+
 # ─────────────────────────────────────────────
 echo "► Обновление системы..."
 # ─────────────────────────────────────────────
@@ -22,7 +25,9 @@ sudo apt install -y amd64-microcode firmware-amd-graphics libgl1-mesa-dri libglx
 sudo apt install -y firmware-iwlwifi firmware-realtek firmware-misc-nonfree
 xdg-user-dirs-update
 
+# ─────────────────────────────────────────────
 echo "► Настройка тачпада..."
+# ─────────────────────────────────────────────
 sudo mkdir -p /etc/X11/xorg.conf.d/
 sudo tee /etc/X11/xorg.conf.d/30-touchpad.conf > /dev/null << 'EOF'
 Section "InputClass"
@@ -86,6 +91,7 @@ sudo apt install -y cups system-config-printer simple-scan printer-driver-splix 
 
 # ─────────────────────────────────────────────
 echo "► Установка EasyEffects..."
+# ─────────────────────────────────────────────
 sudo apt install -y easyeffects
 
 # ─────────────────────────────────────────────
@@ -130,7 +136,6 @@ export PATH="/usr/local/bin:$HOME/.local/bin:$PATH"
 # Инициализация wpgtk
 if command -v wpg &> /dev/null; then
     if [ ! -d "$HOME/.config/wpg" ]; then
-        # Ищем wpg-install.sh в возможных местах
         WPGINSTALL=$(find /usr/local/bin ~/.local/bin -name "wpg-install.sh" 2>/dev/null | head -1)
         if [ -n "$WPGINSTALL" ]; then
             bash "$WPGINSTALL" -g -i -r -p
@@ -144,14 +149,11 @@ else
     echo "⚠ wpg не найден — после перезагрузки выполни: wpg-install.sh -g -i -r -p"
 fi
 
-echo "► Установка сканера отпечатков..."
+# ─────────────────────────────────────────────
+echo "► Установка сканера отпечатков пальцев..."
+# ─────────────────────────────────────────────
 sudo apt install -y fprintd libpam-fprintd
-
-# Добавляем отпечаток в PAM для sudo и входа но НЕ для i3lock
 sudo pam-auth-update --enable fprintd
-
-# Регистрация отпечатка (нужно после установки)
-echo "Для регистрации отпечатка выполни после перезагрузки: fprintd-enroll"
 
 # ─────────────────────────────────────────────
 echo "► Установка i3lock-color..."
@@ -177,7 +179,6 @@ if systemctl --user list-unit-files 2>/dev/null | grep -q "betterlockscreen"; th
     systemctl --user enable "betterlockscreen@$USER"
     echo "✓ betterlockscreen сервис включён"
 else
-    # Создаём unit вручную
     mkdir -p ~/.config/systemd/user/
     cat > ~/.config/systemd/user/betterlockscreen@.service << 'EOF'
 [Unit]
@@ -196,7 +197,7 @@ EOF
     echo "✓ betterlockscreen unit создан и включён"
 fi
 
-# Настройка PAM для i3lock (только пароль, без отпечатка пальца)
+# Настройка PAM для i3lock (только пароль, без отпечатка)
 sudo tee /etc/pam.d/i3lock > /dev/null << 'EOF'
 auth    sufficient    pam_unix.so try_first_pass
 auth    requisite     pam_nologin.so
@@ -214,12 +215,15 @@ if [ -f "$REPO_DIR/tlpui.deb" ]; then
     sudo apt install -y "$REPO_DIR/tlpui.deb"
 fi
 
+# ─────────────────────────────────────────────
 echo "► Настройка GRUB..."
-sudo sed -i 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=1/' /etc/default/grub
-sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3 rd.systemd.show_status=false rd.udev.log_level=3"/' /etc/default/grub
+# ─────────────────────────────────────────────
+sudo sed -i 's|GRUB_TIMEOUT=.*|GRUB_TIMEOUT=1|' /etc/default/grub
+sudo sed -i 's|GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3 rd.systemd.show_status=false rd.udev.log_level=3"|' /etc/default/grub
 
-# Убираем отображение меню если одна ОС
-echo 'GRUB_TIMEOUT_STYLE=hidden' | sudo tee -a /etc/default/grub > /dev/null
+grep -q "GRUB_TIMEOUT_STYLE" /etc/default/grub \
+    && sudo sed -i 's|GRUB_TIMEOUT_STYLE=.*|GRUB_TIMEOUT_STYLE=hidden|' /etc/default/grub \
+    || echo 'GRUB_TIMEOUT_STYLE=hidden' | sudo tee -a /etc/default/grub > /dev/null
 
 sudo update-grub
 
@@ -255,6 +259,7 @@ echo ""
 echo "✓ Установка завершена!"
 echo ""
 echo "Следующие шаги после перезагрузки:"
-echo "  1. Перезагрузи систему: sudo reboot"
-echo "  2. Сгенерируй кэш betterlockscreen: betterlockscreen -u ~/Изображения/Обои/"
-echo "  3. Выбери обои через wpg: wpg -s <файл>"
+echo "  1. Перезагрузи систему:                sudo reboot"
+echo "  2. Зарегистрируй отпечаток пальца:     fprintd-enroll"
+echo "  3. Сгенерируй кэш betterlockscreen:    betterlockscreen -u ~/Изображения/Обои/"
+echo "  4. Выбери обои через wpg:              wpg -s <файл>"
