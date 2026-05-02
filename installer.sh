@@ -17,10 +17,25 @@ sudo apt upgrade -y
 # ─────────────────────────────────────────────
 echo "► Установка базовой графики и микрокода AMD..."
 # ─────────────────────────────────────────────
-sudo apt install -y xorg xserver-xorg xbindkeys light xinput
+sudo apt install -y xorg xserver-xorg xbindkeys light xinput xserver-xorg-input-libinput
 sudo apt install -y amd64-microcode firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu
 sudo apt install -y firmware-iwlwifi firmware-realtek firmware-misc-nonfree
 xdg-user-dirs-update
+
+echo "► Настройка тачпада..."
+sudo mkdir -p /etc/X11/xorg.conf.d/
+sudo tee /etc/X11/xorg.conf.d/30-touchpad.conf > /dev/null << 'EOF'
+Section "InputClass"
+    Identifier "touchpad"
+    MatchIsTouchpad "on"
+    Driver "libinput"
+    Option "Tapping" "on"
+    Option "TappingButtonMap" "lrm"
+    Option "NaturalScrolling" "true"
+    Option "AccelSpeed" "0.5"
+    Option "DisableWhileTyping" "on"
+EndSection
+EOF
 
 # ─────────────────────────────────────────────
 echo "► Установка системных утилит..."
@@ -68,6 +83,10 @@ sudo apt install -y plymouth plymouth-themes xss-lock
 echo "► Установка принтеров и сканеров..."
 # ─────────────────────────────────────────────
 sudo apt install -y cups system-config-printer simple-scan printer-driver-splix sane
+
+# ─────────────────────────────────────────────
+echo "► Установка EasyEffects..."
+sudo apt install -y easyeffects
 
 # ─────────────────────────────────────────────
 echo "► Установка i3wm и компонентов..."
