@@ -144,6 +144,15 @@ else
     echo "⚠ wpg не найден — после перезагрузки выполни: wpg-install.sh -g -i -r -p"
 fi
 
+echo "► Установка сканера отпечатков..."
+sudo apt install -y fprintd libpam-fprintd
+
+# Добавляем отпечаток в PAM для sudo и входа но НЕ для i3lock
+sudo pam-auth-update --enable fprintd
+
+# Регистрация отпечатка (нужно после установки)
+echo "Для регистрации отпечатка выполни после перезагрузки: fprintd-enroll"
+
 # ─────────────────────────────────────────────
 echo "► Установка i3lock-color..."
 # ─────────────────────────────────────────────
@@ -204,6 +213,15 @@ echo "► Установка tlpui..."
 if [ -f "$REPO_DIR/tlpui.deb" ]; then
     sudo apt install -y "$REPO_DIR/tlpui.deb"
 fi
+
+echo "► Настройка GRUB..."
+sudo sed -i 's/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=1/' /etc/default/grub
+sudo sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=3 rd.systemd.show_status=false rd.udev.log_level=3"/' /etc/default/grub
+
+# Убираем отображение меню если одна ОС
+echo 'GRUB_TIMEOUT_STYLE=hidden' | sudo tee -a /etc/default/grub > /dev/null
+
+sudo update-grub
 
 # ─────────────────────────────────────────────
 echo "► Копирование кастомных скриптов..."
