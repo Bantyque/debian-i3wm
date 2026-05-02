@@ -38,7 +38,7 @@ echo "Установка принтеров и сканеров..."
 sudo apt install -y cups system-config-printer simple-scan printer-driver-splix sane
 
 echo "Установка i3wm и компонентов..."
-sudo apt install -y picom polybar feh rofi dunst libnotify-bin i3-wm i3lock lightdm lightdm-gtk-greeter wmctrl curl geany
+sudo apt install -y picom polybar feh rofi dunst libnotify-bin i3-wm i3lock wmctrl curl geany
 sudo apt install -y python3 python3-i3ipc python3-pip python3-full pipx
 
 echo "Установка прикладных программ..."
@@ -89,10 +89,8 @@ fi
 #sudo apt update
 #sudo apt install zig 
 
-#echo "Запуск скрипта установки Ly..."
-#if [ -f "$REPO_DIR/ly.sh" ]; then
- #   bash "$REPO_DIR/ly.sh"
-#fi
+#echo "Установка DM"
+sudo apt install -y emptty
 
 echo "Установка локального .deb (tlpui)..."
 if [ -f "$REPO_DIR/tlpui.deb" ]; then
