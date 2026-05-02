@@ -4,112 +4,220 @@
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 
 if [ "$EUID" -eq 0 ]; then
-  echo "Пожалуйста, запустите скрипт как обычный пользователь."
-  exit 1
+    echo "Пожалуйста, запустите скрипт как обычный пользователь."
+    exit 1
 fi
 
-echo "Обновление системы..."
+# ─────────────────────────────────────────────
+echo "► Обновление системы..."
+# ─────────────────────────────────────────────
 sudo apt update
 sudo apt upgrade -y
 
-echo "Установка базовой графики и микрокода AMD..."
-# Добавлен amd64-microcode и прошивки для железа
+# ─────────────────────────────────────────────
+echo "► Установка базовой графики и микрокода AMD..."
+# ─────────────────────────────────────────────
 sudo apt install -y xorg xserver-xorg xbindkeys light xinput
 sudo apt install -y amd64-microcode firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu
 sudo apt install -y firmware-iwlwifi firmware-realtek firmware-misc-nonfree
 xdg-user-dirs-update
 
-echo "Установка системных утилит и демонов..."
-# Добавлен lm-sensors
-sudo apt install -y build-essential wget dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager lm-sensors
+# ─────────────────────────────────────────────
+echo "► Установка системных утилит..."
+# ─────────────────────────────────────────────
+sudo apt install -y build-essential wget curl dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager lm-sensors
 sudo apt install -y lxpolkit pcmanfm ranger file-roller zip unzip rxvt-unicode
-# Убран tp-smapi-dkms (несовместим с T495)
 sudo apt install -y tlp tlp-rdw acpi-call-dkms network-manager network-manager-gnome network-manager-openvpn-gnome xdg-user-dirs
 
-echo "Установка звука и Bluetooth..."
-sudo apt install -y pulseaudio alsa-utils pavucontrol pamixer
-sudo apt install -y bluetooth bluez bluez-tools pulseaudio-module-bluetooth blueman
+# ─────────────────────────────────────────────
+echo "► Установка PipeWire (вместо PulseAudio)..."
+# ─────────────────────────────────────────────
+sudo apt remove -y pulseaudio pulseaudio-module-bluetooth pulseaudio-utils 2>/dev/null || true
+sudo apt install -y pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber
+sudo apt install -y alsa-utils pavucontrol pamixer
+systemctl --user enable pipewire pipewire-pulse wireplumber
+systemctl --user start pipewire pipewire-pulse wireplumber
 
-echo "Установка шрифтов и тем..."
+# ─────────────────────────────────────────────
+echo "► Установка Bluetooth..."
+# ─────────────────────────────────────────────
+sudo apt install -y bluetooth bluez bluez-tools libspa-0.2-bluetooth blueman
+sudo systemctl enable bluetooth
+
+mkdir -p ~/.config/wireplumber/wireplumber.conf.d/
+cat > ~/.config/wireplumber/wireplumber.conf.d/51-bluetooth-auto.conf << 'EOF'
+monitor.bluez.properties = {
+  bluez5.auto-connect = [ a2dp_sink hsp_hs hfp_hf ]
+  bluez5.headset-roles = [ hsp_hs hfp_hf ]
+}
+EOF
+
+cat > ~/.config/wireplumber/wireplumber.conf.d/52-default-sink.conf << 'EOF'
+wireplumber.settings = {
+  default-policy.move-streams-to-newly-connected-device = true
+}
+EOF
+
+# ─────────────────────────────────────────────
+echo "► Установка шрифтов и тем..."
+# ─────────────────────────────────────────────
 sudo apt install -y lxappearance feh fonts-recommended fonts-ubuntu fonts-font-awesome fonts-terminus font-manager
-sudo apt install -y grub-customizer plymouth plymouth-themes xss-lock
+sudo apt install -y plymouth plymouth-themes xss-lock
 
-echo "Установка принтеров и сканеров..."
+# ─────────────────────────────────────────────
+echo "► Установка принтеров и сканеров..."
+# ─────────────────────────────────────────────
 sudo apt install -y cups system-config-printer simple-scan printer-driver-splix sane
 
-echo "Установка i3wm и компонентов..."
-sudo apt install -y picom polybar feh rofi dunst libnotify-bin i3-wm i3lock wmctrl curl geany
-sudo apt install -y python3 python3-i3ipc python3-pip python3-full pipx
+# ─────────────────────────────────────────────
+echo "► Установка i3wm и компонентов..."
+# ─────────────────────────────────────────────
+sudo apt install -y picom polybar feh rofi dunst libnotify-bin i3-wm i3lock wmctrl geany
+sudo apt install -y python3 python3-pip python3-full pipx
 
-echo "Установка прикладных программ..."
-# Заменили neofetch на fastfetch
-sudo apt install -y fastfetch htop cava mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura moc cava
+# ─────────────────────────────────────────────
+echo "► Установка прикладных программ..."
+# ─────────────────────────────────────────────
+sudo apt install -y fastfetch htop cava mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura
 
-echo "Установка библиотек для компиляции..."
+# ─────────────────────────────────────────────
+echo "► Установка библиотек для компиляции..."
+# ─────────────────────────────────────────────
 sudo apt install -y autoconf gcc make pkg-config libpam0g-dev libcairo2-dev libfontconfig1-dev libxcb-composite0-dev libev-dev libx11-xcb-dev libxcb-xkb-dev libxcb-xinerama0-dev libxcb-randr0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xrm-dev libxkbcommon-dev libxkbcommon-x11-dev libjpeg-dev
 
+# ─────────────────────────────────────────────
+echo "► Включение системных сервисов..."
+# ─────────────────────────────────────────────
+sudo systemctl enable NetworkManager avahi-daemon acpid cups bluetooth tlp
 
-
-# Включаем NetworkManager и другие сервисы
-sudo systemctl enable NetworkManager avahi-daemon acpid cups bluetooth
-
-echo "Установка Google Chrome..."
+# ─────────────────────────────────────────────
+echo "► Установка Google Chrome..."
+# ─────────────────────────────────────────────
 if ! command -v google-chrome-stable &> /dev/null; then
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb
     sudo dpkg -i /tmp/chrome.deb
     sudo apt --fix-broken install -y
 fi
 
-#echo "Установка pywal и wpgtk..."
-#export PIPX_BIN_DIR=/usr/local/bin
-#pipx install pywal
-#pipx install wpgtk
-#pipx ensurepath
-#if [ ! -d "$HOME/.config/wpg" ]; then
-#    wpg-install.sh -g -i -r -p
-#fi
+# ─────────────────────────────────────────────
+echo "► Установка pywal и wpgtk через pipx..."
+# ─────────────────────────────────────────────
+export PIPX_BIN_DIR=/usr/local/bin
+pipx install pywal
+pipx install wpgtk
+pipx ensurepath
+export PATH="/usr/local/bin:$HOME/.local/bin:$PATH"
 
-#echo "Настройка plymouth..."
-#sudo plymouth-set-default-theme -R spinner
+# Инициализация wpgtk
+if command -v wpg &> /dev/null; then
+    if [ ! -d "$HOME/.config/wpg" ]; then
+        # Ищем wpg-install.sh в возможных местах
+        WPGINSTALL=$(find /usr/local/bin ~/.local/bin -name "wpg-install.sh" 2>/dev/null | head -1)
+        if [ -n "$WPGINSTALL" ]; then
+            bash "$WPGINSTALL" -g -i -r -p
+        else
+            echo "⚠ wpg-install.sh не найден, инициализируем вручную..."
+            mkdir -p ~/.config/wpg/templates
+            wpg -n "default" 2>/dev/null || true
+        fi
+    fi
+else
+    echo "⚠ wpg не найден — после перезагрузки выполни: wpg-install.sh -g -i -r -p"
+fi
 
-#echo "Установка i3lock-color..."
-#if [ ! -d "$HOME/i3lock-color" ]; then
- #   git clone https://github.com/Raymo111/i3lock-color.git "$HOME/i3lock-color"
-  #  cd "$HOME/i3lock-color"
-   # ./install-i3lock-color.sh
-    #cd "$REPO_DIR"
-#fi
+# ─────────────────────────────────────────────
+echo "► Установка i3lock-color..."
+# ─────────────────────────────────────────────
+if ! command -v i3lock &> /dev/null || ! i3lock --version 2>&1 | grep -q "color"; then
+    git clone https://github.com/Raymo111/i3lock-color.git /tmp/i3lock-color
+    cd /tmp/i3lock-color
+    ./install-i3lock-color.sh
+    cd "$REPO_DIR"
+fi
 
-#echo "Установка betterlockscreen..."
-#wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
-#systemctl --user enable betterlockscreen@$USER
+# ─────────────────────────────────────────────
+echo "► Установка betterlockscreen..."
+# ─────────────────────────────────────────────
+if ! command -v betterlockscreen &> /dev/null; then
+    wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O /tmp/bls-install.sh
+    sudo bash /tmp/bls-install.sh system
+fi
 
-#echo "Установка DM"
+# Включение сервиса betterlockscreen
+systemctl --user daemon-reload
+if systemctl --user list-unit-files 2>/dev/null | grep -q "betterlockscreen"; then
+    systemctl --user enable "betterlockscreen@$USER"
+    echo "✓ betterlockscreen сервис включён"
+else
+    # Создаём unit вручную
+    mkdir -p ~/.config/systemd/user/
+    cat > ~/.config/systemd/user/betterlockscreen@.service << 'EOF'
+[Unit]
+Description=betterlockscreen
+Before=sleep.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/betterlockscreen -l
+
+[Install]
+WantedBy=sleep.target
+EOF
+    systemctl --user daemon-reload
+    systemctl --user enable "betterlockscreen@$USER"
+    echo "✓ betterlockscreen unit создан и включён"
+fi
+
+# Настройка PAM для i3lock (только пароль, без отпечатка пальца)
+sudo tee /etc/pam.d/i3lock > /dev/null << 'EOF'
+auth    sufficient    pam_unix.so try_first_pass
+auth    requisite     pam_nologin.so
+EOF
+
+# ─────────────────────────────────────────────
+echo "► Установка DM (emptty)..."
+# ─────────────────────────────────────────────
 sudo apt install -y emptty
 
-echo "Установка локального .deb (tlpui)..."
+# ─────────────────────────────────────────────
+echo "► Установка tlpui..."
+# ─────────────────────────────────────────────
 if [ -f "$REPO_DIR/tlpui.deb" ]; then
     sudo apt install -y "$REPO_DIR/tlpui.deb"
 fi
 
-#echo "Копирование кастомных скриптов..."
-#sudo cp "$REPO_DIR/autotiling" /usr/local/bin/
-#sudo chmod +x /usr/local/bin/autotiling
+# ─────────────────────────────────────────────
+echo "► Копирование кастомных скриптов..."
+# ─────────────────────────────────────────────
+sudo cp "$REPO_DIR/autotiling" /usr/local/bin/
+sudo chmod +x /usr/local/bin/autotiling
+sudo cp "$REPO_DIR/rofi-power-menu" /usr/local/bin/
+sudo chmod +x /usr/local/bin/rofi-power-menu
 
-#sudo cp "$REPO_DIR/rofi-power-menu" /usr/local/bin/
-#sudo chmod +x /usr/local/bin/rofi-power-menu
+# ─────────────────────────────────────────────
+echo "► Копирование конфигурационных файлов..."
+# ─────────────────────────────────────────────
+mkdir -p ~/.config ~/.local ~/.moc
+cp -r "$REPO_DIR/.config/." ~/.config/
+cp -r "$REPO_DIR/.moc/." ~/.moc/
+cp -r "$REPO_DIR/.local/." ~/.local/
+cp "$REPO_DIR/.bashrc" ~/
+cp "$REPO_DIR/.Xresources" ~/
 
-#echo "Копирование конфигурационных файлов..."
-#mkdir -p ~/.config ~/.local ~/.moc
+chmod +x ~/.config/polybar/*.sh 2>/dev/null || true
+chmod +x ~/.config/rofi/*.sh 2>/dev/null || true
+chmod +x ~/.config/i3/scripts/* 2>/dev/null || true
 
-#cp -r ~/debian-i3wm/.config ~/
-#cp -r ~/debian-i3wm/.moc ~/
-#cp -r ~/debian-i3wm/.local ~/
-#cp ~/debian-i3wm/.bashrc ~/
-#cp ~/debian-i3wm/.Xresources ~/
+# Обновляем кэш шрифтов
+fc-cache -fv
 
-#sudo chmod +x ~/.config/polybar/*.sh
-#sudo chmod +x ~/.config/rofi/*.sh
-
+# ─────────────────────────────────────────────
 sudo apt autoremove -y
-echo "Установка завершена!"
+
+echo ""
+echo "✓ Установка завершена!"
+echo ""
+echo "Следующие шаги после перезагрузки:"
+echo "  1. Перезагрузи систему: sudo reboot"
+echo "  2. Сгенерируй кэш betterlockscreen: betterlockscreen -u ~/Изображения/Обои/"
+echo "  3. Выбери обои через wpg: wpg -s <файл>"
