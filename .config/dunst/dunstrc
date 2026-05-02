@@ -1,0 +1,117 @@
+[global]
+    # Монитор и фокус
+    monitor = 0
+    follow = keyboard
+
+    # Геометрия
+    width = (200, 420)
+    height = (0, 120)
+    origin = bottom_center
+    offset = 0x50
+    scale = 0
+
+    # Стек уведомлений
+    notification_limit = 5
+    indicate_hidden = yes
+
+    # Вид
+    corner_radius = 12
+    frame_width = 2
+    separator_height = 2
+    padding = 12
+    horizontal_padding = 16
+    text_icon_padding = 10
+    transparency = 10
+
+    # Разделитель
+    separator_color = frame
+
+    # Сортировка
+    sort = yes
+
+    # Шрифт
+    font = Iosevka Nerd Font 13
+
+    # Форматирование текста
+    line_height = 2
+    markup = full
+    format = "<b>%s</b>\n%b"
+    alignment = left
+    vertical_alignment = center
+    word_wrap = yes
+    ellipsize = middle
+    ignore_newline = no
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_indicators = yes
+
+    # Иконки
+    icon_position = left
+    min_icon_size = 24
+    max_icon_size = 36
+    icon_corner_radius = 4
+
+    # Мышь
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+    # Прогресс-бар (для громкости и яркости)
+    progress_bar = true
+    progress_bar_height = 8
+    progress_bar_frame_width = 1
+    progress_bar_min_width = 150
+    progress_bar_max_width = 380
+    progress_bar_corner_radius = 4
+
+    # Цвета из wpgtk
+    frame_color = "{color1}"
+
+    # История
+    sticky_history = yes
+    history_length = 20
+
+    # Прочее
+    show_age_threshold = 60
+    idle_threshold = 120
+    browser = /usr/bin/xdg-open
+    always_run_script = true
+    title = Dunst
+    class = Dunst
+    force_xwayland = false
+    force_xinerama = false
+    ignore_dbusclose = false
+    verbosity = mesg
+    corner_radius = 12
+
+[urgency_low]
+    background = "{color0}"
+    foreground = "{color7}"
+    frame_color = "{color2}"
+    timeout = 4
+    default_icon = dialog-information
+
+[urgency_normal]
+    background = "{color0}"
+    foreground = "{color7}"
+    frame_color = "{color1}"
+    timeout = 6
+    default_icon = dialog-information
+
+[urgency_critical]
+    background = "{color0}"
+    foreground = "{color7}"
+    frame_color = "{color3}"
+    timeout = 0
+    default_icon = dialog-error
+
+# Правила для отдельных приложений
+[volume]
+    appname = "System"
+    summary = "Громкость*"
+    history_ignore = yes
+
+[brightness]
+    appname = "System"
+    summary = "Яркость*"
+    history_ignore = yes
