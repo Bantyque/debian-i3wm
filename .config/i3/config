@@ -134,7 +134,7 @@ bindsym $mod+g exec google-chrome
 bindsym $mod+c exec geany
 
 # Telegram
-bindsym $mod+t exec telegram-desktop
+bindsym $mod+t [class="TelegramDesktop"] move workspace current, focus; exec --no-startup-id telegram-desktop
 
 # Torrent
 bindsym $mod+b exec transmission-gtk
