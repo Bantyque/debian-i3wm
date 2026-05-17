@@ -27,6 +27,13 @@ sudo pacman -S --noconfirm \
     xf86-input-libinput \
     mesa vulkan-radeon libva-mesa-driver \
     mesa-vdpau
+    
+sudo pacman -S --noconfirm \
+    xf86-video-intel \
+    mesa \
+    lib32-mesa \
+    vulkan-intel \
+    lib32-vulkan-intel \   
 
 # Настройка тачпада
 sudo mkdir -p /etc/X11/xorg.conf.d/
@@ -130,7 +137,7 @@ sudo pacman -S --noconfirm \
 echo "► Прикладные программы..."
 # ─────────────────────────────────────────────
 sudo pacman -S --noconfirm \
-    fastfetch htop \
+    fastfetch btop \
     mpv gimp \
     transmission-gtk \
     shotcut \
@@ -165,24 +172,24 @@ if ! command -v yay &> /dev/null; then
 fi
 
 # ─────────────────────────────────────────────
-echo "► ROCm для Vega 8 (gfx902)..."
+#echo "► ROCm для Vega 8 (gfx902)..."
 # ─────────────────────────────────────────────
-sudo pacman -S --noconfirm \
-    rocm-opencl-runtime \
-    rocminfo \
-    rocm-smi-lib
+#sudo pacman -S --noconfirm \
+#    rocm-opencl-runtime \
+#    rocminfo \
+#    rocm-smi-lib
 
 # Добавляем пользователя в группы render и video
-sudo usermod -aG render,video "$USER"
+#sudo usermod -aG render,video "$USER"
 
 # Переменные для gfx902
-echo 'export HSA_OVERRIDE_GFX_VERSION=9.0.2' >> ~/.bashrc
-echo 'export PYTORCH_ROCM_ARCH=gfx902' >> ~/.bashrc
+#echo 'export HSA_OVERRIDE_GFX_VERSION=9.0.2' >> ~/.bashrc
+#echo 'export PYTORCH_ROCM_ARCH=gfx902' >> ~/.bashrc
 
 # ─────────────────────────────────────────────
-echo "► PyTorch ROCm через AUR..."
+#echo "► PyTorch ROCm через AUR..."
 # ─────────────────────────────────────────────
-yay -S --noconfirm python-pytorch-rocm
+#yay -S --noconfirm python-pytorch-rocm
 
 # ─────────────────────────────────────────────
 echo "► Telegram Desktop..."
@@ -270,19 +277,19 @@ auth    requisite     pam_nologin.so
 EOF
 
 # ─────────────────────────────────────────────
-echo "► Howdy (распознавание лица)..."
+#echo "► Howdy (распознавание лица)..."
 # ─────────────────────────────────────────────
-yay -S --noconfirm howdy
+#yay -S --noconfirm howdy
 # Настройка IR камеры
-sudo sed -i 's|device_path = none|device_path = /dev/video2|' /lib/security/howdy/config.ini 2>/dev/null || true
+#sudo sed -i 's|device_path = none|device_path = /dev/video2|' /lib/security/howdy/config.ini 2>/dev/null || true
 
 # Добавляем Howdy в PAM для входа
-sudo tee /etc/pam.d/login > /dev/null << 'EOF'
-auth      sufficient  pam_howdy.so
-auth      include     system-local-login
-account   include     system-local-login
-session   include     system-local-login
-EOF
+#sudo tee /etc/pam.d/login > /dev/null << 'EOF'
+#auth      sufficient  pam_howdy.so
+#auth      include     system-local-login
+#account   include     system-local-login
+#session   include     system-local-login
+#EOF
 
 # ─────────────────────────────────────────────
 echo "► Display Manager (ly)..."
@@ -331,17 +338,17 @@ chmod +x ~/.config/rofi/*.sh 2>/dev/null || true
 chmod +x ~/.config/i3/scripts/* 2>/dev/null || true
 
 # ComfyUI .desktop файл
-mkdir -p ~/.local/share/applications/
-cat > ~/.local/share/applications/comfyui.desktop << 'EOF'
-[Desktop Entry]
-Name=ComfyUI
-Comment=ComfyUI Stable Diffusion
-Exec=rxvt -e bash -c 'cd ~/ComfyUI && source venv/bin/activate && HSA_OVERRIDE_GFX_VERSION=9.0.2 python3 main.py --cpu-vae; read'
-Icon=utilities-terminal
-Terminal=false
-Type=Application
-Categories=Graphics;
-EOF
+#mkdir -p ~/.local/share/applications/
+#cat > ~/.local/share/applications/comfyui.desktop << 'EOF'
+#[Desktop Entry]
+#Name=ComfyUI
+#Comment=ComfyUI Stable Diffusion
+#Exec=rxvt -e bash -c 'cd ~/ComfyUI && source venv/bin/activate && HSA_OVERRIDE_GFX_VERSION=9.0.2 python3 main.py --cpu-vae; read'
+#Icon=utilities-terminal
+#Terminal=false
+#Type=Application
+#Categories=Graphics;
+#EOF
 
 # Обновляем кэш шрифтов
 fc-cache -fv
