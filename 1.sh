@@ -116,7 +116,7 @@ sudo apt install -y python3 python3-pip python3-full pipx
 # ─────────────────────────────────────────────
 echo "► Установка прикладных программ..."
 # ─────────────────────────────────────────────
-sudo apt install -y fastfetch btop cava mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura
+sudo apt install -y fastfetch btop cava mpv gimp transmission shotcut darktable flameshot gthumb moc webp-pixbuf-loader calcurse catfish zathura
 
 # ─────────────────────────────────────────────
 echo "► Установка библиотек для компиляции..."
