@@ -35,7 +35,7 @@ export PATH="$HOME/.local/bin:$PATH"
 echo "► Установка базовой графики и микрокода AMD..."
 # ─────────────────────────────────────────────
 sudo apt install -y xorg xserver-xorg xbindkeys light xinput xserver-xorg-input-libinput
-sudo apt install -y amd64-microcode firmware-amd-graphics libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu
+sudo apt install -y amd64-microcode firmware-amd-graphics xserver-xorg-video-ati libgl1-mesa-dri libglx-mesa0 mesa-vulkan-drivers xserver-xorg-video-amdgpu
 sudo apt install -y firmware-iwlwifi firmware-realtek firmware-misc-nonfree
 xdg-user-dirs-update
 
