@@ -46,7 +46,7 @@ EOF
 echo "► Установка системных утилит..."
 # ─────────────────────────────────────────────
 sudo apt install -y build-essential wget curl dialog mtools dosfstools avahi-daemon acpi acpid gvfs-backends xfce4-power-manager lm-sensors
-sudo apt install -y lxpolkit pcmanfm ranger file-roller zip unzip rxvt-unicode
+sudo apt install -y lxpolkit thunar ranger file-roller micro zip unzip rxvt-unicode
 sudo apt install -y tlp tlp-rdw acpi-call-dkms network-manager network-manager-gnome network-manager-openvpn-gnome xdg-user-dirs
 
 # ─────────────────────────────────────────────
@@ -103,7 +103,7 @@ sudo apt install -y python3 python3-pip python3-full pipx
 # ─────────────────────────────────────────────
 echo "► Установка прикладных программ..."
 # ─────────────────────────────────────────────
-sudo apt install -y fastfetch htop cava mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura
+sudo apt install -y fastfetch btop cava mpv gimp obs-studio transmission shotcut darktable flameshot telegram-desktop viewnior moc webp-pixbuf-loader calcurse catfish zathura
 
 # ─────────────────────────────────────────────
 echo "► Установка библиотек для компиляции..."
