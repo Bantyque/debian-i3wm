@@ -35,16 +35,16 @@ exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec --no-startup-id dunst
 exec --no-startup-id picom --experimental-backends --config ~/.config/picom.conf 
 exec_always --no-startup-id bash -c "~/.local/bin/wpg -s ~/Изображения/Обои"
+exec_always --no-startup-id bash -c "sleep 1 && wal-telegram --wal -g|--gaussian-blur"
 #exec --no-startup-id ~/.config/i3/wal.sh
 exec --no-startup-id betterlockscreen -u ~/Изображения/Обои/
 exec_always --no-startup-id autotiling
-#exec_always --no-startup-id wal-telegram --wal --tiled
 exec_always --no-startup-id ~/.local/share/pipx/venvs/flashfocus/bin/flashfocus
 exec_always --no-startup-id ~/go/bin/i3-focus-last server
-exec_always --no-startup-id ~/.local/bin/swallow
+#exec --no-startup-id conky -c ~/.config/conky/conky.conf
 #exec --no-startup-id ln -sf ~/.cache/wal/dunstrc ~/.config/dunst/dunstrc
-
-exec --no-startup-id easyeffects
+exec --no-startup-id echo "⚖️ Bal" > /tmp/current_power_profile && sudo /usr/local/bin/ryzenadj --stapm-limit=15000 --fast-limit=18000 --slow-limit=15000 --tctl-temp=65
+exec --no-startup-id easyeffects --gapplication-service
 
 ########################################################## Цвета ##############################################
 
@@ -57,7 +57,6 @@ client.focused_inactive $bg     $bg     $fg  $bg       $bg
 client.unfocused        $bg     $bg     $fg  $bg       $bg
 client.urgent           $bg     $bg     $fg  $bg       $bg
 client.placeholder      $bg     $bg     $fg  $bg       $bg
-
 client.background       $bg
 
 #################################################### Правила открытия окон ####################################
@@ -68,18 +67,20 @@ for_window [class="(?i)Gthumb"] floating enable, move absolute position center
 #for_window [instance="Gthumb"] floating enable, move absolute position center
 for_window [class="Pavucontrol"] floating enable, move absolute position center
 for_window [class="Catfish"] floating enable, move absolute position top
-for_window [title="calcurse" class="URxvt"] floating enable
+for_window [class="Alacritty" title="calcurse"] floating enable
 for_window [class="nm-connection-editor"] floating enable, move absolute position top
 for_window [instance="nmtui_float"] floating enable, resize set 700 500, move position center
 for_window [class="monitask"] floating enable, move absolute position center
 for_window [class="telegram-desktop"] floating enable, move absolute position right
 for_window [instance="telegram-desktop"] floating enable, move absolute position right
-
+for_window [class="Blueman-manager"] floating enable, move absolute position center
 for_window [class="easyeffects"] move scratchpad
-
+for_window [class="transmission-gtk"] floating enable, move absolute position center
 for_window [class="Lutris"] floating enable
 
-# Авто-плавающие окна для всех программ, запущенных через Wine/Bottles
+for_window [class="(?i)libreoffice*"] move to workspace $ws2
+
+# Wine 
 for_window [class="Wine"] floating enable
 for_window [title="Wine System Config"] floating enable
 
@@ -87,19 +88,20 @@ for_window [title="Wine System Config"] floating enable
 assign [instance="google-chrome"] $ws1
 assign [instance="transmission-gtk"] $ws3
 #assign [instance="telegram-desktop"] $ws1
-assign [instance="thunar"] $ws3
-assign [instance="shotcut"] $ws4
-assign [class="rxvt" instance="MOC"] $ws4
-assign [class="rxvt" instance="cava"]for_window [instance="nmtui_float"] floating enable, resize set 700 500, move position center $ws4
-#assign [instance="libreoffice"] $ws2
-assign [class="libreoffice-writer"] $ws2
-assign [class="libreoffice-calc"] $ws2
-assign [class="libreoffice-impress"] $ws2
-assign [class="libreoffice-draw"] $ws2
-assign [class="libreoffice-startcenter"] $ws2
 assign [instance="GIMP"] $ws5
+assign [instance="thunar"] $ws3
+assign [instance="shotcut"] $ws5
+assign [class="alacritty" instance="MOC"] $ws5
+assign [class="alacritty" instance="cava"] $ws5
+assign [class="(?i)libreoffice"] $ws2
+assign [class="(?i)libreoffice-writer"] $ws2
+assign [class="(?i)libreoffice-calc"] $ws2
+assign [class="(?i)libreoffice-impress"] $ws2
+assign [class="(?i)libreoffice-draw"] $ws2
+assign [class="(?i)libreoffice-startcenter"] $ws2
+assign [instance="GIMP"] $ws4
 
-assign [class="easyeffects"] $ws4
+assign [class="easyeffects"] $ws5
 
 #################################################### Звук и яркость экрана ####################################
 
@@ -115,7 +117,8 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%- && duns
 ################################################# Программы ##################################################
 
 # Терминал
-bindsym $mod+Return exec rxvt -tr
+bindsym $mod+Return exec alacritty
+#bindsym $mod+Return exec rxvt -tr
 
 # Лаунчер
 bindsym $mod+d exec --no-startup-id PATH="$PATH:/usr/games" rofi -show drun -show-icons -font "Iosevka Nerd Font 17"
@@ -130,8 +133,8 @@ bindsym $mod+Shift+p exec thunar
 # Chrome
 bindsym $mod+g exec google-chrome
 
-# Geany
-bindsym $mod+c exec geany
+# Nvim
+bindsym $mod+c exec alacritty -e nvim 
 
 # Telegram
 bindsym $mod+t [class="TelegramDesktop"] move workspace current, focus; exec --no-startup-id telegram-desktop
@@ -148,11 +151,13 @@ bindsym $mod+m exec monitask
 # Shotcut
 bindsym $mod+s exec shotcut
 
+bindsym $mod+e [class="easyeffects"] move workspace current, focus
+
 # Плеер MOC
-bindsym Mod4+z exec "rxvt -tr -name player -e mocp"
-bindsym XF86AudioPrev exec --no-startup-id "mocp --previous"
-bindsym XF86AudioPlay exec --no-startup-id "mocp --toggle-pause"
-bindsym XF86AudioNext exec --no-startup-id "mocp --next"
+bindsym Mod4+z exec "alacritty --class player -e mocp"
+#bindsym XF86AudioPrev exec --no-startup-id "mocp --previous"
+#bindsym XF86AudioPlay exec --no-startup-id "mocp --toggle-pause"
+#bindsym XF86AudioNext exec --no-startup-id "mocp --next"
 
 ############################################### Горячие клавиши ##############################################
 
@@ -206,8 +211,8 @@ bindsym $mod+Tab workspace next
 set $ws1 "1:"
 set $ws2 "2:"
 set $ws3 "3:"
-set $ws4 "4:"
-set $ws5 "5:"
+set $ws4 "4:"
+set $ws5 "5:"
 
 # Переход на рабочий стол
 bindsym $mod+1 workspace number $ws1

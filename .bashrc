@@ -31,6 +31,25 @@ NC='\e[0m'
 # dir_colors ###########################################################
 test -r "/etc/dir_colors" && eval $(dircolors /etc/dir_colors)
 
+
+# Поиск по истории стрелками
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+# Увеличиваем историю
+HISTSIZE=10000
+HISTFILESIZE=20000
+
+# Git ветка в промпте
+parse_git_branch() {
+    git branch 2>/dev/null | sed -n 's/\* \(.*\)/ (\1)/p'
+}
+PS1='${debian_chroot:+($debian_chroot)} \e[01;32m\u\e[m@\e[0;36m\h\e[m \e[01;34m\w\e[m\e[33m$(parse_git_branch)\e[m\n $ '
+
+# Автодополнение без учёта регистра
+bind 'set completion-ignore-case on'
+bind 'set show-all-if-ambiguous on'
+    
 # alias ################################################################
 # ls & grep ------------------------------------------------------------
 alias ls='ls --color=auto'
@@ -42,6 +61,8 @@ alias egrep='egrep --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias sudo='sudo '
+alias nano='micro'
 # cd & goto ------------------------------------------------------------
 alias cd..='cd ..'
 alias ...='cd ..'
@@ -81,7 +102,8 @@ alias genpass='echo `< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c12`'
 # bashmount
 alias bm='bashmount'
 # Neofetch
-#alias neofetch='pfetch'
+alias neofetch='pfetch'
+alias z=zoxide
 # end of alias #########################################################
 
 # functions ############################################################
@@ -213,5 +235,11 @@ if ! shopt -oq posix; then
 fi
 
 # Created by `pipx` on 2024-01-31 17:02:03
-export PATH="$PATH:/home/banty/.local/bin"
+export PATH="$PATH:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin"
 export PF_INFO="ascii title os uptime shell pkgs wm memory palette"
+source /usr/share/doc/fzf/examples/key-bindings.bash
+eval "$(zoxide init bash)"
+
+clear
+
+export RANGER_LOAD_DEFAULT_RC=FALSE
