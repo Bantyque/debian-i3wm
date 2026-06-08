@@ -84,3 +84,26 @@ map("n", "<F5>", function()
     vim.cmd("split | terminal lua %")
   end
 end, { desc = "Запустить файл" })
+
+-- Переключение раскладки при выходе из Insert режима
+vim.api.nvim_create_autocmd("InsertLeave", {
+  callback = function()
+    os.execute("xkb-switch -s us 2>/dev/null")
+  end,
+})
+
+-- ── PgUp/PgDn — прокрутка ────────────────────────────────────
+map("n", "<PageUp>",   "<C-u>zz", { desc = "Страница вверх" })
+map("n", "<PageDown>", "<C-d>zz", { desc = "Страница вниз" })
+
+-- ── Alt+PgUp/PgDn — переключение буферов ─────────────────────
+map("n", "<A-PageUp>",   "<cmd>BufferPrevious<CR>", { desc = "Предыдущий буфер" })
+map("n", "<A-PageDown>", "<cmd>BufferNext<CR>",     { desc = "Следующий буфер" })
+map("n", "<A-c>",        "<cmd>BufferClose<CR>",    { desc = "Закрыть буфер" })
+
+-- ── Alt+hjkl — переключение окон ─────────────────────────────
+map("n", "<A-h>", "<C-w>h", { desc = "Окно влево" })
+map("n", "<A-l>", "<C-w>l", { desc = "Окно вправо" })
+map("n", "<A-j>", "<C-w>j", { desc = "Окно вниз" })
+map("n", "<A-k>", "<C-w>k", { desc = "Окно вверх" })
+

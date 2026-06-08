@@ -49,3 +49,7 @@ opt.mouse          = "a"
 opt.clipboard      = "unnamedplus"
 opt.completeopt    = "menu,menuone,noselect"
 opt.pumheight      = 10
+
+-- Определение типа файла
+vim.cmd("filetype plugin indent on")
+vim.cmd("syntax on")

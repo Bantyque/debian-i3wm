@@ -1,41 +1,63 @@
-
 return {
   {
+    -- Просто читаем цвета pywal без плагина wal.vim
     "dylanaraps/wal.vim",
     lazy     = false,
     priority = 1000,
     config   = function()
       vim.cmd("colorscheme wal")
-      -- Читаем цвета pywal
-local colors = {
-  color1 = vim.g.color1 or "#AF857B",
-  color2 = vim.g.color2 or "#D17785",
-  color3 = vim.g.color3 or "#B39F9B",
-  color4 = vim.g.color4 or "#CC9C94",
-  color5 = vim.g.color5 or "#CAB7B4",
-  color6 = vim.g.color6 or "#D1C0BF",
-  color7 = vim.g.color7 or "#c5c1c1",
-}
 
--- Применяем к treesitter группам
-vim.api.nvim_set_hl(0, "@keyword",          { fg = colors.color1, bold = true })
-vim.api.nvim_set_hl(0, "@keyword.return",   { fg = colors.color1, bold = true })
-vim.api.nvim_set_hl(0, "@function",         { fg = colors.color4 })
-vim.api.nvim_set_hl(0, "@function.builtin", { fg = colors.color6 })
-vim.api.nvim_set_hl(0, "@string",           { fg = colors.color2 })
-vim.api.nvim_set_hl(0, "@number",           { fg = colors.color3 })
-vim.api.nvim_set_hl(0, "@comment",          { fg = colors.color8 or "#6d5959", italic = true })
-vim.api.nvim_set_hl(0, "@variable",         { fg = colors.color7 })
-vim.api.nvim_set_hl(0, "@type",             { fg = colors.color5 })
-vim.api.nvim_set_hl(0, "@constant",         { fg = colors.color3 })
-vim.api.nvim_set_hl(0, "@operator",         { fg = colors.color6 })
-vim.api.nvim_set_hl(0, "@punctuation",      { fg = colors.color7 })
-      -- Прозрачный фон (как остальная система)
-      vim.api.nvim_set_hl(0, "Normal",       { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "NormalNC",     { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "NormalFloat",  { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "SignColumn",   { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "EndOfBuffer",  { bg = "NONE" })
+      -- Прозрачный фон
+      vim.api.nvim_set_hl(0, "Normal",      { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "NormalNC",    { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "SignColumn",  { bg = "NONE" })
+      vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "NONE" })
+
+      local function apply_wal_colors()
+        local colors = {}
+        local f = io.open(os.getenv("HOME") .. "/.cache/wal/colors-wal.vim", "r")
+        if f then
+          for line in f:lines() do
+            local name, value = line:match("^let (color%d+)%s*=%s*\"(#%x+)\"")
+            if name and value then colors[name] = value end
+          end
+          f:close()
+        end
+        local c = colors
+        if not c.color1 then return end
+
+        -- Перезаписываем ПОСЛЕ wal.vim
+        vim.api.nvim_set_hl(0, "@keyword",             { fg = c.color3, bold = true })
+        vim.api.nvim_set_hl(0, "@keyword.return",      { fg = c.color3, bold = true })
+        vim.api.nvim_set_hl(0, "@keyword.function",    { fg = c.color3, bold = true })
+        vim.api.nvim_set_hl(0, "@function",            { fg = c.color4 })
+        vim.api.nvim_set_hl(0, "@function.builtin",    { fg = c.color6 })
+        vim.api.nvim_set_hl(0, "@function.call",       { fg = c.color4 })
+        vim.api.nvim_set_hl(0, "@string",              { fg = c.color2 })
+        vim.api.nvim_set_hl(0, "@number",              { fg = c.color3 })
+        vim.api.nvim_set_hl(0, "@boolean",             { fg = c.color5 })
+        vim.api.nvim_set_hl(0, "@comment",             { fg = c.color8, italic = true })
+        vim.api.nvim_set_hl(0, "@variable",            { fg = c.color7 })
+        vim.api.nvim_set_hl(0, "@type",                { fg = c.color5 })
+        vim.api.nvim_set_hl(0, "@constant",            { fg = c.color3 })
+        vim.api.nvim_set_hl(0, "@operator",            { fg = c.color6 })
+        vim.api.nvim_set_hl(0, "@punctuation",         { fg = c.color7 })
+        vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = c.color6 })
+        vim.api.nvim_set_hl(0, "@parameter",           { fg = c.color7 })
+        vim.api.nvim_set_hl(0, "@field",               { fg = c.color4 })
+        vim.api.nvim_set_hl(0, "@namespace",           { fg = c.color5 })
+        vim.api.nvim_set_hl(0, "@tag",                 { fg = c.color1 })
+      end
+
+      -- Применяем с задержкой чтобы перезаписать wal.vim highlights
+      vim.defer_fn(apply_wal_colors, 100)
+
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+        callback = function()
+          vim.defer_fn(apply_wal_colors, 100)
+        end,
+      })
     end,
   },
 }

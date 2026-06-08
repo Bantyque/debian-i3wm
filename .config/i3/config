@@ -7,6 +7,9 @@ set $mod Mod4
 # Раскладка клавиатуры
 exec --no-startup-id setxkbmap -layout us,ru,ua -option "grp:alt_shift_toggle"
 
+# Caps = Esc
+exec_always --no-startup-id setxkbmap -option caps:escape
+
 
 #################################################### Декорации окон ###########################################
 default_border pixel 2
