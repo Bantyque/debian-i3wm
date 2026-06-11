@@ -12,11 +12,11 @@ exec_always --no-startup-id setxkbmap -option caps:escape
 
 
 #################################################### Декорации окон ###########################################
-default_border pixel 2
-for_window [tiling] border pixel 2
-for_window [floating] border pixel 2
-gaps inner 2
-gaps outer 2
+default_border pixel 0 
+for_window [tiling] border pixel 0
+for_window [floating] border pixel 0
+gaps inner 4
+gaps outer 1
 
 # Шрифты
 font pango:Iosevka Nerd Font 10
