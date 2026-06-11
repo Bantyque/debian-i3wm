@@ -25,7 +25,7 @@
 Recommended on a minimal Debian install.
 
 ```bash
-git clone [https://github.com/Bantyque/debian-i3wm.git](https://github.com/Bantyque/debian-i3wm.git)
+git clone https://github.com/Bantyque/debian-i3wm.git
 cd debian-i3wm
 chmod +x *.sh
 ./install.sh
