@@ -1,7 +1,7 @@
 <h1 align="center">Debian + i3wm Dotfiles</h1>
 
 <p align="center">
-  <b>Automated setup script and configuration for a minimalist workspace.</b>
+  <b>Automated setup script and configuration for a workspace.</b>
 </p>
 
 ![Debian with i3wm](https://i.postimg.cc/Fsr0mn9B/1.png)
