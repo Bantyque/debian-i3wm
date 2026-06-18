@@ -89,7 +89,7 @@ EOF
 # ─────────────────────────────────────────────
 echo "Шрифты"
 # ─────────────────────────────────────────────
-sudo apt install -y lxappearance feh fonts-recommended fonts-ubuntu fonts-font-awesome fonts-terminus font-manager
+sudo apt install -y lxappearance feh fonts-recommended font-manager fonts-ubuntu fonts-font-awesome fonts-terminus font-manager
 sudo apt install -y plymouth plymouth-themes xss-lock
 
 # ─────────────────────────────────────────────
@@ -105,13 +105,13 @@ sudo apt install -y easyeffects
 # ─────────────────────────────────────────────
 echo "i3wm"
 # ─────────────────────────────────────────────
-sudo apt install -y picom polybar feh rofi dunst libnotify-bin i3-wm i3lock wmctrl geany
-sudo apt install -y python3 python3-pip python3-full pipx
+sudo apt install -y picom polybar feh rofi dunst libnotify-bin i3-wm i3lock wmctrl 
+sudo apt install -y python3 python3-pip python3-full pipx python-i3ipc
 
 # ─────────────────────────────────────────────
 echo "Софт"
 # ─────────────────────────────────────────────
-sudo apt install -y fastfetch btop cava mpv gimp obs-studio transmission shotcut flameshot gthumb moc webp-pixbuf-loader calcurse catfish zathura
+sudo apt install -y fastfetch btop cava mpv gimp darktable obs-studio transmission firefox-esr shotcut flameshot gthumb moc webp-pixbuf-loader calcurse catfish zathura
 
 # ─────────────────────────────────────────────
 echo "Компиляция"
@@ -124,19 +124,11 @@ echo "Системные сервисы"
 sudo systemctl enable NetworkManager avahi-daemon acpid cups bluetooth tlp
 
 # ─────────────────────────────────────────────
-echo "Google Chrome"
-# ─────────────────────────────────────────────
-if ! command -v google-chrome-stable &> /dev/null; then
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb
-    sudo dpkg -i /tmp/chrome.deb
-    sudo apt --fix-broken install -y
-fi
-
-# ─────────────────────────────────────────────
 echo "pywal и wpgtk"
 # ─────────────────────────────────────────────
 export PIPX_BIN_DIR=/usr/local/bin
 pipx install pywal
+pipx install pywalfox
 pipx install wpgtk
 pipx ensurepath
 export PATH="/usr/local/bin:$HOME/.local/bin:$PATH"

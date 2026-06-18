@@ -28,7 +28,6 @@ exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id "xrdb ~/.Xresources"
 exec --no-startup-id ~/.config/i3/layout_notify.sh
 exec --no-startup-id "xfce4-power-manager"
-#exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY I3SOCK
 exec --no-startup-id lxpolkit
@@ -39,12 +38,9 @@ exec --no-startup-id dunst
 exec --no-startup-id picom --experimental-backends --config ~/.config/picom.conf 
 exec_always --no-startup-id bash -c "~/.local/bin/wpg -s ~/Изображения/Обои"
 exec_always --no-startup-id bash -c "sleep 1 && wal-telegram --wal -g|--gaussian-blur"
-#exec --no-startup-id ~/.config/i3/wal.sh
 exec --no-startup-id betterlockscreen -u ~/Изображения/Обои/
 exec_always --no-startup-id autotiling
 exec_always --no-startup-id ~/.local/share/pipx/venvs/flashfocus/bin/flashfocus
-exec_always --no-startup-id ~/go/bin/i3-focus-last server
-#exec --no-startup-id conky -c ~/.config/conky/conky.conf
 #exec --no-startup-id ln -sf ~/.cache/wal/dunstrc ~/.config/dunst/dunstrc
 exec --no-startup-id echo "⚖️ Bal" > /tmp/current_power_profile && sudo /usr/local/bin/ryzenadj --stapm-limit=15000 --fast-limit=18000 --slow-limit=15000 --tctl-temp=65
 exec --no-startup-id easyeffects --gapplication-service
@@ -66,7 +62,7 @@ client.background       $bg
 
 # Окна в плавающем режиме по умолчанию
 for_window [class="mpv"] floating enable, move absolute position center
-for_window [class="(?i)Gthumb"] floating enable, move absolute position center
+for_window [class="Viewnior"] floating enable, move absolute position center
 #for_window [instance="Gthumb"] floating enable, move absolute position center
 for_window [class="Pavucontrol"] floating enable, move absolute position center
 for_window [class="Catfish"] floating enable, move absolute position top
@@ -88,7 +84,7 @@ for_window [class="Wine"] floating enable
 for_window [title="Wine System Config"] floating enable
 
 # Окна открывающиеся на определенном рабочем столе
-assign [instance="google-chrome"] $ws1
+assign [instance="firefox"] $ws1
 assign [instance="transmission-gtk"] $ws3
 #assign [instance="telegram-desktop"] $ws1
 assign [instance="GIMP"] $ws5
@@ -133,8 +129,8 @@ bindsym --release Print exec "flameshot gui"
 # Pcmanfm
 bindsym $mod+Shift+p exec thunar
 
-# Chrome
-bindsym $mod+g exec google-chrome
+# Firefox
+bindsym $mod+g exec firefox
 
 # Nvim
 bindsym $mod+c exec alacritty -e nvim 
@@ -211,8 +207,8 @@ bindsym $mod+a focus parent
 bindsym $mod+Tab workspace next
 
 # Название рабочих столов
-set $ws1 "1:"
-set $ws2 "2:"
+set $ws1 "1:"
+set $ws2 "2:󰪸"
 set $ws3 "3:"
 set $ws4 "4:"
 set $ws5 "5:"
