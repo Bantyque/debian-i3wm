@@ -6,28 +6,28 @@ set $mod Mod4
 
 # Раскладка клавиатуры
 exec --no-startup-id setxkbmap -layout us,ru,ua -option "grp:alt_shift_toggle"
-
-# Caps = Esc
-exec_always --no-startup-id setxkbmap -option caps:escape
-
+exec_always --no-startup-id xmodmap ~/.xmodmaprc
 
 #################################################### Декорации окон ###########################################
-default_border pixel 0 
+default_border pixel 0
 for_window [tiling] border pixel 0
 for_window [floating] border pixel 0
 gaps inner 4
-gaps outer 1
+gaps outer 1 
 
 # Шрифты
 font pango:Iosevka Nerd Font 10
 font pango:Symbols Nerd Font 12
 
 ########################################################## Автостарт ##########################################
+#exec --no-startup-id autocutsel -fork
+#exec --no-startup-id autocutsel -selection PRIMARY -fork
 
 exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id "xrdb ~/.Xresources"
 exec --no-startup-id ~/.config/i3/layout_notify.sh
 exec --no-startup-id "xfce4-power-manager"
+#exec --no-startup-id nm-applet
 exec --no-startup-id blueman-applet
 exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY I3SOCK
 exec --no-startup-id lxpolkit
@@ -38,9 +38,10 @@ exec --no-startup-id dunst
 exec --no-startup-id picom --experimental-backends --config ~/.config/picom.conf 
 exec_always --no-startup-id bash -c "~/.local/bin/wpg -s ~/Изображения/Обои"
 exec_always --no-startup-id bash -c "sleep 1 && wal-telegram --wal -g|--gaussian-blur"
+#exec --no-startup-id ~/.config/i3/wal.sh
 exec --no-startup-id betterlockscreen -u ~/Изображения/Обои/
 exec_always --no-startup-id autotiling --limit 2
-exec_always --no-startup-id ~/.local/share/pipx/venvs/flashfocus/bin/flashfocus
+exec_always --no-startup-id python3 ~/.config/i3/i3-window.py
 #exec --no-startup-id ln -sf ~/.cache/wal/dunstrc ~/.config/dunst/dunstrc
 exec --no-startup-id echo "⚖️ Bal" > /tmp/current_power_profile && sudo /usr/local/bin/ryzenadj --stapm-limit=15000 --fast-limit=18000 --slow-limit=15000 --tctl-temp=65
 exec --no-startup-id easyeffects --gapplication-service
@@ -87,7 +88,7 @@ for_window [title="Wine System Config"] floating enable
 assign [instance="firefox"] $ws1
 assign [instance="transmission-gtk"] $ws3
 #assign [instance="telegram-desktop"] $ws1
-assign [instance="GIMP"] $ws5
+assign [class="(?i)GIMP"] $ws5
 assign [instance="thunar"] $ws3
 assign [instance="shotcut"] $ws5
 assign [class="alacritty" instance="MOC"] $ws5
@@ -98,9 +99,10 @@ assign [class="(?i)libreoffice-calc"] $ws2
 assign [class="(?i)libreoffice-impress"] $ws2
 assign [class="(?i)libreoffice-draw"] $ws2
 assign [class="(?i)libreoffice-startcenter"] $ws2
-assign [instance="GIMP"] $ws4
-
 assign [class="easyeffects"] $ws5
+assign [instance="Krita"] $ws5
+assign [instance="Blender"] $ws5
+assign [instance="(?i)Zathura"] $ws4
 
 #################################################### Звук и яркость экрана ####################################
 
