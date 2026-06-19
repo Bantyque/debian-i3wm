@@ -39,7 +39,7 @@ exec --no-startup-id picom --experimental-backends --config ~/.config/picom.conf
 exec_always --no-startup-id bash -c "~/.local/bin/wpg -s ~/Изображения/Обои"
 exec_always --no-startup-id bash -c "sleep 1 && wal-telegram --wal -g|--gaussian-blur"
 exec --no-startup-id betterlockscreen -u ~/Изображения/Обои/
-exec_always --no-startup-id autotiling
+exec_always --no-startup-id autotiling --limit 2
 exec_always --no-startup-id ~/.local/share/pipx/venvs/flashfocus/bin/flashfocus
 #exec --no-startup-id ln -sf ~/.cache/wal/dunstrc ~/.config/dunst/dunstrc
 exec --no-startup-id echo "⚖️ Bal" > /tmp/current_power_profile && sudo /usr/local/bin/ryzenadj --stapm-limit=15000 --fast-limit=18000 --slow-limit=15000 --tctl-temp=65
