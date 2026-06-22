@@ -119,7 +119,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%- && duns
 
 # Терминал
 bindsym $mod+Return exec alacritty
-#bindsym $mod+Return exec rxvt -tr
+bindsym $mod+grave exec ~/.config/i3/scratchpad.sh
 
 # Лаунчер
 bindsym $mod+d exec --no-startup-id PATH="$PATH:/usr/games" rofi -show drun -show-icons -font "Iosevka Nerd Font 17"
