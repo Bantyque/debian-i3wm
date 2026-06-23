@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+!/usr/bin/env bash
 
 # Путь к файлу, где хранится текущий статус
 STATUS_FILE="/tmp/current_power_profile"
@@ -18,7 +18,7 @@ fi
 options="🤫 Сбережение (10W)\n⚖️ Баланс (15W)\n🚀 Максимум (22W)"
 
 # Запуск Rofi
-chosen=$(echo -e "$options" | rofi -dmenu -i -p "Профиль мощности:" -theme-str 'window {width: 250px;}')
+chosen=$(printf "🤫 Сбережение (10W)\n⚖️ Баланс (15W)\n🚀 Максимум (22W)" | rofi -dmenu -i -p "Профиль мощности:" -theme-str 'window {width: 300px;}')
 
 # Обработка выбора
 case "$chosen" in

@@ -1,0 +1,64 @@
+@import "~/.cache/wal/colors-rofi-dark"
+
+* {
+    font: "Iosevka Nerd Font 13";
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+window {
+    background-color: @background;
+    border: 1px solid;
+    border-color: @active-background;
+    border-radius: 12px;
+    width: 480px;
+    padding: 16px;
+}
+
+mainbox {
+    spacing: 8px;
+    children: [inputbar, listview];
+}
+
+inputbar {
+    background-color: @active-background;
+    border-radius: 8px;
+    padding: 8px 12px;
+    children: [entry];
+}
+
+entry {
+    foreground-color: @foreground;
+    placeholder: "Поиск...";
+    placeholder-color: @normal-foreground;
+}
+
+listview {
+    spacing: 2px;
+    lines: 8;
+    border: 0px;
+}
+
+element {
+    padding: 7px 10px;
+    border-radius: 6px;
+    children: [element-icon, element-text];
+    spacing: 8px;
+}
+
+element-icon {
+    size: 24px;
+}
+
+element-text {
+    foreground-color: @foreground;
+    vertical-align: 0.5;
+}
+
+element selected {
+    background-color: @active-background;
+}
+
+element normal.normal {
+    background-color: transparent;
+}
