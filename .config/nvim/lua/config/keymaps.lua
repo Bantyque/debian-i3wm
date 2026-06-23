@@ -6,6 +6,7 @@ vim.g.maplocalleader = " "
 
 local map = vim.keymap.set
 
+vim.keymap.set('n', '<F5>', ':w | !python3 %<CR>')
 -- ── Основные ─────────────────────────────────────────────────
 map("n", "<Esc>",     "<cmd>nohlsearch<CR>",  { desc = "Снять подсветку поиска" })
 map("n", "<leader>w", "<cmd>w<CR>",           { desc = "Сохранить" })
@@ -107,3 +108,5 @@ map("n", "<A-l>", "<C-w>l", { desc = "Окно вправо" })
 map("n", "<A-j>", "<C-w>j", { desc = "Окно вниз" })
 map("n", "<A-k>", "<C-w>k", { desc = "Окно вверх" })
 
+-- Выпрыгнуть за закрывающую скобку/кавычку в insert mode
+vim.keymap.set('i', '<C-l>', '<Right>', { desc = 'Jump past closing bracket' })

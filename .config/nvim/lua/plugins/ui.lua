@@ -69,9 +69,53 @@ return {
     event        = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
+      local function wal_theme()
+        local f = io.open(os.getenv("HOME") .. "/.cache/wal/colors.json", "r")
+        if not f then return "auto" end
+        local content = f:read("*a")
+        f:close()
+        local bg = content:match('"background"%s*:%s*"(#%x+)"') or "#1a1a1a"
+        local fg = content:match('"foreground"%s*:%s*"(#%x+)"') or "#d8d8d8"
+        local c1 = content:match('"color1"%s*:%s*"(#%x+)"') or "#cc6666"
+        local c3 = content:match('"color3"%s*:%s*"(#%x+)"') or "#f0c674"
+        local c4 = content:match('"color4"%s*:%s*"(#%x+)"') or "#81a2be"
+        return {
+          normal = {
+            a = { bg = c4, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          insert = {
+            a = { bg = c3, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          visual = {
+            a = { bg = c1, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          replace = {
+            a = { bg = c1, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          command = {
+            a = { bg = c3, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          inactive = {
+            a = { bg = bg, fg = fg },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+        }
+      end
+
       require("lualine").setup({
         options = {
-          theme                = "auto",
+          theme                = wal_theme(),
           globalstatus         = true,
           component_separators = { left = "", right = "" },
           section_separators   = { left = "", right = "" },
@@ -181,17 +225,16 @@ return {
       local alpha = require("alpha")
       local dash  = require("alpha.themes.dashboard")
 
-      dash.section.header.val = {
-        "",
-        "  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗  ",
-        "  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║  ",
-        "  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║  ",
-        "  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║  ",
-        "  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║  ",
-        "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝  ",
-        "",
-      }
-
+    dash.section.header.val = {
+      "",
+      "  ██████╗  █████╗ ███╗  ██╗████████╗██╗   ██╗  ",
+      "  ██╔══██╗██╔══██╗████╗ ██║╚══██╔══╝╚██╗ ██╔╝  ",
+      "  ██████╔╝███████║██╔██╗██║   ██║    ╚████╔╝   ",
+      "  ██╔══██╗██╔══██║██║╚████║   ██║     ╚██╔╝    ",
+      "  ██████╔╝██║  ██║██║ ╚███║   ██║      ██║     ",
+      "  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚══╝   ╚═╝      ╚═╝     ",
+      "",
+    }
       dash.section.buttons.val = {
         dash.button("n", "  Новый файл",        "<cmd>enew<CR>"),
         dash.button("r", "  Недавние файлы",    "<cmd>Telescope oldfiles<CR>"),
@@ -258,5 +301,22 @@ return {
   {
     "nvim-tree/nvim-web-devicons",
     lazy = true,
+  },
+
+  -- ── Indent lines ─────────────────────────────────────────────
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main  = "ibl",
+    event = "BufReadPost",
+    config = function()
+      require("ibl").setup({
+        indent = {
+          char = "│",
+        },
+        scope = {
+          enabled = true,
+        },
+      })
+    end,
   },
 }

@@ -6,13 +6,6 @@ return {
     config   = function()
       vim.cmd("colorscheme wal")
 
-      -- Прозрачный фон
-      vim.api.nvim_set_hl(0, "Normal",      { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "NormalNC",    { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "SignColumn",  { bg = "NONE" })
-      vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "NONE" })
-
       local function apply_wal_colors()
         local colors = {}
         local f = io.open(os.getenv("HOME") .. "/.cache/wal/colors-wal.vim", "r")
@@ -25,6 +18,14 @@ return {
         end
         local c = colors
         if not c.color1 then return end
+
+        -- Фон — берём color0 из pywal но не полностью прозрачный
+        local bg = c.color0 or "#1a1a1a"
+        vim.api.nvim_set_hl(0, "Normal",      { bg = bg })
+        vim.api.nvim_set_hl(0, "NormalNC",    { bg = bg })
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = bg })
+        vim.api.nvim_set_hl(0, "SignColumn",  { bg = bg })
+        vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = bg })
 
         -- Подсветка синтаксиса (treesitter)
         vim.api.nvim_set_hl(0, "@keyword",             { fg = c.color3, bold = true })
@@ -62,7 +63,7 @@ return {
         vim.api.nvim_set_hl(0, "NeoTreeExpander",      { fg = c.color6 })
         vim.api.nvim_set_hl(0, "NeoTreeRootName",      { fg = c.color5, bold = true })
 
-        -- Иконки devicons цветами pywal
+        -- Иконки devicons
         local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
         if devicons_ok then
           local icons = devicons.get_icons()
@@ -73,9 +74,7 @@ return {
         end
       end
 
-      -- Применяем с задержкой чтобы перезаписать wal.vim highlights
       vim.defer_fn(apply_wal_colors, 100)
-
       vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
         callback = function()
           vim.defer_fn(apply_wal_colors, 100)

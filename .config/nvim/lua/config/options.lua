@@ -5,13 +5,13 @@ local opt = vim.opt
 
 -- Нумерация строк
 opt.number         = true
-opt.relativenumber = true
+-- opt.relativenumber = true
 
 -- Внешний вид
 opt.cursorline     = true
 opt.signcolumn     = "yes"
 opt.termguicolors  = true
-opt.showmode       = false       -- режим показывает lualine
+opt.showmode       = true       -- режим показывает lualine
 opt.scrolloff      = 8
 opt.sidescrolloff  = 8
 opt.wrap           = false
@@ -46,10 +46,20 @@ opt.timeoutlen     = 400
 opt.splitbelow     = true
 opt.splitright     = true
 opt.mouse          = "a"
-opt.clipboard      = "unnamedplus"
+-- opt.clipboard      = "unnamed,unnamedplus"
 opt.completeopt    = "menu,menuone,noselect"
 opt.pumheight      = 10
 
 -- Определение типа файла
 vim.cmd("filetype plugin indent on")
 vim.cmd("syntax on")
+
+-- в options.lua добавь
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "lua",
+  callback = function()
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.tabstop = 2
+    vim.opt_local.expandtab = true
+  end,
+})
