@@ -1,0 +1,83 @@
+return {
+  {
+    "jacoborus/tender.vim",
+    lazy     = false,
+    priority = 1000,
+    config   = function()
+      -- Включаем поддержку true color (24-bit hex цвета)
+      vim.opt.termguicolors = true
+      vim.cmd("colorscheme tender")
+
+      -- Палитра tender — все цвета темы
+      local c = {
+        bg        = "#282828", -- фон
+        bg_dark   = "#1d1d1d", -- более тёмный фон (для inactive)
+        bg_visual = "#293b44", -- фон выделения
+        fg        = "#eeeeee", -- основной текст
+        fg_dim    = "#dadada", -- чуть приглушённый текст
+        gray      = "#666666", -- комментарии, неактивное
+        gray_dark = "#444444", -- ещё темнее
+        red       = "#f43753", -- ошибки, операторы
+        yellow    = "#ffc24b", -- числа, константы
+        lime      = "#c9d05c", -- функции, условия
+        blue      = "#b3deef", -- keyword, директории
+        cyan      = "#73cef4", -- statement, типы
+        tan       = "#d3b987", -- строки
+        olive     = "#9faa00", -- arrow functions
+      }
+
+      -- Подсветка синтаксиса (treesitter)
+      vim.api.nvim_set_hl(0, "@keyword",             { fg = c.blue })
+      vim.api.nvim_set_hl(0, "@keyword.return",      { fg = c.blue })
+      vim.api.nvim_set_hl(0, "@keyword.function",    { fg = c.blue })
+      vim.api.nvim_set_hl(0, "@function",            { fg = c.lime })
+      vim.api.nvim_set_hl(0, "@function.builtin",    { fg = c.cyan })
+      vim.api.nvim_set_hl(0, "@function.call",       { fg = c.lime })
+      vim.api.nvim_set_hl(0, "@string",              { fg = c.tan })
+      vim.api.nvim_set_hl(0, "@number",              { fg = c.yellow })
+      vim.api.nvim_set_hl(0, "@boolean",             { fg = c.yellow })
+      vim.api.nvim_set_hl(0, "@comment",             { fg = c.gray, italic = true })
+      vim.api.nvim_set_hl(0, "@variable",            { fg = c.fg_dim })
+      vim.api.nvim_set_hl(0, "@type",                { fg = c.cyan })
+      vim.api.nvim_set_hl(0, "@constant",            { fg = c.yellow })
+      vim.api.nvim_set_hl(0, "@operator",            { fg = c.red })
+      vim.api.nvim_set_hl(0, "@punctuation",         { fg = c.fg })
+      vim.api.nvim_set_hl(0, "@punctuation.bracket", { fg = c.blue })
+      vim.api.nvim_set_hl(0, "@parameter",           { fg = c.yellow })
+      vim.api.nvim_set_hl(0, "@field",               { fg = c.lime })
+      vim.api.nvim_set_hl(0, "@namespace",           { fg = c.cyan })
+      vim.api.nvim_set_hl(0, "@tag",                 { fg = c.red })
+
+      -- Фон — берём из tender напрямую
+      vim.api.nvim_set_hl(0, "Normal",      { fg = c.fg,  bg = c.bg })
+      vim.api.nvim_set_hl(0, "NormalNC",    { bg = c.bg })
+      vim.api.nvim_set_hl(0, "NormalFloat", { bg = c.bg })
+      vim.api.nvim_set_hl(0, "SignColumn",  { bg = c.bg })
+      vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = c.bg })
+
+      -- Neo-tree цвета
+      vim.api.nvim_set_hl(0, "NeoTreeFileName",      { fg = c.fg_dim })
+      vim.api.nvim_set_hl(0, "NeoTreeDirectory",     { fg = c.fg_dim, bold = true })
+      vim.api.nvim_set_hl(0, "NeoTreeDirectoryName", { fg = c.fg_dim })
+      vim.api.nvim_set_hl(0, "Directory",            { fg = c.lime })
+      vim.api.nvim_set_hl(0, "NeoTreeDirectoryIcon", { fg = c.lime })
+      vim.api.nvim_set_hl(0, "NeoTreeFileIcon",      { fg = c.lime })
+      vim.api.nvim_set_hl(0, "NeoTreeGitModified",   { fg = c.yellow })
+      vim.api.nvim_set_hl(0, "NeoTreeGitAdded",      { fg = c.lime })
+      vim.api.nvim_set_hl(0, "NeoTreeGitDeleted",    { fg = c.red })
+      vim.api.nvim_set_hl(0, "NeoTreeIndentMarker",  { fg = c.gray })
+      vim.api.nvim_set_hl(0, "NeoTreeExpander",      { fg = c.cyan })
+      vim.api.nvim_set_hl(0, "NeoTreeRootName",      { fg = c.cyan, bold = true })
+
+      -- Иконки devicons — красим в cyan как в tender
+      local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
+      if devicons_ok then
+        local icons = devicons.get_icons()
+        for _, icon in pairs(icons) do
+          icon.color = c.cyan
+        end
+        devicons.set_icon(icons)
+      end
+    end,
+  },
+}

@@ -69,43 +69,43 @@ return {
     event        = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      -- Banty тема для lualine
-      local banty_theme = {
+      -- Tender цвета для lualine
+      local tender_theme = {
         normal = {
-          a = { bg = "#5a8e9a", fg = "#100d0e", gui = "bold" }, -- teal
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
+          a = { bg = "#b3deef", fg = "#282828", gui = "bold" }, -- blue
+          b = { bg = "#282828", fg = "#eeeeee" },
+          c = { bg = "#282828", fg = "#eeeeee" },
         },
         insert = {
-          a = { bg = "#7a9e82", fg = "#100d0e", gui = "bold" }, -- sage
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
+          a = { bg = "#c9d05c", fg = "#282828", gui = "bold" }, -- lime
+          b = { bg = "#282828", fg = "#eeeeee" },
+          c = { bg = "#282828", fg = "#eeeeee" },
         },
         visual = {
-          a = { bg = "#c45c52", fg = "#100d0e", gui = "bold" }, -- red
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
+          a = { bg = "#f43753", fg = "#282828", gui = "bold" }, -- red
+          b = { bg = "#282828", fg = "#eeeeee" },
+          c = { bg = "#282828", fg = "#eeeeee" },
         },
         replace = {
-          a = { bg = "#c46882", fg = "#100d0e", gui = "bold" }, -- pink
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
+          a = { bg = "#f43753", fg = "#282828", gui = "bold" }, -- red
+          b = { bg = "#282828", fg = "#eeeeee" },
+          c = { bg = "#282828", fg = "#eeeeee" },
         },
         command = {
-          a = { bg = "#c4823a", fg = "#100d0e", gui = "bold" }, -- orange
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
+          a = { bg = "#ffc24b", fg = "#282828", gui = "bold" }, -- yellow
+          b = { bg = "#282828", fg = "#eeeeee" },
+          c = { bg = "#282828", fg = "#eeeeee" },
         },
         inactive = {
-          a = { bg = "#191314", fg = "#6b6263" },
-          b = { bg = "#191314", fg = "#6b6263" },
-          c = { bg = "#191314", fg = "#6b6263" },
+          a = { bg = "#282828", fg = "#666666" },
+          b = { bg = "#282828", fg = "#666666" },
+          c = { bg = "#282828", fg = "#666666" },
         },
       }
 
       require("lualine").setup({
         options = {
-          theme                = banty_theme,
+          theme                = tender_theme,
           globalstatus         = true,
           component_separators = { left = "", right = "" },
           section_separators   = { left = "", right = "" },
@@ -235,7 +235,7 @@ return {
         dash.button("q", "  Выйти",             "<cmd>qa<CR>"),
       }
 
-      dash.section.footer.val = ""
+      dash.section.footer.val = "  Меньше плагинов — больше дела"
       alpha.setup(dash.config)
     end,
   },
