@@ -25,12 +25,37 @@ return {
       require("mason").setup({ ui = { border = "rounded" } })
 
       require("mason-lspconfig").setup({
-        ensure_installed = { "pylsp" },  -- только Python
+        -- Возвращаем pylsp
+        ensure_installed = { "pylsp" },  
         handlers = {
           function(server_name)
             require("lspconfig")[server_name].setup({
               capabilities = capabilities,
               on_attach    = on_attach,
+            })
+          end,
+          
+          -- Тонкая настройка pylsp, чтобы он был умным
+          ["pylsp"] = function()
+            require("lspconfig").pylsp.setup({
+              capabilities = capabilities,
+              on_attach = on_attach,
+              settings = {
+                pylsp = {
+                  plugins = {
+                    -- Включаем умное автодополнение на базе Jedi
+                    jedi_completion = { enabled = true, fuzzy = true },
+                    jedi_hover = { enabled = true },
+                    jedi_references = { enabled = true },
+                    
+                    -- Отключаем встроенные старые линтеры, 
+                    -- так как у тебя в файлах уже настроены шикарные black и flake8!
+                    pycodestyle = { enabled = false },
+                    mccabe = { enabled = false },
+                    pyflakes = { enabled = false },
+                  }
+                }
+              }
             })
           end,
         },

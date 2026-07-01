@@ -17,7 +17,7 @@ return {
           selection_caret  = " ",
           path_display     = { "truncate" },
           sorting_strategy = "ascending",
-          layout_config    = {
+          layout_config = {
             horizontal = { prompt_position = "top", preview_width = 0.55 },
             width = 0.87, height = 0.80,
           },
@@ -69,43 +69,55 @@ return {
     event        = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      -- Banty тема для lualine
-      local banty_theme = {
-        normal = {
-          a = { bg = "#5a8e9a", fg = "#100d0e", gui = "bold" }, -- teal
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
-        },
-        insert = {
-          a = { bg = "#7a9e82", fg = "#100d0e", gui = "bold" }, -- sage
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
-        },
-        visual = {
-          a = { bg = "#c45c52", fg = "#100d0e", gui = "bold" }, -- red
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
-        },
-        replace = {
-          a = { bg = "#c46882", fg = "#100d0e", gui = "bold" }, -- pink
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
-        },
-        command = {
-          a = { bg = "#c4823a", fg = "#100d0e", gui = "bold" }, -- orange
-          b = { bg = "#211a1b", fg = "#d5d0cf" },
-          c = { bg = "#191314", fg = "#d5d0cf" },
-        },
-        inactive = {
-          a = { bg = "#191314", fg = "#6b6263" },
-          b = { bg = "#191314", fg = "#6b6263" },
-          c = { bg = "#191314", fg = "#6b6263" },
-        },
-      }
+      local function wal_theme()
+        local core_ok, core = pcall(require, "pywal16.core")
+        if not core_ok then return "auto" end
+        local c = core.get_colors()
+        if not c or not c.color0 then return "auto" end
+        
+        local bg = c.color0
+        local fg = c.color7
+        local c1 = c.color1
+        local c3 = c.color3
+        local c4 = c.color4
+        
+        return {
+          normal = {
+            a = { bg = c4, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          insert = {
+            a = { bg = c3, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          visual = {
+            a = { bg = c1, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          replace = {
+            a = { bg = c1, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          command = {
+            a = { bg = c3, fg = bg, gui = "bold" },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+          inactive = {
+            a = { bg = bg, fg = fg },
+            b = { bg = bg, fg = fg },
+            c = { bg = bg, fg = fg },
+          },
+        }
+      end
 
       require("lualine").setup({
         options = {
-          theme                = banty_theme,
+          theme                = wal_theme(),
           globalstatus         = true,
           component_separators = { left = "", right = "" },
           section_separators   = { left = "", right = "" },
@@ -235,7 +247,7 @@ return {
         dash.button("q", "  Выйти",             "<cmd>qa<CR>"),
       }
 
-      dash.section.footer.val = ""
+      dash.section.footer.val = "  Меньше плагинов — больше дела"
       alpha.setup(dash.config)
     end,
   },

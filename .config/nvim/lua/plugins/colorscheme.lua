@@ -1,136 +1,99 @@
 return {
   {
-    "jacoborus/tender.vim",
+    "uZer/pywal16.nvim",
     lazy     = false,
     priority = 1000,
     config   = function()
       vim.opt.termguicolors = true
 
-      -- Палитра "Banty" v2
-      -- Фон взят из усреднения всех 1736 схем: тёмный тёплый #191314
-      -- Акценты охватывают реальный разброс твоих обоев:
-      --   72% красно-коричневые, 22% синие/холодные, 4% зелёные
-      -- Расширена до 20+ цветов для полноценной подсветки синтаксиса
-      local c = {
-        -- Фоны
-        bg0      = "#100d0e",  -- самый тёмный
-        bg       = "#191314",  -- основной (из усреднения всех схем)
-        bg2      = "#211a1b",  -- чуть светлее
-        bg3      = "#2a2123",  -- selection / visual
-        bg4      = "#332829",  -- UI элементы
+      local pywal16 = require("pywal16")
+      pywal16.setup()
+      vim.cmd("colorscheme pywal16")
 
-        -- Серые
-        gray0    = "#3d3738",
-        gray1    = "#6b6263",  -- комментарии (color8)
-        gray2    = "#857c7d",
-        gray3    = "#9e9698",
+      -- Получаем 16 динамических цветов без чтения файлов с диска
+      local core_ok, core = pcall(require, "pywal16.core")
+      if not core_ok then return end
+      local c = core.get_colors()
 
-        -- Основной текст
-        fg_dim   = "#c4c3c3",  -- color7
-        fg       = "#d5d0cf",
-        fg_bright = "#e8e3e2",
+      if not c or not c.color1 then return end
 
-        -- Красно-коричневые (72% обоев) → тёплые акценты
-        -- Используем насыщенные версии характерных цветов
-        red      = "#c45c52",  -- ошибки, операторы (насыщенный #B52158 + #903110)
-        red_warm = "#c47052",  -- тёплый красно-оранжевый (#D19276 насыщеннее)
-        orange   = "#c4823a",  -- числа, константы (#AE6215 насыщеннее)
-        tan      = "#b89e82",  -- строки (тёплый бежевый, характерный для большинства)
-        brown    = "#8c6d67",  -- приглушённый (color1 среднее)
+      -- Базовые группы и фоны (Логика из палитры "Banty" v2)
+      local bg = c.color0
+      vim.api.nvim_set_hl(0, "Normal",         { fg = c.color15, bg = bg })
+      vim.api.nvim_set_hl(0, "NormalNC",       { fg = c.color7,  bg = bg })
+      vim.api.nvim_set_hl(0, "NormalFloat",    { fg = c.color15, bg = bg })
+      vim.api.nvim_set_hl(0, "SignColumn",     { bg = bg })
+      vim.api.nvim_set_hl(0, "EndOfBuffer",    { fg = c.color8,  bg = bg })
+      vim.api.nvim_set_hl(0, "Visual",         { bg = c.color8 })
+      vim.api.nvim_set_hl(0, "CursorLine",     { bg = c.color0 })
+      vim.api.nvim_set_hl(0, "CursorLineNr",   { fg = c.color3,  bg = bg })
+      vim.api.nvim_set_hl(0, "LineNr",         { fg = c.color8,  bg = bg })
+      vim.api.nvim_set_hl(0, "WinSeparator",    { fg = c.color8 })
+      vim.api.nvim_set_hl(0, "FloatBorder",     { fg = c.color6 })
 
-        -- Синие/холодные (22% обоев) → холодные акценты
-        blue_dim = "#56778e",  -- реальный color1 из синих схем
-        teal     = "#5a8e9a",  -- keyword (производный)
-        blue     = "#7aaac4",  -- типы
-        sky      = "#9ac4d4",  -- builtin функции
-
-        -- Зелёные (4% обоев) → редкие акценты
-        green    = "#6a9e6a",  -- git added
-        sage     = "#7a9e82",  -- функции
-
-        -- Розово-фиолетовые (редкие но красивые)
-        pink     = "#c46882",  -- boolean (#DE7683 насыщеннее)
-        mauve    = "#9e8894",  -- namespace, special
-      }
-
-      vim.cmd("colorscheme tender")
-
-      -- Фон и базовые группы
-      vim.api.nvim_set_hl(0, "Normal",         { fg = c.fg,      bg = c.bg })
-      vim.api.nvim_set_hl(0, "NormalNC",        { fg = c.fg_dim,  bg = c.bg0 })
-      vim.api.nvim_set_hl(0, "NormalFloat",     { fg = c.fg,      bg = c.bg2 })
-      vim.api.nvim_set_hl(0, "SignColumn",      { bg = c.bg })
-      vim.api.nvim_set_hl(0, "EndOfBuffer",     { fg = c.bg3,     bg = c.bg })
-      vim.api.nvim_set_hl(0, "Visual",          { bg = c.bg3 })
-      vim.api.nvim_set_hl(0, "CursorLine",      { bg = c.bg2 })
-      vim.api.nvim_set_hl(0, "CursorLineNr",    { fg = c.tan,     bg = c.bg })
-      vim.api.nvim_set_hl(0, "LineNr",          { fg = c.gray1,   bg = c.bg })
-      vim.api.nvim_set_hl(0, "WinSeparator",    { fg = c.gray0 })
-      vim.api.nvim_set_hl(0, "FloatBorder",     { fg = c.teal })
-
-      -- Treesitter
-      vim.api.nvim_set_hl(0, "@keyword",              { fg = c.teal,     bold = true })
-      vim.api.nvim_set_hl(0, "@keyword.return",       { fg = c.teal,     bold = true })
-      vim.api.nvim_set_hl(0, "@keyword.function",     { fg = c.teal,     bold = true })
-      vim.api.nvim_set_hl(0, "@conditional",          { fg = c.teal })
-      vim.api.nvim_set_hl(0, "@repeat",               { fg = c.teal })
-      vim.api.nvim_set_hl(0, "@include",              { fg = c.teal })
-      vim.api.nvim_set_hl(0, "@exception",            { fg = c.red,      bold = true })
-      vim.api.nvim_set_hl(0, "@function",             { fg = c.sage })
-      vim.api.nvim_set_hl(0, "@function.builtin",     { fg = c.sky })
-      vim.api.nvim_set_hl(0, "@function.call",        { fg = c.sage })
-      vim.api.nvim_set_hl(0, "@method",               { fg = c.sage })
-      vim.api.nvim_set_hl(0, "@method.call",          { fg = c.sage })
-      vim.api.nvim_set_hl(0, "@string",               { fg = c.tan })
-      vim.api.nvim_set_hl(0, "@string.escape",        { fg = c.red_warm })
-      vim.api.nvim_set_hl(0, "@number",               { fg = c.orange })
-      vim.api.nvim_set_hl(0, "@float",                { fg = c.orange })
-      vim.api.nvim_set_hl(0, "@boolean",              { fg = c.pink })
-      vim.api.nvim_set_hl(0, "@comment",              { fg = c.gray1,    italic = true })
-      vim.api.nvim_set_hl(0, "@variable",             { fg = c.fg })
-      vim.api.nvim_set_hl(0, "@variable.builtin",     { fg = c.brown })
-      vim.api.nvim_set_hl(0, "@type",                 { fg = c.blue })
-      vim.api.nvim_set_hl(0, "@type.builtin",         { fg = c.blue })
-      vim.api.nvim_set_hl(0, "@constant",             { fg = c.orange })
-      vim.api.nvim_set_hl(0, "@constant.builtin",     { fg = c.mauve })
-      vim.api.nvim_set_hl(0, "@operator",             { fg = c.red })
-      vim.api.nvim_set_hl(0, "@punctuation",          { fg = c.fg_dim })
-      vim.api.nvim_set_hl(0, "@punctuation.bracket",  { fg = c.gray3 })
-      vim.api.nvim_set_hl(0, "@punctuation.delimiter",{ fg = c.gray2 })
-      vim.api.nvim_set_hl(0, "@parameter",            { fg = c.red_warm })
-      vim.api.nvim_set_hl(0, "@field",                { fg = c.blue })
-      vim.api.nvim_set_hl(0, "@property",             { fg = c.blue })
-      vim.api.nvim_set_hl(0, "@namespace",            { fg = c.mauve })
-      vim.api.nvim_set_hl(0, "@tag",                  { fg = c.red })
-      vim.api.nvim_set_hl(0, "@tag.attribute",        { fg = c.red_warm })
-      vim.api.nvim_set_hl(0, "@attribute",            { fg = c.orange })
+      -- Treesitter (Развернутая палитра по мотивам tender.vim)
+      vim.api.nvim_set_hl(0, "@keyword",              { fg = c.color6,  bold = true })
+      vim.api.nvim_set_hl(0, "@keyword.return",       { fg = c.color6,  bold = true })
+      vim.api.nvim_set_hl(0, "@keyword.function",     { fg = c.color6,  bold = true })
+      vim.api.nvim_set_hl(0, "@conditional",          { fg = c.color6 })
+      vim.api.nvim_set_hl(0, "@repeat",               { fg = c.color6 })
+      vim.api.nvim_set_hl(0, "@include",              { fg = c.color6 })
+      vim.api.nvim_set_hl(0, "@exception",            { fg = c.color1,  bold = true })
+      vim.api.nvim_set_hl(0, "@function",             { fg = c.color2 })
+      vim.api.nvim_set_hl(0, "@function.builtin",     { fg = c.color14 })
+      vim.api.nvim_set_hl(0, "@function.call",        { fg = c.color2 })
+      vim.api.nvim_set_hl(0, "@method",               { fg = c.color2 })
+      vim.api.nvim_set_hl(0, "@method.call",          { fg = c.color2 })
+      vim.api.nvim_set_hl(0, "@string",               { fg = c.color3 })
+      vim.api.nvim_set_hl(0, "@string.escape",        { fg = c.color9 })
+      vim.api.nvim_set_hl(0, "@number",               { fg = c.color11 })
+      vim.api.nvim_set_hl(0, "@float",                { fg = c.color11 })
+      vim.api.nvim_set_hl(0, "@boolean",              { fg = c.color5 })
+      vim.api.nvim_set_hl(0, "@comment",              { fg = c.color8,  italic = true })
+      vim.api.nvim_set_hl(0, "@variable",             { fg = c.color15 })
+      vim.api.nvim_set_hl(0, "@variable.builtin",     { fg = c.color13 })
+      vim.api.nvim_set_hl(0, "@type",                 { fg = c.color4 })
+      vim.api.nvim_set_hl(0, "@type.builtin",         { fg = c.color12 })
+      vim.api.nvim_set_hl(0, "@constant",             { fg = c.color11 })
+      vim.api.nvim_set_hl(0, "@constant.builtin",     { fg = c.color13 })
+      vim.api.nvim_set_hl(0, "@operator",             { fg = c.color1 })
+      vim.api.nvim_set_hl(0, "@punctuation",          { fg = c.color7 })
+      vim.api.nvim_set_hl(0, "@punctuation.bracket",  { fg = c.color7 })
+      vim.api.nvim_set_hl(0, "@punctuation.delimiter",{ fg = c.color8 })
+      vim.api.nvim_set_hl(0, "@parameter",            { fg = c.color9 })
+      vim.api.nvim_set_hl(0, "@field",                { fg = c.color4 })
+      vim.api.nvim_set_hl(0, "@property",             { fg = c.color4 })
+      vim.api.nvim_set_hl(0, "@namespace",            { fg = c.color13 })
+      vim.api.nvim_set_hl(0, "@tag",                  { fg = c.color1 })
+      vim.api.nvim_set_hl(0, "@tag.attribute",        { fg = c.color9 })
+      vim.api.nvim_set_hl(0, "@attribute",            { fg = c.color11 })
 
       -- LSP диагностика
-      vim.api.nvim_set_hl(0, "DiagnosticError",  { fg = c.red })
-      vim.api.nvim_set_hl(0, "DiagnosticWarn",   { fg = c.orange })
-      vim.api.nvim_set_hl(0, "DiagnosticInfo",   { fg = c.blue })
-      vim.api.nvim_set_hl(0, "DiagnosticHint",   { fg = c.teal })
+      vim.api.nvim_set_hl(0, "DiagnosticError",  { fg = c.color1 })
+      vim.api.nvim_set_hl(0, "DiagnosticWarn",   { fg = c.color3 })
+      vim.api.nvim_set_hl(0, "DiagnosticInfo",   { fg = c.color4 })
+      vim.api.nvim_set_hl(0, "DiagnosticHint",   { fg = c.color6 })
 
       -- Neo-tree
-      vim.api.nvim_set_hl(0, "NeoTreeFileName",      { fg = c.fg_dim })
-      vim.api.nvim_set_hl(0, "NeoTreeDirectory",     { fg = c.sky,  bold = true })
-      vim.api.nvim_set_hl(0, "NeoTreeDirectoryName", { fg = c.sky })
-      vim.api.nvim_set_hl(0, "Directory",            { fg = c.teal })
-      vim.api.nvim_set_hl(0, "NeoTreeDirectoryIcon", { fg = c.teal })
-      vim.api.nvim_set_hl(0, "NeoTreeFileIcon",      { fg = c.sage })
-      vim.api.nvim_set_hl(0, "NeoTreeGitModified",   { fg = c.orange })
-      vim.api.nvim_set_hl(0, "NeoTreeGitAdded",      { fg = c.green })
-      vim.api.nvim_set_hl(0, "NeoTreeGitDeleted",    { fg = c.red })
-      vim.api.nvim_set_hl(0, "NeoTreeIndentMarker",  { fg = c.gray1 })
-      vim.api.nvim_set_hl(0, "NeoTreeExpander",      { fg = c.gray2 })
-      vim.api.nvim_set_hl(0, "NeoTreeRootName",      { fg = c.mauve, bold = true })
+      vim.api.nvim_set_hl(0, "NeoTreeFileName",      { fg = c.color7 })
+      vim.api.nvim_set_hl(0, "NeoTreeDirectory",     { fg = c.color12, bold = true })
+      vim.api.nvim_set_hl(0, "NeoTreeDirectoryName", { fg = c.color12 })
+      vim.api.nvim_set_hl(0, "Directory",            { fg = c.color6 })
+      vim.api.nvim_set_hl(0, "NeoTreeDirectoryIcon", { fg = c.color6 })
+      vim.api.nvim_set_hl(0, "NeoTreeFileIcon",      { fg = c.color2 })
+      vim.api.nvim_set_hl(0, "NeoTreeGitModified",   { fg = c.color3 })
+      vim.api.nvim_set_hl(0, "NeoTreeGitAdded",      { fg = c.color10 })
+      vim.api.nvim_set_hl(0, "NeoTreeGitDeleted",    { fg = c.color1 })
+      vim.api.nvim_set_hl(0, "NeoTreeIndentMarker",  { fg = c.color8 })
+      vim.api.nvim_set_hl(0, "NeoTreeExpander",      { fg = c.color8 })
+      vim.api.nvim_set_hl(0, "NeoTreeRootName",      { fg = c.color13, bold = true })
 
       -- Devicons
       local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
       if devicons_ok then
         local icons = devicons.get_icons()
         for _, icon in pairs(icons) do
-          icon.color = c.sage
+          icon.color = c.color2
         end
         devicons.set_icon(icons)
       end
