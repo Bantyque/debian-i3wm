@@ -25,8 +25,7 @@ return {
       require("mason").setup({ ui = { border = "rounded" } })
 
       require("mason-lspconfig").setup({
-        -- Возвращаем pylsp
-        ensure_installed = { "pylsp" },  
+        ensure_installed = { "basedpyright", "ruff" },  
         handlers = {
           function(server_name)
             require("lspconfig")[server_name].setup({
@@ -35,34 +34,35 @@ return {
             })
           end,
           
-          -- Тонкая настройка pylsp, чтобы он был умным
-          ["pylsp"] = function()
-            require("lspconfig").pylsp.setup({
+          -- Настройка basedpyright
+          ["basedpyright"] = function()
+            require("lspconfig").basedpyright.setup({
               capabilities = capabilities,
               on_attach = on_attach,
               settings = {
-                pylsp = {
-                  plugins = {
-                    -- Включаем умное автодополнение на базе Jedi
-                    jedi_completion = { enabled = true, fuzzy = true },
-                    jedi_hover = { enabled = true },
-                    jedi_references = { enabled = true },
-                    
-                    -- Отключаем встроенные старые линтеры, 
-                    -- так как у тебя в файлах уже настроены шикарные black и flake8!
-                    pycodestyle = { enabled = false },
-                    mccabe = { enabled = false },
-                    pyflakes = { enabled = false },
+                basedpyright = {
+                  analysis = {
+                    typeCheckingMode = "off",
+                    autoSearchPaths = true,
+                    useLibraryCodeForTypes = true,
                   }
                 }
               }
+            })
+          end,
+          -- Настройка ruff-lsp
+          ["ruff"] = function()
+            require("lspconfig").ruff.setup({
+              capabilities = capabilities,
+              on_attach = on_attach,
             })
           end,
         },
       })
 
       vim.diagnostic.config({
-        virtual_text  = { prefix = "●" },
+        virtual_text  = { prefix = "", spacing = 8 },
+        signs = true,
         severity_sort = true,
         float         = { border = "rounded" },
       })
