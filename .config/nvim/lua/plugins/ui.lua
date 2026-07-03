@@ -247,7 +247,7 @@ return {
         dash.button("q", "  Выйти",             "<cmd>qa<CR>"),
       }
 
-      dash.section.footer.val = "  Меньше плагинов — больше дела"
+      dash.section.footer.val = ""
       alpha.setup(dash.config)
     end,
   },

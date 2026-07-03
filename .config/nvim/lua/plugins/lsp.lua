@@ -10,22 +10,36 @@ return {
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      local on_attach = function(_, bufnr)
+      -- Настройка поведения при подключении ЛЮБОГО сервера
+      local on_attach = function(client, bufnr)
         local map = function(keys, func, desc)
           vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
         end
+
+        -- Твои горячие клавиши
         map("gd",          vim.lsp.buf.definition,     "Перейти к определению")
         map("gD",          vim.lsp.buf.declaration,    "Перейти к объявлению")
         map("gr",          vim.lsp.buf.references,     "Найти ссылки")
         map("K",           vim.lsp.buf.hover,          "Документация")
         map("<leader>ca",  vim.lsp.buf.code_action,    "Code Action")
         map("<leader>rn",  vim.lsp.buf.rename,         "Переименовать")
+
+        -- МАГИЯ: Автоформатирование при сохранении силами запущенного LSP
+        if client.supports_method("textDocument/formatting") then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            callback = function()
+              vim.lsp.buf.format({ bufnr = bufnr, async = false })
+            end,
+          })
+        end
       end
 
+      -- Инициализация Mason
       require("mason").setup({ ui = { border = "rounded" } })
 
+      -- Автоматическое подключение всего, что установлено в Mason
       require("mason-lspconfig").setup({
-        ensure_installed = { "basedpyright", "ruff" },  
         handlers = {
           function(server_name)
             require("lspconfig")[server_name].setup({
@@ -33,36 +47,12 @@ return {
               on_attach    = on_attach,
             })
           end,
-          
-          -- Настройка basedpyright
-          ["basedpyright"] = function()
-            require("lspconfig").basedpyright.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
-              settings = {
-                basedpyright = {
-                  analysis = {
-                    typeCheckingMode = "off",
-                    autoSearchPaths = true,
-                    useLibraryCodeForTypes = true,
-                  }
-                }
-              }
-            })
-          end,
-          -- Настройка ruff-lsp
-          ["ruff"] = function()
-            require("lspconfig").ruff.setup({
-              capabilities = capabilities,
-              on_attach = on_attach,
-            })
-          end,
         },
       })
 
+      -- Красивый вывод ошибок сбоку кода
       vim.diagnostic.config({
-        virtual_text  = { prefix = "", spacing = 8 },
-        signs = true,
+        virtual_text  = { prefix = "●", spacing = 4 },
         severity_sort = true,
         float         = { border = "rounded" },
       })
