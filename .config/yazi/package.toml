@@ -1,0 +1,22 @@
+[[plugin.deps]]
+use = "uhs-robert/recycle-bin"
+rev = "fa68711"
+hash = "8714306b5cac6359edbacbf545fbd691"
+
+[[plugin.deps]]
+use = "ndtoan96/ouch"
+rev = "406ce6c"
+hash = "f5afc904d5106ee368c8aa2ded43bd74"
+
+[[plugin.deps]]
+use = "Shallow-Seek/djvu-view"
+rev = "f218aa6"
+hash = "522db0412d7839c8c343f9c733713d24"
+
+[[plugin.deps]]
+use = "yazi-rs/plugins:mount"
+rev = "8cd50c6"
+hash = "e3260d0b1feded8c8e3ae3afa1169e30"
+
+[flavor]
+deps = []

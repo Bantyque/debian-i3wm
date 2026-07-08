@@ -1,0 +1,1006 @@
+# If the user's terminal is in dark mode, Yazi will load `theme-dark.toml` on startup; otherwise, `theme-light.toml`.
+# You can override any parts of them that are not related to the dark/light mode in your own `theme.toml`.
+
+# If you want to dynamically override their content based on dark/light mode, you can specify two different flavors
+# for dark and light modes under `[flavor]`, and do so in those flavors instead.
+
+#:schema https://yazi-rs.github.io/schemas/theme.json
+# vim:fileencoding=utf-8:foldmethod=marker
+
+# : Flavor {{{
+
+[flavor]
+dark  = ""
+light = ""
+
+# : }}}
+
+
+# : App {{{
+
+[app]
+overall = {}
+
+# : }}}
+
+
+# : Manager {{{
+
+[mgr]
+cwd = { fg = "cyan" }
+
+# Find
+find_keyword  = { fg = "yellow", bold = true, italic = true, underline = true }
+find_position = { fg = "magenta", bg = "reset", bold = true, italic = true }
+
+# Symlink
+symlink_target = { italic = true }
+
+# Marker
+marker_copied   = { fg = "lightgreen",  bg = "lightgreen" }
+marker_cut      = { fg = "lightred",    bg = "lightred" }
+marker_marked   = { fg = "lightcyan",   bg = "lightcyan" }
+marker_selected = { fg = "lightyellow", bg = "lightyellow" }
+marker_symbol   = "│"
+
+# Count
+count_copied   = { fg = "white", bg = "green" }
+count_cut      = { fg = "white", bg = "red" }
+count_selected = { fg = "black", bg = "yellow" }
+
+# Border
+border_symbol = "│"
+border_style  = { fg = "darkgray" }
+
+# Highlighting
+syntect_theme = ""
+
+# : }}}
+
+
+# : Tabs {{{
+
+[tabs]
+active   = { bg = "blue", bold = true }
+inactive = { fg = "blue", bg = "darkgray" }
+
+# Separator
+sep_inner = { open = "", close = "" }
+sep_outer = { open = "", close = "" }
+
+# : }}}
+
+
+# : Mode {{{
+
+[mode]
+normal_main = { bg = "blue", bold = true }
+normal_alt  = { fg = "blue", bg = "darkgray" }
+
+# Select mode
+select_main = { bg = "red", bold = true }
+select_alt  = { fg = "red", bg = "darkgray" }
+
+# Unset mode
+unset_main = { bg = "red", bold = true }
+unset_alt  = { fg = "red", bg = "darkgray" }
+
+# : }}}
+
+
+# : Indicator of hovered file {{{
+
+[indicator]
+parent  = { reversed = true }
+current = { reversed = true }
+preview = { underline = true }
+padding = { open = "", close = "" }
+
+# : }}}
+
+
+# : Status bar {{{
+
+[status]
+overall   = {}
+sep_left  = { open = "", close = "" }
+sep_right = { open = "", close = "" }
+
+# Permissions
+perm_sep   = { fg = "darkgray" }
+perm_type  = { fg = "green" }
+perm_read  = { fg = "yellow" }
+perm_write = { fg = "red" }
+perm_exec  = { fg = "cyan" }
+
+# Progress
+progress_label  = { bold = true }
+progress_normal = { fg = "green", bg = "black" }
+progress_error  = { fg = "yellow", bg = "red" }
+
+# : }}}
+
+
+# : Which {{{
+
+[which]
+cols            = 3
+mask            = { bg = "black" }
+cand            = { fg = "lightcyan" }
+rest            = { fg = "darkgray" }
+desc            = { fg = "lightmagenta" }
+separator       = "  "
+separator_style = { fg = "darkgray" }
+
+# : }}}
+
+
+# : Confirmation {{{
+
+[confirm]
+border     = { fg = "blue" }
+title      = { fg = "blue" }
+body       = {}
+list       = {}
+btn_yes    = { reversed = true }
+btn_no     = {}
+btn_labels = [ "  [Y]es  ", "  (N)o  " ]
+
+# : }}}
+
+
+# : Spotter {{{
+
+[spot]
+border = { fg = "blue" }
+title  = { fg = "blue" }
+
+# Table
+tbl_col  = { fg = "blue" }
+tbl_cell = { fg = "yellow", reversed = true }
+
+# : }}}
+
+
+# : Notification {{{
+
+[notify]
+title_info  = { fg = "green" }
+title_warn  = { fg = "yellow" }
+title_error = { fg = "red" }
+
+# Icons
+icon_info  = ""
+icon_warn  = ""
+icon_error = ""
+
+# : }}}
+
+
+# : Picker {{{
+
+[pick]
+border   = { fg = "blue" }
+active   = { fg = "magenta", bold = true }
+inactive = {}
+
+# : }}}
+
+
+# : Input {{{
+
+[input]
+border   = { fg = "blue" }
+title    = {}
+value    = {}
+selected = { reversed = true }
+
+# : }}}
+
+
+# : Completion {{{
+
+[cmp]
+border   = { fg = "blue" }
+active   = { reversed = true }
+inactive = {}
+
+# Icons
+icon_file    = ""
+icon_folder  = ""
+icon_command = ""
+
+# : }}}
+
+
+# : Task manager {{{
+
+[tasks]
+border  = { fg = "blue" }
+title   = {}
+hovered = { fg = "magenta", bold = true }
+
+# : }}}
+
+
+# : Help menu {{{
+
+[help]
+on      = { fg = "cyan" }
+run     = { fg = "magenta" }
+desc    = {}
+hovered = { reversed = true, bold = true }
+footer  = { fg = "black", bg = "white" }
+
+# : }}}
+
+
+# : File-specific styles {{{
+
+[filetype]
+rules = [
+	# Image
+	{ mime = "image/*", fg = "yellow" },
+	# Media
+	{ mime = "{audio,video}/*", fg = "magenta" },
+	# Archive
+	{ mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "red" },
+	# Document
+	{ mime = "application/{pdf,doc,rtf}", fg = "cyan" },
+	# Virtual file system
+	{ mime = "vfs/{absent,stale}", fg = "darkgray" },
+	# Special file
+	{ url = "*", is = "orphan", bg = "red" },
+	{ url = "*", is = "exec"  , fg = "green" },
+	# Dummy file
+	{ url = "*", is = "dummy", bg = "red" },
+	{ url = "*/", is = "dummy", bg = "red" },
+	# Fallback
+	{ url = "*/", fg = "blue" }
+]
+
+# : }}}
+
+
+# : Icons {{{
+
+[icon]
+globs = []
+dirs  = [
+	{ name = ".config", text = "", fg = "cyan" },
+	{ name = ".git", text = "", fg = "cyan" },
+	{ name = ".github", text = "", fg = "cyan" },
+	{ name = ".npm", text = "", fg = "cyan" },
+	{ name = "Desktop", text = "", fg = "blue" },
+	{ name = "Development", text = "", fg = "blue" },
+	{ name = "Documents", text = "", fg = "blue" },
+	{ name = "Downloads", text = "", fg = "blue" },
+	{ name = "Library", text = "", fg = "blue" },
+	{ name = "Movies", text = "", fg = "blue" },
+	{ name = "Music", text = "", fg = "blue" },
+	{ name = "Pictures", text = "", fg = "blue" },
+	{ name = "Public", text = "", fg = "blue" },
+	{ name = "Videos", text = "", fg = "blue" },
+]
+files = [
+	{ name = ".babelrc", text = "", fg = "yellow" },
+	{ name = ".bash_profile", text = "", fg = "yellow" },
+	{ name = ".bashrc", text = "", fg = "yellow" },
+	{ name = ".clang-format", text = "", fg = "yellow" },
+	{ name = ".clang-tidy", text = "", fg = "yellow" },
+	{ name = ".codespellrc", text = "󰓆", fg = "yellow" },
+	{ name = ".condarc", text = "", fg = "yellow" },
+	{ name = ".dockerignore", text = "󰡨", fg = "yellow" },
+	{ name = ".ds_store", text = "", fg = "yellow" },
+	{ name = ".editorconfig", text = "", fg = "yellow" },
+	{ name = ".env", text = "", fg = "yellow" },
+	{ name = ".eslintignore", text = "", fg = "yellow" },
+	{ name = ".eslintrc", text = "", fg = "yellow" },
+	{ name = ".git-blame-ignore-revs", text = "", fg = "yellow" },
+	{ name = ".gitattributes", text = "", fg = "yellow" },
+	{ name = ".gitconfig", text = "", fg = "yellow" },
+	{ name = ".gitignore", text = "", fg = "yellow" },
+	{ name = ".gitlab-ci.yml", text = "", fg = "yellow" },
+	{ name = ".gitmodules", text = "", fg = "yellow" },
+	{ name = ".gtkrc-2.0", text = "", fg = "yellow" },
+	{ name = ".gvimrc", text = "", fg = "yellow" },
+	{ name = ".justfile", text = "", fg = "yellow" },
+	{ name = ".luacheckrc", text = "", fg = "yellow" },
+	{ name = ".luaurc", text = "", fg = "yellow" },
+	{ name = ".mailmap", text = "󰊢", fg = "yellow" },
+	{ name = ".nanorc", text = "", fg = "yellow" },
+	{ name = ".npmignore", text = "", fg = "yellow" },
+	{ name = ".npmrc", text = "", fg = "yellow" },
+	{ name = ".nuxtrc", text = "󱄆", fg = "yellow" },
+	{ name = ".nvmrc", text = "", fg = "yellow" },
+	{ name = ".pnpmfile.cjs", text = "", fg = "yellow" },
+	{ name = ".pre-commit-config.yaml", text = "󰛢", fg = "yellow" },
+	{ name = ".prettierignore", text = "", fg = "yellow" },
+	{ name = ".prettierrc", text = "", fg = "yellow" },
+	{ name = ".prettierrc.cjs", text = "", fg = "yellow" },
+	{ name = ".prettierrc.js", text = "", fg = "yellow" },
+	{ name = ".prettierrc.json", text = "", fg = "yellow" },
+	{ name = ".prettierrc.json5", text = "", fg = "yellow" },
+	{ name = ".prettierrc.mjs", text = "", fg = "yellow" },
+	{ name = ".prettierrc.toml", text = "", fg = "yellow" },
+	{ name = ".prettierrc.yaml", text = "", fg = "yellow" },
+	{ name = ".prettierrc.yml", text = "", fg = "yellow" },
+	{ name = ".pylintrc", text = "", fg = "yellow" },
+	{ name = ".settings.json", text = "", fg = "yellow" },
+	{ name = ".SRCINFO", text = "󰣇", fg = "yellow" },
+	{ name = ".vimrc", text = "", fg = "yellow" },
+	{ name = ".Xauthority", text = "", fg = "yellow" },
+	{ name = ".xinitrc", text = "", fg = "yellow" },
+	{ name = ".Xresources", text = "", fg = "yellow" },
+	{ name = ".xsession", text = "", fg = "yellow" },
+	{ name = ".zprofile", text = "", fg = "yellow" },
+	{ name = ".zshenv", text = "", fg = "yellow" },
+	{ name = ".zshrc", text = "", fg = "yellow" },
+	{ name = "_gvimrc", text = "", fg = "lightcyan" },
+	{ name = "_vimrc", text = "", fg = "lightcyan" },
+	{ name = "AUTHORS", text = "", fg = "green" },
+	{ name = "AUTHORS.txt", text = "", fg = "lightcyan" },
+	{ name = "brewfile", text = "", fg = "lightgreen" },
+	{ name = "bspwmrc", text = "", fg = "blue" },
+	{ name = "build", text = "", fg = "blue" },
+	{ name = "build.gradle", text = "", fg = "yellow" },
+	{ name = "build.zig.zon", text = "", fg = "lightmagenta" },
+	{ name = "bun.lock", text = "", fg = "red" },
+	{ name = "bun.lockb", text = "", fg = "yellow" },
+	{ name = "cantorrc", text = "", fg = "magenta" },
+	{ name = "checkhealth", text = "󰓙", fg = "lightred" },
+	{ name = "cmakelists.txt", text = "", fg = "lightcyan" },
+	{ name = "code_of_conduct", text = "", fg = "yellow" },
+	{ name = "code_of_conduct.md", text = "", fg = "lightcyan" },
+	{ name = "commit_editmsg", text = "", fg = "green" },
+	{ name = "commitlint.config.js", text = "󰜘", fg = "green" },
+	{ name = "commitlint.config.ts", text = "󰜘", fg = "magenta" },
+	{ name = "compose.yaml", text = "󰡨", fg = "yellow" },
+	{ name = "compose.yml", text = "󰡨", fg = "yellow" },
+	{ name = "config", text = "", fg = "yellow" },
+	{ name = "containerfile", text = "󰡨", fg = "blue" },
+	{ name = "copying", text = "", fg = "cyan" },
+	{ name = "copying.lesser", text = "", fg = "lightyellow" },
+	{ name = "Directory.Build.props", text = "", fg = "lightred" },
+	{ name = "Directory.Build.targets", text = "", fg = "lightmagenta" },
+	{ name = "Directory.Packages.props", text = "", fg = "lightgreen" },
+	{ name = "docker-compose.yaml", text = "󰡨", fg = "lightcyan" },
+	{ name = "docker-compose.yml", text = "󰡨", fg = "green" },
+	{ name = "dockerfile", text = "󰡨", fg = "yellow" },
+	{ name = "eslint.config.cjs", text = "", fg = "lightyellow" },
+	{ name = "eslint.config.js", text = "", fg = "green" },
+	{ name = "eslint.config.mjs", text = "", fg = "lightmagenta" },
+	{ name = "eslint.config.ts", text = "", fg = "magenta" },
+	{ name = "ext_typoscript_setup.txt", text = "", fg = "lightcyan" },
+	{ name = "favicon.ico", text = "", fg = "yellow" },
+	{ name = "fp-info-cache", text = "", fg = "lightred" },
+	{ name = "fp-lib-table", text = "", fg = "green" },
+	{ name = "FreeCAD.conf", text = "", fg = "yellow" },
+	{ name = "Gemfile", text = "", fg = "lightyellow" },
+	{ name = "gnumakefile", text = "", fg = "green" },
+	{ name = "go.mod", text = "", fg = "magenta" },
+	{ name = "go.sum", text = "", fg = "magenta" },
+	{ name = "go.work", text = "", fg = "blue" },
+	{ name = "gradle-wrapper.properties", text = "", fg = "lightmagenta" },
+	{ name = "gradle.properties", text = "", fg = "lightcyan" },
+	{ name = "gradlew", text = "", fg = "lightcyan" },
+	{ name = "groovy", text = "", fg = "green" },
+	{ name = "gruntfile.babel.js", text = "", fg = "green" },
+	{ name = "gruntfile.coffee", text = "", fg = "cyan" },
+	{ name = "gruntfile.js", text = "", fg = "green" },
+	{ name = "gruntfile.ts", text = "", fg = "magenta" },
+	{ name = "gtkrc", text = "", fg = "cyan" },
+	{ name = "gulpfile.babel.js", text = "", fg = "green" },
+	{ name = "gulpfile.coffee", text = "", fg = "lightmagenta" },
+	{ name = "gulpfile.js", text = "", fg = "green" },
+	{ name = "gulpfile.ts", text = "", fg = "magenta" },
+	{ name = "hypridle.conf", text = "", fg = "lightcyan" },
+	{ name = "hyprland.conf", text = "", fg = "lightyellow" },
+	{ name = "hyprlandd.conf", text = "", fg = "lightyellow" },
+	{ name = "hyprlock.conf", text = "", fg = "lightgreen" },
+	{ name = "hyprpaper.conf", text = "", fg = "blue" },
+	{ name = "hyprsunset.conf", text = "", fg = "cyan" },
+	{ name = "i18n.config.js", text = "󰗊", fg = "green" },
+	{ name = "i18n.config.ts", text = "󰗊", fg = "magenta" },
+	{ name = "i3blocks.conf", text = "", fg = "yellow" },
+	{ name = "i3status.conf", text = "", fg = "yellow" },
+	{ name = "index.theme", text = "", fg = "lightgreen" },
+	{ name = "ionic.config.json", text = "", fg = "magenta" },
+	{ name = "Jenkinsfile", text = "", fg = "lightmagenta" },
+	{ name = "justfile", text = "", fg = "blue" },
+	{ name = "kalgebrarc", text = "", fg = "magenta" },
+	{ name = "kdeglobals", text = "", fg = "lightyellow" },
+	{ name = "kdenlive-layoutsrc", text = "", fg = "lightcyan" },
+	{ name = "kdenliverc", text = "", fg = "lightcyan" },
+	{ name = "kritadisplayrc", text = "", fg = "lightred" },
+	{ name = "kritarc", text = "", fg = "red" },
+	{ name = "license", text = "", fg = "green" },
+	{ name = "license.md", text = "", fg = "lightcyan" },
+	{ name = "lxde-rc.xml", text = "", fg = "magenta" },
+	{ name = "lxqt.conf", text = "", fg = "lightcyan" },
+	{ name = "makefile", text = "", fg = "yellow" },
+	{ name = "mix.lock", text = "", fg = "cyan" },
+	{ name = "mpv.conf", text = "", fg = "yellow" },
+	{ name = "next.config.cjs", text = "", fg = "blue" },
+	{ name = "next.config.js", text = "", fg = "green" },
+	{ name = "next.config.ts", text = "", fg = "magenta" },
+	{ name = "node_modules", text = "", fg = "red" },
+	{ name = "nuxt.config.cjs", text = "󱄆", fg = "lightyellow" },
+	{ name = "nuxt.config.js", text = "󱄆", fg = "green" },
+	{ name = "nuxt.config.mjs", text = "󱄆", fg = "red" },
+	{ name = "nuxt.config.ts", text = "󱄆", fg = "magenta" },
+	{ name = "package-lock.json", text = "", fg = "cyan" },
+	{ name = "package.json", text = "", fg = "lightmagenta" },
+	{ name = "PKGBUILD", text = "", fg = "lightgreen" },
+	{ name = "platformio.ini", text = "", fg = "cyan" },
+	{ name = "playwright.config.cjs", text = "", fg = "magenta" },
+	{ name = "playwright.config.cts", text = "", fg = "lightred" },
+	{ name = "playwright.config.js", text = "", fg = "green" },
+	{ name = "playwright.config.mjs", text = "", fg = "lightmagenta" },
+	{ name = "playwright.config.mts", text = "", fg = "magenta" },
+	{ name = "playwright.config.ts", text = "", fg = "magenta" },
+	{ name = "pnpm-lock.yaml", text = "", fg = "lightgreen" },
+	{ name = "pnpm-workspace.yaml", text = "", fg = "magenta" },
+	{ name = "pom.xml", text = "", fg = "green" },
+	{ name = "prettier.config.cjs", text = "", fg = "lightred" },
+	{ name = "prettier.config.js", text = "", fg = "green" },
+	{ name = "prettier.config.mjs", text = "", fg = "lightcyan" },
+	{ name = "prettier.config.ts", text = "", fg = "magenta" },
+	{ name = "prisma.config.mts", text = "", fg = "magenta" },
+	{ name = "prisma.config.ts", text = "", fg = "magenta" },
+	{ name = "procfile", text = "", fg = "lightred" },
+	{ name = "PrusaSlicer.ini", text = "", fg = "red" },
+	{ name = "PrusaSlicerGcodeViewer.ini", text = "", fg = "cyan" },
+	{ name = "py.typed", text = "", fg = "lightgreen" },
+	{ name = "QtProject.conf", text = "", fg = "lightgreen" },
+	{ name = "rakefile", text = "", fg = "lightgreen" },
+	{ name = "readme", text = "󰂺", fg = "lightyellow" },
+	{ name = "readme.md", text = "󰂺", fg = "lightcyan" },
+	{ name = "rmd", text = "", fg = "cyan" },
+	{ name = "robots.txt", text = "󰚩", fg = "lightcyan" },
+	{ name = "security", text = "󰒃", fg = "lightyellow" },
+	{ name = "security.md", text = "󰒃", fg = "lightcyan" },
+	{ name = "settings.gradle", text = "", fg = "lightgreen" },
+	{ name = "svelte.config.js", text = "", fg = "green" },
+	{ name = "sxhkdrc", text = "", fg = "yellow" },
+	{ name = "sym-lib-table", text = "", fg = "lightgreen" },
+	{ name = "tailwind.config.js", text = "󱏿", fg = "green" },
+	{ name = "tailwind.config.mjs", text = "󱏿", fg = "lightred" },
+	{ name = "tailwind.config.ts", text = "󱏿", fg = "magenta" },
+	{ name = "tmux.conf", text = "", fg = "yellow" },
+	{ name = "tmux.conf.local", text = "", fg = "green" },
+	{ name = "tsconfig.json", text = "", fg = "lightred" },
+	{ name = "unlicense", text = "", fg = "magenta" },
+	{ name = "vagrantfile", text = "", fg = "magenta" },
+	{ name = "vercel.json", text = "", fg = "lightgreen" },
+	{ name = "vite.config.cjs", text = "", fg = "green" },
+	{ name = "vite.config.cts", text = "", fg = "lightmagenta" },
+	{ name = "vite.config.js", text = "", fg = "green" },
+	{ name = "vite.config.mjs", text = "", fg = "lightmagenta" },
+	{ name = "vite.config.mts", text = "", fg = "magenta" },
+	{ name = "vite.config.ts", text = "", fg = "magenta" },
+	{ name = "vitest.config.cjs", text = "", fg = "yellow" },
+	{ name = "vitest.config.cts", text = "", fg = "cyan" },
+	{ name = "vitest.config.js", text = "", fg = "green" },
+	{ name = "vitest.config.mjs", text = "", fg = "lightcyan" },
+	{ name = "vitest.config.mts", text = "", fg = "magenta" },
+	{ name = "vitest.config.ts", text = "", fg = "magenta" },
+	{ name = "vlcrc", text = "󰕼", fg = "lightyellow" },
+	{ name = "webpack", text = "󰜫", fg = "yellow" },
+	{ name = "weston.ini", text = "", fg = "lightmagenta" },
+	{ name = "workspace", text = "", fg = "lightcyan" },
+	{ name = "wrangler.jsonc", text = "", fg = "lightyellow" },
+	{ name = "wrangler.toml", text = "", fg = "lightcyan" },
+	{ name = "xdph.conf", text = "", fg = "lightgreen" },
+	{ name = "xmobarrc", text = "", fg = "cyan" },
+	{ name = "xmobarrc.hs", text = "", fg = "lightmagenta" },
+	{ name = "xmonad.hs", text = "", fg = "green" },
+	{ name = "xorg.conf", text = "", fg = "green" },
+	{ name = "xsettingsd.conf", text = "", fg = "magenta" },
+]
+exts = [
+	{ name = "3gp", text = "", fg = "magenta" },
+	{ name = "3mf", text = "󰆧", fg = "lightmagenta" },
+	{ name = "7z", text = "", fg = "red" },
+	{ name = "a", text = "", fg = "lightgreen" },
+	{ name = "aac", text = "", fg = "cyan" },
+	{ name = "ada", text = "", fg = "lightred" },
+	{ name = "adb", text = "", fg = "lightcyan" },
+	{ name = "ads", text = "", fg = "red" },
+	{ name = "ai", text = "", fg = "lightyellow" },
+	{ name = "aif", text = "", fg = "cyan" },
+	{ name = "aiff", text = "", fg = "cyan" },
+	{ name = "android", text = "", fg = "lightred" },
+	{ name = "ape", text = "", fg = "cyan" },
+	{ name = "apk", text = "", fg = "yellow" },
+	{ name = "apl", text = "", fg = "red" },
+	{ name = "app", text = "", fg = "red" },
+	{ name = "applescript", text = "", fg = "red" },
+	{ name = "asc", text = "󰦝", fg = "lightcyan" },
+	{ name = "asm", text = "", fg = "lightgreen" },
+	{ name = "ass", text = "󰨖", fg = "lightyellow" },
+	{ name = "astro", text = "", fg = "lightmagenta" },
+	{ name = "avif", text = "", fg = "yellow" },
+	{ name = "awk", text = "", fg = "lightyellow" },
+	{ name = "azcli", text = "", fg = "lightred" },
+	{ name = "bak", text = "󰁯", fg = "lightyellow" },
+	{ name = "bash", text = "", fg = "green" },
+	{ name = "bat", text = "", fg = "lightred" },
+	{ name = "bazel", text = "", fg = "red" },
+	{ name = "bib", text = "󱉟", fg = "cyan" },
+	{ name = "bicep", text = "", fg = "red" },
+	{ name = "bicepparam", text = "", fg = "lightgreen" },
+	{ name = "bin", text = "", fg = "yellow" },
+	{ name = "blade.php", text = "", fg = "green" },
+	{ name = "blend", text = "󰂫", fg = "lightyellow" },
+	{ name = "blp", text = "󰺾", fg = "lightcyan" },
+	{ name = "bmp", text = "", fg = "yellow" },
+	{ name = "bqn", text = "", fg = "lightcyan" },
+	{ name = "brep", text = "󰻫", fg = "yellow" },
+	{ name = "bz", text = "", fg = "red" },
+	{ name = "bz2", text = "", fg = "red" },
+	{ name = "bz3", text = "", fg = "lightred" },
+	{ name = "bzl", text = "", fg = "cyan" },
+	{ name = "c", text = "", fg = "green" },
+	{ name = "c++", text = "", fg = "red" },
+	{ name = "cache", text = "", fg = "yellow" },
+	{ name = "cast", text = "", fg = "blue" },
+	{ name = "cbl", text = "", fg = "lightmagenta" },
+	{ name = "cc", text = "", fg = "yellow" },
+	{ name = "ccm", text = "", fg = "red" },
+	{ name = "cfc", text = "", fg = "red" },
+	{ name = "cfg", text = "", fg = "lightgreen" },
+	{ name = "cfm", text = "", fg = "lightred" },
+	{ name = "cjs", text = "", fg = "lightyellow" },
+	{ name = "clj", text = "", fg = "lightyellow" },
+	{ name = "cljc", text = "", fg = "lightmagenta" },
+	{ name = "cljd", text = "", fg = "lightcyan" },
+	{ name = "cljs", text = "", fg = "yellow" },
+	{ name = "cmake", text = "", fg = "magenta" },
+	{ name = "cob", text = "", fg = "lightgreen" },
+	{ name = "cobol", text = "", fg = "lightmagenta" },
+	{ name = "coffee", text = "", fg = "lightred" },
+	{ name = "conda", text = "", fg = "lightgreen" },
+	{ name = "conf", text = "", fg = "cyan" },
+	{ name = "config.ru", text = "", fg = "red" },
+	{ name = "cow", text = "󰆚", fg = "yellow" },
+	{ name = "cp", text = "", fg = "lightgreen" },
+	{ name = "cpp", text = "", fg = "green" },
+	{ name = "cppm", text = "", fg = "blue" },
+	{ name = "cpy", text = "", fg = "yellow" },
+	{ name = "cr", text = "", fg = "cyan" },
+	{ name = "crdownload", text = "", fg = "lightyellow" },
+	{ name = "cs", text = "󰌛", fg = "lightmagenta" },
+	{ name = "csh", text = "", fg = "lightred" },
+	{ name = "cshtml", text = "󱦗", fg = "yellow" },
+	{ name = "cson", text = "", fg = "lightcyan" },
+	{ name = "csproj", text = "󰪮", fg = "magenta" },
+	{ name = "css", text = "", fg = "blue" },
+	{ name = "csv", text = "", fg = "lightcyan" },
+	{ name = "cts", text = "", fg = "blue" },
+	{ name = "cu", text = "", fg = "yellow" },
+	{ name = "cue", text = "󰲹", fg = "blue" },
+	{ name = "cuh", text = "", fg = "lightmagenta" },
+	{ name = "cxx", text = "", fg = "lightcyan" },
+	{ name = "cxxm", text = "", fg = "lightred" },
+	{ name = "d", text = "", fg = "lightcyan" },
+	{ name = "d.ts", text = "", fg = "magenta" },
+	{ name = "dart", text = "", fg = "lightyellow" },
+	{ name = "db", text = "", fg = "lightyellow" },
+	{ name = "dconf", text = "", fg = "cyan" },
+	{ name = "desktop", text = "", fg = "green" },
+	{ name = "diff", text = "", fg = "lightyellow" },
+	{ name = "dll", text = "", fg = "lightmagenta" },
+	{ name = "doc", text = "󰈬", fg = "lightcyan" },
+	{ name = "Dockerfile", text = "󰡨", fg = "yellow" },
+	{ name = "dockerignore", text = "󰡨", fg = "lightgreen" },
+	{ name = "docx", text = "󰈬", fg = "lightcyan" },
+	{ name = "dot", text = "󱁉", fg = "yellow" },
+	{ name = "download", text = "", fg = "blue" },
+	{ name = "drl", text = "", fg = "cyan" },
+	{ name = "dropbox", text = "", fg = "yellow" },
+	{ name = "dump", text = "", fg = "lightcyan" },
+	{ name = "dwg", text = "󰻫", fg = "lightgreen" },
+	{ name = "dxf", text = "󰻫", fg = "lightred" },
+	{ name = "ebook", text = "", fg = "lightcyan" },
+	{ name = "ebuild", text = "", fg = "lightyellow" },
+	{ name = "edn", text = "", fg = "yellow" },
+	{ name = "eex", text = "", fg = "yellow" },
+	{ name = "ejs", text = "", fg = "lightcyan" },
+	{ name = "el", text = "", fg = "lightgreen" },
+	{ name = "elc", text = "", fg = "blue" },
+	{ name = "elf", text = "", fg = "lightyellow" },
+	{ name = "elm", text = "", fg = "cyan" },
+	{ name = "eln", text = "", fg = "cyan" },
+	{ name = "env", text = "", fg = "lightcyan" },
+	{ name = "eot", text = "", fg = "magenta" },
+	{ name = "epp", text = "", fg = "blue" },
+	{ name = "epub", text = "", fg = "lightcyan" },
+	{ name = "erb", text = "", fg = "lightgreen" },
+	{ name = "erl", text = "", fg = "lightgreen" },
+	{ name = "ex", text = "", fg = "magenta" },
+	{ name = "exe", text = "", fg = "lightred" },
+	{ name = "exs", text = "", fg = "magenta" },
+	{ name = "f#", text = "", fg = "yellow" },
+	{ name = "f3d", text = "󰻫", fg = "lightcyan" },
+	{ name = "f90", text = "󱈚", fg = "lightgreen" },
+	{ name = "fbx", text = "󰆧", fg = "red" },
+	{ name = "fcbak", text = "", fg = "lightgreen" },
+	{ name = "fcmacro", text = "", fg = "green" },
+	{ name = "fcmat", text = "", fg = "blue" },
+	{ name = "fcparam", text = "", fg = "blue" },
+	{ name = "fcscript", text = "", fg = "lightmagenta" },
+	{ name = "fcstd", text = "", fg = "green" },
+	{ name = "fcstd1", text = "", fg = "lightred" },
+	{ name = "fctb", text = "", fg = "magenta" },
+	{ name = "fctl", text = "", fg = "red" },
+	{ name = "fdmdownload", text = "", fg = "yellow" },
+	{ name = "feature", text = "", fg = "blue" },
+	{ name = "fish", text = "", fg = "green" },
+	{ name = "flac", text = "", fg = "cyan" },
+	{ name = "flc", text = "", fg = "lightgreen" },
+	{ name = "flf", text = "", fg = "red" },
+	{ name = "fnl", text = "", fg = "lightmagenta" },
+	{ name = "fodg", text = "", fg = "yellow" },
+	{ name = "fodp", text = "", fg = "lightgreen" },
+	{ name = "fods", text = "", fg = "lightcyan" },
+	{ name = "fodt", text = "", fg = "lightgreen" },
+	{ name = "frag", text = "", fg = "magenta" },
+	{ name = "fs", text = "", fg = "yellow" },
+	{ name = "fsi", text = "", fg = "lightyellow" },
+	{ name = "fsscript", text = "", fg = "lightyellow" },
+	{ name = "fsx", text = "", fg = "magenta" },
+	{ name = "gcode", text = "󰐫", fg = "yellow" },
+	{ name = "gd", text = "", fg = "green" },
+	{ name = "gemspec", text = "", fg = "red" },
+	{ name = "geom", text = "", fg = "magenta" },
+	{ name = "gif", text = "", fg = "yellow" },
+	{ name = "git", text = "", fg = "lightred" },
+	{ name = "glb", text = "", fg = "lightred" },
+	{ name = "gleam", text = "", fg = "lightyellow" },
+	{ name = "glsl", text = "", fg = "green" },
+	{ name = "gnumakefile", text = "", fg = "green" },
+	{ name = "go", text = "", fg = "green" },
+	{ name = "godot", text = "", fg = "yellow" },
+	{ name = "gpr", text = "", fg = "lightmagenta" },
+	{ name = "gql", text = "", fg = "lightcyan" },
+	{ name = "gradle", text = "", fg = "yellow" },
+	{ name = "graphql", text = "", fg = "green" },
+	{ name = "gresource", text = "", fg = "cyan" },
+	{ name = "gv", text = "󱁉", fg = "lightcyan" },
+	{ name = "gz", text = "", fg = "red" },
+	{ name = "h", text = "", fg = "green" },
+	{ name = "haml", text = "", fg = "yellow" },
+	{ name = "hbs", text = "", fg = "lightmagenta" },
+	{ name = "heex", text = "", fg = "green" },
+	{ name = "hex", text = "", fg = "cyan" },
+	{ name = "hh", text = "", fg = "lightyellow" },
+	{ name = "hpp", text = "", fg = "green" },
+	{ name = "hrl", text = "", fg = "lightyellow" },
+	{ name = "hs", text = "", fg = "cyan" },
+	{ name = "htm", text = "", fg = "green" },
+	{ name = "html", text = "", fg = "yellow" },
+	{ name = "http", text = "", fg = "blue" },
+	{ name = "huff", text = "󰡘", fg = "magenta" },
+	{ name = "hurl", text = "", fg = "lightcyan" },
+	{ name = "hx", text = "", fg = "lightyellow" },
+	{ name = "hxx", text = "", fg = "yellow" },
+	{ name = "ical", text = "", fg = "lightyellow" },
+	{ name = "icalendar", text = "", fg = "cyan" },
+	{ name = "ico", text = "", fg = "yellow" },
+	{ name = "ics", text = "", fg = "lightcyan" },
+	{ name = "ifb", text = "", fg = "red" },
+	{ name = "ifc", text = "󰻫", fg = "yellow" },
+	{ name = "ige", text = "󰻫", fg = "lightred" },
+	{ name = "iges", text = "󰻫", fg = "lightgreen" },
+	{ name = "igs", text = "󰻫", fg = "magenta" },
+	{ name = "image", text = "", fg = "lightyellow" },
+	{ name = "img", text = "", fg = "cyan" },
+	{ name = "import", text = "", fg = "red" },
+	{ name = "info", text = "", fg = "cyan" },
+	{ name = "ini", text = "", fg = "lightmagenta" },
+	{ name = "ino", text = "", fg = "lightyellow" },
+	{ name = "ipynb", text = "", fg = "lightred" },
+	{ name = "iso", text = "", fg = "green" },
+	{ name = "ixx", text = "", fg = "lightmagenta" },
+	{ name = "jar", text = "", fg = "magenta" },
+	{ name = "java", text = "", fg = "green" },
+	{ name = "jl", text = "", fg = "green" },
+	{ name = "jpeg", text = "", fg = "yellow" },
+	{ name = "jpg", text = "", fg = "yellow" },
+	{ name = "js", text = "", fg = "green" },
+	{ name = "json", text = "", fg = "lightmagenta" },
+	{ name = "json5", text = "", fg = "blue" },
+	{ name = "jsonc", text = "", fg = "lightcyan" },
+	{ name = "jsx", text = "", fg = "green" },
+	{ name = "jwmrc", text = "", fg = "lightred" },
+	{ name = "jxl", text = "", fg = "yellow" },
+	{ name = "kbx", text = "󰯄", fg = "lightcyan" },
+	{ name = "kdb", text = "", fg = "yellow" },
+	{ name = "kdbx", text = "", fg = "lightyellow" },
+	{ name = "kdenlive", text = "", fg = "lightcyan" },
+	{ name = "kdenlivetitle", text = "", fg = "lightcyan" },
+	{ name = "kicad_dru", text = "", fg = "green" },
+	{ name = "kicad_mod", text = "", fg = "cyan" },
+	{ name = "kicad_pcb", text = "", fg = "magenta" },
+	{ name = "kicad_prl", text = "", fg = "blue" },
+	{ name = "kicad_pro", text = "", fg = "magenta" },
+	{ name = "kicad_sch", text = "", fg = "red" },
+	{ name = "kicad_sym", text = "", fg = "yellow" },
+	{ name = "kicad_wks", text = "", fg = "lightmagenta" },
+	{ name = "ko", text = "", fg = "red" },
+	{ name = "kpp", text = "", fg = "blue" },
+	{ name = "kra", text = "", fg = "green" },
+	{ name = "krz", text = "", fg = "lightgreen" },
+	{ name = "ksh", text = "", fg = "yellow" },
+	{ name = "kt", text = "", fg = "lightred" },
+	{ name = "kts", text = "", fg = "lightgreen" },
+	{ name = "lck", text = "", fg = "yellow" },
+	{ name = "leex", text = "", fg = "lightyellow" },
+	{ name = "less", text = "", fg = "magenta" },
+	{ name = "lff", text = "", fg = "cyan" },
+	{ name = "lhs", text = "", fg = "blue" },
+	{ name = "lib", text = "", fg = "red" },
+	{ name = "license", text = "", fg = "green" },
+	{ name = "liquid", text = "", fg = "yellow" },
+	{ name = "lock", text = "", fg = "yellow" },
+	{ name = "log", text = "󰌱", fg = "lightcyan" },
+	{ name = "lrc", text = "󰨖", fg = "red" },
+	{ name = "lua", text = "", fg = "green" },
+	{ name = "luac", text = "", fg = "blue" },
+	{ name = "luau", text = "", fg = "lightyellow" },
+	{ name = "m", text = "", fg = "yellow" },
+	{ name = "m3u", text = "󰲹", fg = "green" },
+	{ name = "m3u8", text = "󰲹", fg = "yellow" },
+	{ name = "m4a", text = "", fg = "cyan" },
+	{ name = "m4v", text = "", fg = "magenta" },
+	{ name = "magnet", text = "", fg = "lightcyan" },
+	{ name = "makefile", text = "", fg = "yellow" },
+	{ name = "markdown", text = "", fg = "lightcyan" },
+	{ name = "material", text = "", fg = "lightcyan" },
+	{ name = "md", text = "", fg = "lightcyan" },
+	{ name = "md5", text = "󰕥", fg = "lightred" },
+	{ name = "mdx", text = "", fg = "lightgreen" },
+	{ name = "mint", text = "󰌪", fg = "lightcyan" },
+	{ name = "mjs", text = "", fg = "blue" },
+	{ name = "mk", text = "", fg = "green" },
+	{ name = "mkv", text = "", fg = "magenta" },
+	{ name = "ml", text = "", fg = "lightcyan" },
+	{ name = "mli", text = "", fg = "lightred" },
+	{ name = "mm", text = "", fg = "lightmagenta" },
+	{ name = "mo", text = "", fg = "lightyellow" },
+	{ name = "mobi", text = "", fg = "lightcyan" },
+	{ name = "mojo", text = "", fg = "lightgreen" },
+	{ name = "mov", text = "", fg = "magenta" },
+	{ name = "mp3", text = "", fg = "cyan" },
+	{ name = "mp4", text = "", fg = "magenta" },
+	{ name = "mpp", text = "", fg = "blue" },
+	{ name = "msf", text = "", fg = "lightyellow" },
+	{ name = "mts", text = "", fg = "magenta" },
+	{ name = "mustache", text = "", fg = "cyan" },
+	{ name = "nfo", text = "", fg = "cyan" },
+	{ name = "nim", text = "", fg = "lightred" },
+	{ name = "nix", text = "", fg = "green" },
+	{ name = "norg", text = "", fg = "magenta" },
+	{ name = "nswag", text = "", fg = "lightgreen" },
+	{ name = "nu", text = "", fg = "red" },
+	{ name = "o", text = "", fg = "lightred" },
+	{ name = "obj", text = "󰆧", fg = "lightyellow" },
+	{ name = "odf", text = "", fg = "cyan" },
+	{ name = "odg", text = "", fg = "cyan" },
+	{ name = "odin", text = "󰟢", fg = "yellow" },
+	{ name = "odp", text = "", fg = "lightcyan" },
+	{ name = "ods", text = "", fg = "lightcyan" },
+	{ name = "odt", text = "", fg = "lightcyan" },
+	{ name = "oga", text = "", fg = "cyan" },
+	{ name = "ogg", text = "", fg = "cyan" },
+	{ name = "ogv", text = "", fg = "magenta" },
+	{ name = "ogx", text = "", fg = "yellow" },
+	{ name = "opus", text = "", fg = "cyan" },
+	{ name = "org", text = "", fg = "lightcyan" },
+	{ name = "otf", text = "", fg = "lightred" },
+	{ name = "out", text = "", fg = "cyan" },
+	{ name = "part", text = "", fg = "red" },
+	{ name = "patch", text = "", fg = "green" },
+	{ name = "pck", text = "", fg = "lightmagenta" },
+	{ name = "pcm", text = "", fg = "yellow" },
+	{ name = "pdf", text = "", fg = "lightcyan" },
+	{ name = "php", text = "", fg = "green" },
+	{ name = "pl", text = "", fg = "magenta" },
+	{ name = "pls", text = "󰲹", fg = "yellow" },
+	{ name = "ply", text = "󰆧", fg = "yellow" },
+	{ name = "pm", text = "", fg = "blue" },
+	{ name = "png", text = "", fg = "yellow" },
+	{ name = "po", text = "", fg = "lightgreen" },
+	{ name = "pot", text = "", fg = "lightgreen" },
+	{ name = "pp", text = "", fg = "red" },
+	{ name = "ppt", text = "󰈧", fg = "lightcyan" },
+	{ name = "pptx", text = "󰈧", fg = "lightcyan" },
+	{ name = "prisma", text = "", fg = "green" },
+	{ name = "pro", text = "", fg = "red" },
+	{ name = "ps1", text = "󰨊", fg = "blue" },
+	{ name = "psb", text = "", fg = "lightcyan" },
+	{ name = "psd", text = "", fg = "yellow" },
+	{ name = "psd1", text = "󰨊", fg = "magenta" },
+	{ name = "psm1", text = "󰨊", fg = "yellow" },
+	{ name = "pub", text = "󰷖", fg = "yellow" },
+	{ name = "pxd", text = "", fg = "yellow" },
+	{ name = "pxi", text = "", fg = "lightmagenta" },
+	{ name = "py", text = "", fg = "green" },
+	{ name = "pyc", text = "", fg = "magenta" },
+	{ name = "pyd", text = "", fg = "lightgreen" },
+	{ name = "pyi", text = "", fg = "yellow" },
+	{ name = "pyo", text = "", fg = "lightyellow" },
+	{ name = "pyw", text = "", fg = "lightgreen" },
+	{ name = "pyx", text = "", fg = "lightyellow" },
+	{ name = "qm", text = "", fg = "lightcyan" },
+	{ name = "qml", text = "", fg = "blue" },
+	{ name = "qrc", text = "", fg = "lightred" },
+	{ name = "qss", text = "", fg = "cyan" },
+	{ name = "query", text = "", fg = "lightmagenta" },
+	{ name = "R", text = "󰟔", fg = "cyan" },
+	{ name = "r", text = "󰟔", fg = "cyan" },
+	{ name = "rake", text = "", fg = "green" },
+	{ name = "rar", text = "", fg = "red" },
+	{ name = "rasi", text = "", fg = "lightyellow" },
+	{ name = "razor", text = "󱦘", fg = "magenta" },
+	{ name = "rb", text = "", fg = "green" },
+	{ name = "res", text = "", fg = "yellow" },
+	{ name = "resi", text = "", fg = "cyan" },
+	{ name = "rlib", text = "", fg = "green" },
+	{ name = "rmd", text = "", fg = "cyan" },
+	{ name = "rproj", text = "󰗆", fg = "lightyellow" },
+	{ name = "rs", text = "", fg = "green" },
+	{ name = "rss", text = "", fg = "lightmagenta" },
+	{ name = "s", text = "", fg = "lightyellow" },
+	{ name = "sass", text = "", fg = "lightmagenta" },
+	{ name = "sbt", text = "", fg = "lightmagenta" },
+	{ name = "sc", text = "", fg = "magenta" },
+	{ name = "scad", text = "", fg = "cyan" },
+	{ name = "scala", text = "", fg = "yellow" },
+	{ name = "scm", text = "󰘧", fg = "lightyellow" },
+	{ name = "scss", text = "", fg = "lightcyan" },
+	{ name = "sh", text = "", fg = "green" },
+	{ name = "sha1", text = "󰕥", fg = "red" },
+	{ name = "sha224", text = "󰕥", fg = "red" },
+	{ name = "sha256", text = "󰕥", fg = "lightmagenta" },
+	{ name = "sha384", text = "󰕥", fg = "blue" },
+	{ name = "sha512", text = "󰕥", fg = "yellow" },
+	{ name = "sig", text = "󰘧", fg = "yellow" },
+	{ name = "signature", text = "󰘧", fg = "yellow" },
+	{ name = "skp", text = "󰻫", fg = "cyan" },
+	{ name = "sldasm", text = "󰻫", fg = "lightcyan" },
+	{ name = "sldprt", text = "󰻫", fg = "green" },
+	{ name = "slim", text = "", fg = "lightcyan" },
+	{ name = "sln", text = "", fg = "cyan" },
+	{ name = "slnx", text = "", fg = "yellow" },
+	{ name = "slvs", text = "󰻫", fg = "red" },
+	{ name = "sml", text = "󰘧", fg = "lightgreen" },
+	{ name = "so", text = "", fg = "yellow" },
+	{ name = "sol", text = "", fg = "yellow" },
+	{ name = "spec.js", text = "", fg = "green" },
+	{ name = "spec.jsx", text = "", fg = "green" },
+	{ name = "spec.ts", text = "", fg = "magenta" },
+	{ name = "spec.tsx", text = "", fg = "green" },
+	{ name = "spx", text = "", fg = "lightred" },
+	{ name = "sql", text = "", fg = "lightyellow" },
+	{ name = "sqlite", text = "", fg = "lightcyan" },
+	{ name = "sqlite3", text = "", fg = "cyan" },
+	{ name = "srt", text = "󰨖", fg = "magenta" },
+	{ name = "ssa", text = "󰨖", fg = "magenta" },
+	{ name = "ste", text = "󰻫", fg = "lightmagenta" },
+	{ name = "step", text = "󰻫", fg = "magenta" },
+	{ name = "stl", text = "󰆧", fg = "lightyellow" },
+	{ name = "stories.js", text = "", fg = "green" },
+	{ name = "stories.jsx", text = "", fg = "green" },
+	{ name = "stories.mjs", text = "", fg = "red" },
+	{ name = "stories.svelte", text = "", fg = "blue" },
+	{ name = "stories.ts", text = "", fg = "magenta" },
+	{ name = "stories.tsx", text = "", fg = "green" },
+	{ name = "stories.vue", text = "", fg = "lightgreen" },
+	{ name = "stp", text = "󰻫", fg = "blue" },
+	{ name = "strings", text = "", fg = "blue" },
+	{ name = "styl", text = "", fg = "red" },
+	{ name = "sub", text = "󰨖", fg = "red" },
+	{ name = "sublime", text = "", fg = "green" },
+	{ name = "suo", text = "", fg = "green" },
+	{ name = "sv", text = "󰍛", fg = "lightmagenta" },
+	{ name = "svelte", text = "", fg = "lightgreen" },
+	{ name = "svg", text = "󰜡", fg = "yellow" },
+	{ name = "svgz", text = "󰜡", fg = "lightgreen" },
+	{ name = "svh", text = "󰍛", fg = "lightcyan" },
+	{ name = "swift", text = "", fg = "lightyellow" },
+	{ name = "t", text = "", fg = "red" },
+	{ name = "tbc", text = "󰛓", fg = "cyan" },
+	{ name = "tcl", text = "󰛓", fg = "red" },
+	{ name = "templ", text = "", fg = "cyan" },
+	{ name = "terminal", text = "", fg = "red" },
+	{ name = "test.js", text = "", fg = "green" },
+	{ name = "test.jsx", text = "", fg = "green" },
+	{ name = "test.ts", text = "", fg = "magenta" },
+	{ name = "test.tsx", text = "", fg = "green" },
+	{ name = "tex", text = "", fg = "lightcyan" },
+	{ name = "tf", text = "", fg = "lightgreen" },
+	{ name = "tfvars", text = "", fg = "yellow" },
+	{ name = "tgz", text = "", fg = "red" },
+	{ name = "tmpl", text = "", fg = "lightyellow" },
+	{ name = "tmux", text = "", fg = "lightyellow" },
+	{ name = "toml", text = "", fg = "yellow" },
+	{ name = "torrent", text = "", fg = "lightred" },
+	{ name = "tres", text = "", fg = "lightcyan" },
+	{ name = "ts", text = "", fg = "magenta" },
+	{ name = "tscn", text = "", fg = "yellow" },
+	{ name = "tsconfig", text = "", fg = "lightgreen" },
+	{ name = "tsx", text = "", fg = "green" },
+	{ name = "ttf", text = "", fg = "lightmagenta" },
+	{ name = "twig", text = "", fg = "lightgreen" },
+	{ name = "txt", text = "󰈙", fg = "lightcyan" },
+	{ name = "txz", text = "", fg = "red" },
+	{ name = "typ", text = "", fg = "lightmagenta" },
+	{ name = "typoscript", text = "", fg = "lightgreen" },
+	{ name = "ui", text = "", fg = "blue" },
+	{ name = "v", text = "󰍛", fg = "blue" },
+	{ name = "vala", text = "", fg = "blue" },
+	{ name = "vert", text = "", fg = "yellow" },
+	{ name = "vh", text = "󰍛", fg = "lightred" },
+	{ name = "vhd", text = "󰍛", fg = "magenta" },
+	{ name = "vhdl", text = "󰍛", fg = "blue" },
+	{ name = "vi", text = "", fg = "lightred" },
+	{ name = "vim", text = "", fg = "lightcyan" },
+	{ name = "vsh", text = "", fg = "magenta" },
+	{ name = "vsix", text = "", fg = "lightgreen" },
+	{ name = "vue", text = "", fg = "lightcyan" },
+	{ name = "wasm", text = "", fg = "blue" },
+	{ name = "wav", text = "", fg = "cyan" },
+	{ name = "webm", text = "", fg = "magenta" },
+	{ name = "webmanifest", text = "", fg = "blue" },
+	{ name = "webp", text = "", fg = "yellow" },
+	{ name = "webpack", text = "󰜫", fg = "yellow" },
+	{ name = "wma", text = "", fg = "cyan" },
+	{ name = "wmv", text = "", fg = "magenta" },
+	{ name = "woff", text = "", fg = "magenta" },
+	{ name = "woff2", text = "", fg = "blue" },
+	{ name = "wrl", text = "󰆧", fg = "lightred" },
+	{ name = "wrz", text = "󰆧", fg = "lightgreen" },
+	{ name = "wv", text = "", fg = "cyan" },
+	{ name = "wvc", text = "", fg = "magenta" },
+	{ name = "x", text = "", fg = "lightgreen" },
+	{ name = "xaml", text = "󰙳", fg = "green" },
+	{ name = "xcf", text = "", fg = "yellow" },
+	{ name = "xcplayground", text = "", fg = "lightred" },
+	{ name = "xcstrings", text = "", fg = "blue" },
+	{ name = "xls", text = "󰈛", fg = "lightcyan" },
+	{ name = "xlsx", text = "󰈛", fg = "lightcyan" },
+	{ name = "xm", text = "", fg = "green" },
+	{ name = "xml", text = "󰗀", fg = "lightcyan" },
+	{ name = "xpi", text = "", fg = "cyan" },
+	{ name = "xslt", text = "󰗀", fg = "lightmagenta" },
+	{ name = "xul", text = "", fg = "lightyellow" },
+	{ name = "xz", text = "", fg = "red" },
+	{ name = "yaml", text = "", fg = "blue" },
+	{ name = "yml", text = "", fg = "magenta" },
+	{ name = "zig", text = "", fg = "green" },
+	{ name = "zip", text = "", fg = "red" },
+	{ name = "zsh", text = "", fg = "green" },
+	{ name = "zst", text = "", fg = "red" },
+	{ name = "🔥", text = "", fg = "lightgreen" },
+]
+conds = [
+	# Special files
+	{ if = "orphan", text = "", fg = "red" },
+	{ if = "link", text = "", fg = "cyan" },
+	{ if = "block", text = "", fg = "yellow" },
+	{ if = "char", text = "", fg = "yellow" },
+	{ if = "fifo", text = "", fg = "yellow" },
+	{ if = "sock", text = "", fg = "yellow" },
+	{ if = "sticky", text = "", fg = "yellow" },
+	{ if = "dummy", text = "", fg = "red" },
+
+	# Fallback
+	{ if = "dir & hovered", text = "", fg = "blue" },
+	{ if = "dir", text = "", fg = "blue" },
+	{ if = "exec", text = "", fg = "green" },
+	{ if = "!dir", text = "", fg = "white" },
+]
+
+# : }}}
