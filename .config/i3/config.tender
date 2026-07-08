@@ -1,4 +1,3 @@
-
 ##################################################### Конфигурационный файл i3wm ##############################
 
 # Кнопка MOD
@@ -24,41 +23,46 @@ exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id "xrdb ~/.Xresources"
 exec --no-startup-id ~/.config/i3/layout_notify.sh
 exec --no-startup-id "xfce4-power-manager"
-#exec --no-startup-id nm-applet
-exec --no-startup-id udiskie --automount --notify --no-tray
-exec --no-startup-id ~/.local/bin/mtp-link.sh
 exec --no-startup-id blueman-applet
 exec --no-startup-id dbus-update-activation-environment --systemd DISPLAY I3SOCK
 exec --no-startup-id lxpolkit
-exec --no-startup-id "unclutter-xfixes --timeout 1 --jitter 1 --ignore-buttons 4,5,6,7 --hide-on-touch --start-hidden" 
+exec --no-startup-id "unclutter-xfixes --timeout 1 --jitter 1 --ignore-buttons 4,5,6,7 --hide-on-touch --start-hidden"
 exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec --no-startup-id dunst
-exec --no-startup-id picom --experimental-backends --config ~/.config/picom.conf 
-exec_always --no-startup-id bash -c "~/.local/bin/wpg -s ~/Изображения/Обои"
-exec_always --no-startup-id bash -c "sleep 1 && wal-telegram --wal -g|--gaussian-blur"
+exec --no-startup-id picom --experimental-backends --config ~/.config/picom.conf
+# wpgtk и pywal закомментированы — исполь8зуем tender
+exec_always --no-startup-id feh --randomize --bg-fill ~/Изображения/Обои/
+#exec_always --no-startup-id bash -c "~/.local/bin/wpg -s ~/Изображения/Обои"
+#exec_always --no-startup-id bash -c "sleep 1 && wal-telegram --wal -g|--gaussian-blur"
+#exec_always --no-startup-id bash -c "sleep 3 && python3 ~/.local/bin/papirus-wal.py"
 exec --no-startup-id betterlockscreen -u ~/Изображения/Обои/
 exec_always --no-startup-id autotiling --limit 2
 exec_always --no-startup-id python3 ~/.config/i3/i3-window.py
 exec --no-startup-id echo "⚖️ Bal" > /tmp/current_power_profile && sudo /usr/local/bin/ryzenadj --stapm-limit=15000 --fast-limit=18000 --slow-limit=15000 --tctl-temp=65
-exec --no-startup-id easyeffects 
+exec --no-startup-id easyeffects
 
 ########################################################## Цвета ##############################################
 
-set_from_resource $fg i3wm.color7 #f0f0f0
-set_from_resource $bg i3wm.color2 #f0f0f0
+# Tender palette
+set $tender_bg      #282828
+set $tender_fg      #eeeeee
+set $tender_blue    #b3deef
+set $tender_cyan    #73cef4
+set $tender_lime    #c9d05c
+set $tender_red     #f43753
+set $tender_yellow  #ffc24b
 
-# class     wpg -m            border  backgr. text indicator child_border
-client.focused          $bg     $bg     $fg  $bg       $bg
-client.focused_inactive $bg     $bg     $fg  $bg       $bg
-client.unfocused        $bg     $bg     $fg  $bg       $bg
-client.urgent           $bg     $bg     $fg  $bg       $bg
-client.placeholder      $bg     $bg     $fg  $bg       $bg
-client.background       $bg
+# class                 border          backgr.         text            indicator       child_border
+client.focused          $tender_blue    $tender_blue    $tender_bg      $tender_cyan    $tender_blue
+client.focused_inactive $tender_bg      $tender_bg      $tender_fg      $tender_bg      $tender_bg
+client.unfocused        $tender_bg      $tender_bg      $tender_fg      $tender_bg      $tender_bg
+client.urgent           $tender_red     $tender_red     $tender_fg      $tender_red     $tender_red
+client.placeholder      $tender_bg      $tender_bg      $tender_fg      $tender_bg      $tender_bg
+client.background       $tender_bg
 
 #################################################### Правила открытия окон ####################################
 
-# Окна в плавающем режиме по умолчанию
 for_window [class="mpv"] floating enable, move absolute position center
 for_window [class="Viewnior"] floating enable, move absolute position center
 for_window [class="Pavucontrol"] floating enable, move absolute position center
@@ -71,21 +75,25 @@ for_window [class="telegram-desktop"] floating enable, move absolute position ri
 for_window [instance="telegram-desktop"] floating enable, move absolute position right
 for_window [class="Blueman-manager"] floating enable, move absolute position center
 for_window [class="easyeffects"] move scratchpad
-for_window [class="rtorrent"] floating enable, move absolute position center
+for_window [class="transmission-gtk"] floating enable, move absolute position center
 for_window [class="Lutris"] floating enable
-
-# Wine 
+for_window [class="(?i)libreoffice*"] move to workspace $ws2
 for_window [class="Wine"] floating enable
 for_window [title="Wine System Config"] floating enable
 
-# Окна открывающиеся на определенном рабочем столе
 assign [instance="firefox"] $ws1
+assign [instance="transmission-gtk"] $ws3
 assign [class="(?i)GIMP"] $ws5
-assign [instance="yazi"] $ws3
+assign [instance="thunar"] $ws3
 assign [instance="shotcut"] $ws5
 assign [class="alacritty" instance="MOC"] $ws5
 assign [class="alacritty" instance="cava"] $ws5
-assign [class="sc-im"] $ws2
+assign [class="(?i)libreoffice"] $ws2
+assign [class="(?i)libreoffice-writer"] $ws2
+assign [class="(?i)libreoffice-calc"] $ws2
+assign [class="(?i)libreoffice-impress"] $ws2
+assign [class="(?i)libreoffice-draw"] $ws2
+assign [class="(?i)libreoffice-startcenter"] $ws2
 assign [class="easyeffects"] $ws5
 assign [instance="Krita"] $ws5
 assign [instance="Blender"] $ws5
@@ -93,164 +101,84 @@ assign [instance="(?i)Zathura"] $ws4
 
 #################################################### Звук и яркость экрана ####################################
 
-# Звук 
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 2%+ && dunstify -h string:x-dunst-stack-tag:volume -a "System" "Громкость: $(pamixer --get-volume-human)" -h int:value:"$(pamixer --get-volume)"
 bindsym XF86AudioLowerVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%- && dunstify -h string:x-dunst-stack-tag:volume -a "System" "Громкость: $(pamixer --get-volume-human)" -h int:value:"$(pamixer --get-volume)"
 bindsym XF86AudioMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle && dunstify -h string:x-dunst-stack-tag:volume -a "System" "Звук переключен"
-# Яркость
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5% && dunstify -h string:x-dunst-stack-tag:brightness -a "System" "Яркость: $(brightnessctl info | grep -oP '\(\K[^)]+') "
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%- && dunstify -h string:x-dunst-stack-tag:brightness -a "System" "Яркость: $(brightnessctl info | grep -oP '\(\K[^)]+') "
 
-
 ################################################# Программы ##################################################
 
-# Терминал
 bindsym $mod+Return exec alacritty
 bindsym $mod+grave exec ~/.config/i3/scratchpad.sh
-
-# Лаунчер
 bindsym $mod+d exec --no-startup-id PATH="$PATH:/usr/games" rofi -show drun -show-icons -font "Iosevka Nerd Font 17" -theme ~/.config/rofi/theme.rasi
-
-# Скриншот
 bindsym --release Print exec "flameshot gui"
-
-# yazi
-bindsym $mod+Shift+p exec "alacritty --class yazi,yazi -e yazi" 
-
-# Firefox
+bindsym $mod+Shift+p exec thunar
 bindsym $mod+g exec firefox
-
-# Nvim
-bindsym $mod+c exec alacritty -e nvim 
-
-# Telegram
-bindsym $mod+t exec ~/.config/i3/telegram-scratch.sh 
-
-# Torrent
-bindsym $mod+b exec ~/.config/i3/torrent.sh
-
-# Monitask
+bindsym $mod+c exec alacritty -e nvim
+bindsym $mod+t exec ~/.config/i3/telegram-scratch.sh
+bindsym $mod+b exec transmission-gtk
+bindsym $mod+y exec catfish
 bindsym $mod+m exec monitask
-
-# Shotcut
 bindsym $mod+s exec shotcut
-
 bindsym $mod+e [class="easyeffects"] move workspace current, focus
-
-# Плеер MOC
 bindsym Mod4+z exec "alacritty --class player -e mocp"
-#bindsym XF86AudioPrev exec --no-startup-id "mocp --previous"
-#bindsym XF86AudioPlay exec --no-startup-id "mocp --toggle-pause"
-#bindsym XF86AudioNext exec --no-startup-id "mocp --next"
 
 ############################################### Горячие клавиши ##############################################
 
-# Перетаскивание мышкой
 floating_modifier $mod
 tiling_drag modifier titlebar
-
-# Закрыть окно
 bindsym $mod+Shift+q kill
-
-# Рестарт конфига i3
 bindsym $mod+Shift+r restart
-
-# Выход из сессии i3
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-# Переключение окон
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
-
-
-# Перемещение окон на рабочем столе
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
-
-
-# Открыть новое окно горизонтально
-bindsym $mod+Ctrl+h split h
-
-# Открыть новое окно вертикально
-bindsym $mod+Ctrl+v split v
-
-# Открыть окно во весь экран
+bindsym $mod+h split h
+bindsym $mod+v split v
 bindsym $mod+f fullscreen toggle
-
-# Переключение между плавающими окнами и тайлингом
 bindsym $mod+space floating toggle
-
-# Изменение фокуса между плавающими окнами и тайлингом
 bindsym $mod+Shift+space focus mode_toggle
-
-# Выделитьвсе окна
 bindsym $mod+a focus parent
-
-# Переключение на предыдущее окно по Mod+Tab
 bindsym $mod+Tab workspace next
 
-# Название рабочих столов
-set $ws1 "1:"
+set $ws1 "1:"
 set $ws2 "2:󰪸"
-set $ws3 "3:"
-set $ws4 "4:"
-set $ws5 "5:"
+set $ws3 "3:"
+set $ws4 "4:"
+set $ws5 "5:"
 
-# Переход на рабочий стол
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
 bindsym $mod+3 workspace number $ws3
 bindsym $mod+4 workspace number $ws4
 bindsym $mod+5 workspace number $ws5
 
-# Перемещение выбраного окнана рабочий стол
 bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
 bindsym $mod+Shift+3 move container to workspace number $ws3
 bindsym $mod+Shift+4 move container to workspace number $ws4
 bindsym $mod+Shift+5 move container to workspace number $ws5
 
-# Режим изменения размера окна
 mode "resize" {
-
-        # Направление изменения размера окон
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize shrink height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
-
-        bindsym h resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow width 10 px or 10 ppt
-
-
-        # Горячие клавиши изменения размера
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+r mode "default"
 }
 
-#Скрэтчпад
-# Отправить текущее активное окно в фоновый Scratchpad ("свернуть")
 bindsym $mod+Shift+minus move scratchpad
-
-# Показать/Спрятать окно из Scratchpad (по центру экрана)
 bindsym $mod+minus scratchpad show
-
 bindsym $mod+r mode "resize"
