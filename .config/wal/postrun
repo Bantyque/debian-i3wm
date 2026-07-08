@@ -1,0 +1,2 @@
+#!/bin/sh
+cp ~/.cache/wal/zathurarc ~/.config/zathura/zathurarc
